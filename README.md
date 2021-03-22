@@ -1,7 +1,14 @@
-
-[//]: # (This file is generated. Do not edit)
-
 # kubernetes
+
+Example usage:
+```terraform
+module "kubernetes" {
+  source               = "git@github.com:kabisa/terraform-datadog-kubernetes.git?ref=0.1"
+  notification_channel = "@kabisa"
+  alert_env            = "prd"
+  filter_str           = "cluster_name:production"
+}
+```
 
 TOC:
 <!--ts-->
