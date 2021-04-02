@@ -32,3 +32,28 @@ variable "node_status_alerting_enabled" {
   type    = bool
   default = true
 }
+
+variable "node_status_no_data_timeframe" {
+  type    = number
+  default = null
+}
+
+variable "node_status_notify_no_data" {
+  type    = bool
+  default = false
+}
+
+variable "node_status_ok_threshold" {
+  type    = number
+  default = null
+}
+
+variable "node_status_name_prefix" {
+  type    = string
+  default = ""
+}
+
+variable "node_status_name_suffix" {
+  type    = string
+  default = ""
+}

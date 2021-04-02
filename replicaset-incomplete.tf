@@ -6,7 +6,7 @@ locals {
 }
 
 module "replicaset_incomplete" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.2"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.5"
 
   name  = "Replicaset Incomplete"
   query = "min(${var.replicaset_incomplete_evaluation_period}):max:kubernetes_state.replicaset.replicas_desired{${local.replicaset_incomplete_filter}} by {kube_replica_set,cluster_name} - min:kubernetes_state.replicaset.replicas_ready{${local.replicaset_incomplete_filter}} by {kube_replica_set,cluster_name} > ${var.replicaset_incomplete_critical}"
@@ -29,4 +29,5 @@ module "replicaset_incomplete" {
   require_full_window = true
 
   critical_threshold = var.replicaset_incomplete_critical
+  locked             = var.locked
 }

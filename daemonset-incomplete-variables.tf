@@ -4,8 +4,8 @@ variable "daemonset_incomplete_enabled" {
 }
 
 variable "daemonset_incomplete_critical" {
-  type    = number
-  default = 0
+  type        = number
+  default     = 0
   description = "alert is raised when (desired - running) > daemonset_incomplete_critical"
 }
 
@@ -37,4 +37,29 @@ variable "daemonset_incomplete_filter_override" {
 variable "daemonset_incomplete_alerting_enabled" {
   type    = bool
   default = true
+}
+
+variable "daemonset_incomplete_no_data_timeframe" {
+  type    = number
+  default = null
+}
+
+variable "daemonset_incomplete_notify_no_data" {
+  type    = bool
+  default = false
+}
+
+variable "daemonset_incomplete_ok_threshold" {
+  type    = number
+  default = null
+}
+
+variable "daemonset_incomplete_name_prefix" {
+  type    = string
+  default = ""
+}
+
+variable "daemonset_incomplete_name_suffix" {
+  type    = string
+  default = ""
 }
