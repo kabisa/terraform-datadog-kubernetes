@@ -11,7 +11,7 @@ module "replicaset_unavailable" {
   source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.5"
 
   name = "Replicaset Unavailable"
-  # This (ab)uses a division by zero to
+  # This (ab)uses a division by zero to make sure we don't get alerts when nr of desired pods < 2
   query = "max(${var.replicaset_unavailable_evaluation_period}):( ${local.rs_pods_ready} ) / ${local.rs_pods_desired} / ( ${local.rs_pods_desired} - 1 ) <= 0"
 
   enabled          = var.replicaset_unavailable_enabled
