@@ -23,3 +23,8 @@ variable "additional_tags" {
 variable "filter_str" {
   type = string
 }
+
+variable "locked" {
+  type    = bool
+  default = true
+}

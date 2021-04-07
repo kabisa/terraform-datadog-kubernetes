@@ -4,8 +4,8 @@ variable "replicaset_incomplete_enabled" {
 }
 
 variable "replicaset_incomplete_critical" {
-  type    = number
-  default = 0
+  type        = number
+  default     = 0
   description = "alert is raised when (desired - running) > replicaset_incomplete_critical"
 }
 
@@ -37,4 +37,29 @@ variable "replicaset_incomplete_filter_override" {
 variable "replicaset_incomplete_alerting_enabled" {
   type    = bool
   default = true
+}
+
+variable "replicaset_incomplete_no_data_timeframe" {
+  type    = number
+  default = null
+}
+
+variable "replicaset_incomplete_notify_no_data" {
+  type    = bool
+  default = false
+}
+
+variable "replicaset_incomplete_ok_threshold" {
+  type    = number
+  default = null
+}
+
+variable "replicaset_incomplete_name_prefix" {
+  type    = string
+  default = ""
+}
+
+variable "replicaset_incomplete_name_suffix" {
+  type    = string
+  default = ""
 }

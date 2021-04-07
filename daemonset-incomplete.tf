@@ -6,7 +6,7 @@ locals {
 }
 
 module "daemonset_incomplete" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.2"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.5"
 
   name  = "Daemonset Incomplete"
   query = "min(${var.daemonset_incomplete_evaluation_period}):max:kubernetes_state.daemonset.scheduled{${local.daemonset_incomplete_filter}} by {daemonset,cluster_name} - min:kubernetes_state.daemonset.ready{${local.daemonset_incomplete_filter}} by {daemonset,cluster_name} > 0"
@@ -29,4 +29,5 @@ module "daemonset_incomplete" {
   require_full_window = true
 
   critical_threshold = var.daemonset_incomplete_critical
+  locked             = var.locked
 }

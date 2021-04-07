@@ -32,3 +32,28 @@ variable "pod_ready_alerting_enabled" {
   type    = bool
   default = true
 }
+
+variable "pod_ready_no_data_timeframe" {
+  type    = number
+  default = null
+}
+
+variable "pod_ready_notify_no_data" {
+  type    = bool
+  default = false
+}
+
+variable "pod_ready_ok_threshold" {
+  type    = number
+  default = null
+}
+
+variable "pod_ready_name_prefix" {
+  type    = string
+  default = ""
+}
+
+variable "pod_ready_name_suffix" {
+  type    = string
+  default = ""
+}

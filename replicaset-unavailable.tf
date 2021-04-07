@@ -3,14 +3,16 @@ locals {
     var.replicaset_unavailable_filter_override,
     var.filter_str
   )
+  rs_pods_ready   = "min:kubernetes_state.replicaset.replicas_ready{${local.replicaset_unavailable_filter}} by {kube_replica_set,cluster_name}"
+  rs_pods_desired = "min:kubernetes_state.replicaset.replicas_desired{${local.replicaset_unavailable_filter}} by {kube_replica_set,cluster_name}"
 }
 
 module "replicaset_unavailable" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.2"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.5"
 
-  name  = "Replicaset Unavailable"
-  # This (ab)uses a division by zero to
-  query = "max(${var.replicaset_unavailable_evaluation_period}):min:kubernetes_state.replicaset.replicas_ready{${local.replicaset_unavailable_filter}} by {kube_replica_set,cluster_name} / min:kubernetes_state.replicaset.replicas_desired{${local.replicaset_unavailable_filter}} by {kube_replica_set,cluster_name} <= 0"
+  name = "Replicaset Unavailable"
+  # This (ab)uses a division by zero to make sure we don't get alerts when nr of desired pods < 2
+  query = "max(${var.replicaset_unavailable_evaluation_period}):( ${local.rs_pods_ready} ) / ${local.rs_pods_desired} / ( ${local.rs_pods_desired} - 1 ) <= 0"
 
   enabled          = var.replicaset_unavailable_enabled
   alerting_enabled = var.replicaset_unavailable_alerting_enabled
@@ -30,4 +32,5 @@ module "replicaset_unavailable" {
   require_full_window = true
 
   critical_threshold = 0
+  locked             = var.locked
 }
