@@ -69,3 +69,10 @@ variable "node_memory_used_percent_name_suffix" {
   type    = string
   default = ""
 }
+
+variable "node_memory_used_percent_priority" {
+  description = "Number from 1 (high) to 5 (low)."
+
+  type    = number
+  default = null
+}
