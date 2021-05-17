@@ -17,7 +17,7 @@ variable "notification_channel" {
 
 variable "additional_tags" {
   type    = list(string)
-  default = ["group:TME_IMS_Middleware_Systems", "service:k8s"]
+  default = []
 }
 
 variable "filter_str" {
