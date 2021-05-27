@@ -36,7 +36,7 @@ variable "network_unavailable_filter_override" {
 
 variable "network_unavailable_alerting_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "network_unavailable_no_data_timeframe" {

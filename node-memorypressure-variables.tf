@@ -36,7 +36,7 @@ variable "node_memorypressure_filter_override" {
 
 variable "node_memorypressure_alerting_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "node_memorypressure_no_data_timeframe" {

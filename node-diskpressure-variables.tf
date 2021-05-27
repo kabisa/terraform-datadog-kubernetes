@@ -36,7 +36,7 @@ variable "node_diskpressure_filter_override" {
 
 variable "node_diskpressure_alerting_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "node_diskpressure_no_data_timeframe" {

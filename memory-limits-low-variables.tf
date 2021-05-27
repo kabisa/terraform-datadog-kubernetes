@@ -40,7 +40,7 @@ variable "memory_limits_low_filter_override" {
 
 variable "memory_limits_low_alerting_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "memory_limits_low_no_data_timeframe" {

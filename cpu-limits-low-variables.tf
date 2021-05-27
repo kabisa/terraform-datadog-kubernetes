@@ -40,7 +40,7 @@ variable "cpu_limits_low_filter_override" {
 
 variable "cpu_limits_low_alerting_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "cpu_limits_low_no_data_timeframe" {
