@@ -54,16 +54,6 @@ variable "node_memorypressure_ok_threshold" {
   default = null
 }
 
-variable "node_memorypressure_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "node_memorypressure_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "node_memorypressure_priority" {
   description = "Number from 1 (high) to 5 (low)."
 

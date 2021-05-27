@@ -54,16 +54,6 @@ variable "pid_pressure_ok_threshold" {
   default = null
 }
 
-variable "pid_pressure_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "pid_pressure_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "pid_pressure_priority" {
   description = "Number from 1 (high) to 5 (low)."
 

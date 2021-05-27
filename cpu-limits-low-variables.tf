@@ -58,16 +58,6 @@ variable "cpu_limits_low_ok_threshold" {
   default = null
 }
 
-variable "cpu_limits_low_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "cpu_limits_low_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "cpu_limits_low_priority" {
   description = "Number from 1 (high) to 5 (low)."
 

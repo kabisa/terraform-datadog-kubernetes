@@ -6,7 +6,7 @@ locals {
 }
 
 module "node_memorypressure" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.5.1"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
 
   name             = "Nodes with Memorypressure"
   query            = "avg(${var.node_memorypressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.node_memorypressure_filter} AND condition:memorypressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.node_memorypressure_critical}"
@@ -14,7 +14,7 @@ module "node_memorypressure" {
   recovery_message = "Kubernetes cluster node {{node}} no longer has Memory Pressure."
 
   # monitor level vars
-  enabled            = var.node_memorypressure_enabled
+  enabled            = var.state_metrics_monitoring && var.node_memorypressure_enabled
   alerting_enabled   = var.node_memorypressure_alerting_enabled
   critical_threshold = var.node_memorypressure_critical
   # no warning threshold for this monitor
@@ -29,4 +29,6 @@ module "node_memorypressure" {
   notification_channel = var.notification_channel
   additional_tags      = var.additional_tags
   locked               = var.locked
+  name_prefix          = var.name_prefix
+  name_suffix          = var.name_suffix
 }

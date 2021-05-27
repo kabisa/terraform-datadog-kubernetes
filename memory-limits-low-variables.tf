@@ -58,16 +58,6 @@ variable "memory_limits_low_ok_threshold" {
   default = null
 }
 
-variable "memory_limits_low_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "memory_limits_low_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "memory_limits_low_priority" {
   description = "Number from 1 (high) to 5 (low)."
 

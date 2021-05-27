@@ -54,16 +54,6 @@ variable "network_unavailable_ok_threshold" {
   default = null
 }
 
-variable "network_unavailable_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "network_unavailable_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "network_unavailable_priority" {
   description = "Number from 1 (high) to 5 (low)."
 

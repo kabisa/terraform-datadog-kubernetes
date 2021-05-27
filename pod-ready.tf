@@ -6,7 +6,7 @@ locals {
 }
 
 module "pod_ready" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.5.1"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
 
   name             = "Pod status not ready"
   query            = "min(${var.pod_ready_evaluation_period}):sum:kubernetes_state.pod.count{${local.pod_ready_filter}} by {cluster_name,namespace} - sum:kubernetes_state.pod.ready{${local.pod_ready_filter}} by {cluster_name,namespace} > 0"
@@ -14,7 +14,7 @@ module "pod_ready" {
   recovery_message = "Kubernetes Pod status recovered in namespace {{namespace}}"
 
   # monitor level vars
-  enabled            = var.pod_ready_enabled
+  enabled            = var.state_metrics_monitoring && var.pod_ready_enabled
   alerting_enabled   = var.pod_ready_alerting_enabled
   critical_threshold = 0
   # No warning possible for status that is either 0 or 1
@@ -29,4 +29,6 @@ module "pod_ready" {
   notification_channel = var.notification_channel
   additional_tags      = var.additional_tags
   locked               = var.locked
+  name_prefix          = var.name_prefix
+  name_suffix          = var.name_suffix
 }

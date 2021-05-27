@@ -48,16 +48,6 @@ variable "hpa_status_ok_threshold" {
   default = null
 }
 
-variable "hpa_status_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "hpa_status_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "hpa_status_priority" {
   description = "Number from 1 (high) to 5 (low)."
 

@@ -54,16 +54,6 @@ variable "node_diskpressure_ok_threshold" {
   default = null
 }
 
-variable "node_diskpressure_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "node_diskpressure_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "node_diskpressure_priority" {
   description = "Number from 1 (high) to 5 (low)."
 

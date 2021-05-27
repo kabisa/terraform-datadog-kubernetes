@@ -54,16 +54,6 @@ variable "daemonset_incomplete_ok_threshold" {
   default = null
 }
 
-variable "daemonset_incomplete_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "daemonset_incomplete_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "daemonset_incomplete_priority" {
   description = "Number from 1 (high) to 5 (low)."
 
