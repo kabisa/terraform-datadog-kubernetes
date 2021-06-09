@@ -28,3 +28,18 @@ variable "locked" {
   type    = bool
   default = true
 }
+
+variable "state_metrics_monitoring" {
+  type    = bool
+  default = true
+}
+
+variable "name_prefix" {
+  type    = string
+  default = ""
+}
+
+variable "name_suffix" {
+  type    = string
+  default = ""
+}

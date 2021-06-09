@@ -36,7 +36,7 @@ variable "node_diskpressure_filter_override" {
 
 variable "node_diskpressure_alerting_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "node_diskpressure_no_data_timeframe" {
@@ -52,16 +52,6 @@ variable "node_diskpressure_notify_no_data" {
 variable "node_diskpressure_ok_threshold" {
   type    = number
   default = null
-}
-
-variable "node_diskpressure_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "node_diskpressure_name_suffix" {
-  type    = string
-  default = ""
 }
 
 variable "node_diskpressure_priority" {

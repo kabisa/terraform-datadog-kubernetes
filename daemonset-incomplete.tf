@@ -6,7 +6,7 @@ locals {
 }
 
 module "daemonset_incomplete" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.5.1"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
 
   name             = "Daemonset Incomplete"
   query            = "min(${var.daemonset_incomplete_evaluation_period}):max:kubernetes_state.daemonset.scheduled{${local.daemonset_incomplete_filter}} by {daemonset,cluster_name} - min:kubernetes_state.daemonset.ready{${local.daemonset_incomplete_filter}} by {daemonset,cluster_name} > 0"
@@ -14,7 +14,7 @@ module "daemonset_incomplete" {
   recovery_message = "Kubernetes Daemonset {{daemonset}} has recovered"
 
   # monitor level vars
-  enabled            = var.daemonset_incomplete_enabled
+  enabled            = var.state_metrics_monitoring && var.daemonset_incomplete_enabled
   alerting_enabled   = var.daemonset_incomplete_alerting_enabled
   critical_threshold = var.daemonset_incomplete_critical
   # no warning threshold for this monitor
@@ -29,4 +29,6 @@ module "daemonset_incomplete" {
   notification_channel = var.notification_channel
   additional_tags      = var.additional_tags
   locked               = var.locked
+  name_prefix          = var.name_prefix
+  name_suffix          = var.name_suffix
 }

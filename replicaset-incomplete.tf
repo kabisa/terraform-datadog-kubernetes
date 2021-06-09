@@ -6,7 +6,7 @@ locals {
 }
 
 module "replicaset_incomplete" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.5.1"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
 
   name             = "Replicaset Incomplete"
   query            = "min(${var.replicaset_incomplete_evaluation_period}):max:kubernetes_state.replicaset.replicas_desired{${local.replicaset_incomplete_filter}} by {kube_replica_set,cluster_name} - min:kubernetes_state.replicaset.replicas_ready{${local.replicaset_incomplete_filter}} by {kube_replica_set,cluster_name} > ${var.replicaset_incomplete_critical}"
@@ -14,7 +14,7 @@ module "replicaset_incomplete" {
   recovery_message = "Kubernetes Replicaset {{kube_replica_set}} has recovered"
 
   # monitor level vars
-  enabled            = var.replicaset_incomplete_enabled
+  enabled            = var.state_metrics_monitoring && var.replicaset_incomplete_enabled
   alerting_enabled   = var.replicaset_incomplete_alerting_enabled
   critical_threshold = var.replicaset_incomplete_critical
   # No warning threshold for this monitor
@@ -29,4 +29,6 @@ module "replicaset_incomplete" {
   notification_channel = var.notification_channel
   additional_tags      = var.additional_tags
   locked               = var.locked
+  name_prefix          = var.name_prefix
+  name_suffix          = var.name_suffix
 }

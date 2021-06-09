@@ -6,7 +6,7 @@ locals {
 }
 
 module "network_unavailable" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.5.1"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
 
   name             = "Nodes with Network Unavailable"
   query            = "avg(${var.network_unavailable_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.network_unavailable_filter} AND condition:networkunavailable AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.network_unavailable_critical}"
@@ -14,7 +14,7 @@ module "network_unavailable" {
   recovery_message = "Kubernetes cluster node {{node}} has come back on the network"
 
   # monitor level vars
-  enabled            = var.network_unavailable_enabled
+  enabled            = var.state_metrics_monitoring && var.network_unavailable_enabled
   alerting_enabled   = var.network_unavailable_alerting_enabled
   critical_threshold = var.network_unavailable_critical
   # no warning threshold for this monitor
@@ -29,4 +29,6 @@ module "network_unavailable" {
   notification_channel = var.notification_channel
   additional_tags      = var.additional_tags
   locked               = var.locked
+  name_prefix          = var.name_prefix
+  name_suffix          = var.name_suffix
 }

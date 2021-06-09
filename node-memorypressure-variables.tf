@@ -36,7 +36,7 @@ variable "node_memorypressure_filter_override" {
 
 variable "node_memorypressure_alerting_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "node_memorypressure_no_data_timeframe" {
@@ -52,16 +52,6 @@ variable "node_memorypressure_notify_no_data" {
 variable "node_memorypressure_ok_threshold" {
   type    = number
   default = null
-}
-
-variable "node_memorypressure_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "node_memorypressure_name_suffix" {
-  type    = string
-  default = ""
 }
 
 variable "node_memorypressure_priority" {

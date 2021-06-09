@@ -60,16 +60,6 @@ variable "node_memory_used_percent_ok_threshold" {
   default = null
 }
 
-variable "node_memory_used_percent_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "node_memory_used_percent_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "node_memory_used_percent_priority" {
   description = "Number from 1 (high) to 5 (low)."
 

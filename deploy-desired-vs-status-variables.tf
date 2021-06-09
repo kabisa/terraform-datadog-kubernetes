@@ -42,7 +42,7 @@ variable "deploy_desired_vs_status_filter_override" {
 
 variable "deploy_desired_vs_status_alerting_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "deploy_desired_vs_status_no_data_timeframe" {
@@ -58,16 +58,6 @@ variable "deploy_desired_vs_status_notify_no_data" {
 variable "deploy_desired_vs_status_ok_threshold" {
   type    = number
   default = null
-}
-
-variable "deploy_desired_vs_status_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "deploy_desired_vs_status_name_suffix" {
-  type    = string
-  default = ""
 }
 
 variable "deploy_desired_vs_status_priority" {

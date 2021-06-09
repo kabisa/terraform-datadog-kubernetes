@@ -8,7 +8,7 @@ locals {
 }
 
 module "replicaset_unavailable" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.5.1"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
 
   name = "Replicaset Unavailable"
   # This (ab)uses a division by zero to make sure we don't get alerts when nr of desired pods < 2
@@ -17,7 +17,7 @@ module "replicaset_unavailable" {
   recovery_message = "Kubernetes Replicaset {{kube_replica_set}} now has available pods"
 
   # monitor level vars
-  enabled            = var.replicaset_unavailable_enabled
+  enabled            = var.state_metrics_monitoring && var.replicaset_unavailable_enabled
   alerting_enabled   = var.replicaset_unavailable_alerting_enabled
   critical_threshold = 0
   # No warning threshold for this monitor
@@ -32,4 +32,6 @@ module "replicaset_unavailable" {
   notification_channel = var.notification_channel
   additional_tags      = var.additional_tags
   locked               = var.locked
+  name_prefix          = var.name_prefix
+  name_suffix          = var.name_suffix
 }

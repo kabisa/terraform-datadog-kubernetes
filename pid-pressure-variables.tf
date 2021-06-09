@@ -36,7 +36,7 @@ variable "pid_pressure_filter_override" {
 
 variable "pid_pressure_alerting_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "pid_pressure_no_data_timeframe" {
@@ -52,16 +52,6 @@ variable "pid_pressure_notify_no_data" {
 variable "pid_pressure_ok_threshold" {
   type    = number
   default = null
-}
-
-variable "pid_pressure_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "pid_pressure_name_suffix" {
-  type    = string
-  default = ""
 }
 
 variable "pid_pressure_priority" {

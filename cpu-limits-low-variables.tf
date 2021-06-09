@@ -40,7 +40,7 @@ variable "cpu_limits_low_filter_override" {
 
 variable "cpu_limits_low_alerting_enabled" {
   type    = bool
-  default = false
+  default = true
 }
 
 variable "cpu_limits_low_no_data_timeframe" {
@@ -56,16 +56,6 @@ variable "cpu_limits_low_notify_no_data" {
 variable "cpu_limits_low_ok_threshold" {
   type    = number
   default = null
-}
-
-variable "cpu_limits_low_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "cpu_limits_low_name_suffix" {
-  type    = string
-  default = ""
 }
 
 variable "cpu_limits_low_priority" {

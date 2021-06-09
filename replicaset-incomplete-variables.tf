@@ -54,16 +54,6 @@ variable "replicaset_incomplete_ok_threshold" {
   default = null
 }
 
-variable "replicaset_incomplete_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "replicaset_incomplete_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "replicaset_incomplete_priority" {
   description = "Number from 1 (high) to 5 (low)."
 

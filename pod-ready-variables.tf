@@ -48,16 +48,6 @@ variable "pod_ready_ok_threshold" {
   default = null
 }
 
-variable "pod_ready_name_prefix" {
-  type    = string
-  default = ""
-}
-
-variable "pod_ready_name_suffix" {
-  type    = string
-  default = ""
-}
-
 variable "pod_ready_priority" {
   description = "Number from 1 (high) to 5 (low)."
 
