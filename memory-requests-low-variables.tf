@@ -5,12 +5,12 @@ variable "memory_requests_low_enabled" {
 
 variable "memory_requests_low_warning" {
   type    = number
-  default = 4000000000
+  default = 4000000000 # Divided by 1024 = around 4GiB
 }
 
 variable "memory_requests_low_critical" {
   type    = number
-  default = 3000000000
+  default = 3000000000 # Divided by 1024 = around 3GiB
 }
 
 variable "memory_requests_low_evaluation_period" {
