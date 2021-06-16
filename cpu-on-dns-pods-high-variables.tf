@@ -15,7 +15,7 @@ variable "cpu_on_dns_pods_high_critical" {
 
 variable "cpu_on_dns_pods_high_evaluation_period" {
   type    = string
-  default = "last_5m"
+  default = "last_30m"
 }
 
 variable "cpu_on_dns_pods_high_severity" {
