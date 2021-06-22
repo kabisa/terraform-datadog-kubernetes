@@ -1,6 +1,6 @@
 locals {
-  dns_filter_tags = join(" OR ", dns_filter_tags)
-  filter_string = "(${var.filter_str}) AND (${local.dns_filter_tags})"
+  dns_filter_tags = join(" OR ", var.dns_filter_tags)
+  filter_string   = "(${var.filter_str}) AND (${local.dns_filter_tags})"
   cpu_on_dns_pods_high_filter = coalesce(
     var.cpu_on_dns_pods_high_filter_override,
     local.filter_string
