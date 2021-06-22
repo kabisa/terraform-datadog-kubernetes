@@ -1,11 +1,21 @@
 
+# Getting started
+[pre-commit](http://pre-commit.com/) was used to do Terraform linting and validating.
+
+Steps:
+   - Install [pre-commit](http://pre-commit.com/). E.g. `brew install pre-commit`.
+   - Run `pre-commit install` in the repo.
+   - That’s it! Now every time you commit a code change (`.tf` file), the hooks in the `hooks:` config `.pre-commit-config.yaml` will execute.
+
+
 [//]: # (This file is generated. Do not edit)
 
-# terraform-datadog-kubernetes
+# Terraform module for Datadog Kubernetes
 
 TOC:
 <!--ts-->
-   * [terraform-datadog-kubernetes](#terraform-datadog-kubernetes)
+   * [Getting started](#getting-started)
+   * [Terraform module for Datadog Kubernetes](#terraform-module-for-datadog-kubernetes)
       * [Daemonset Incomplete](#daemonset-incomplete)
       * [Node Status](#node-status)
       * [Replicaset Incomplete](#replicaset-incomplete)
@@ -26,7 +36,7 @@ TOC:
       * [Memory Requests Low](#memory-requests-low)
       * [Module Variables](#module-variables)
 
-<!-- Added by: sjuuljanssen, at: di 22 jun 2021 10:02:32 CEST -->
+<!-- Added by: sjuuljanssen, at: di 22 jun 2021 10:30:15 CEST -->
 
 <!--te-->
 
@@ -45,7 +55,7 @@ TOC:
 | daemonset_incomplete_no_data_timeframe | null                                     | No       |                                                                          |
 | daemonset_incomplete_notify_no_data    | False                                    | No       |                                                                          |
 | daemonset_incomplete_ok_threshold      | null                                     | No       |                                                                          |
-| daemonset_incomplete_priority          | null                                     | No       | Number from 1 (high) to 5 (low).                                         |
+| daemonset_incomplete_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                         |
 
 
 ## Node Status
@@ -62,7 +72,7 @@ TOC:
 | node_status_no_data_timeframe | null                                     | No       |                                  |
 | node_status_notify_no_data    | False                                    | No       |                                  |
 | node_status_ok_threshold      | null                                     | No       |                                  |
-| node_status_priority          | null                                     | No       | Number from 1 (high) to 5 (low). |
+| node_status_priority          | 2                                        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## Replicaset Incomplete
@@ -80,7 +90,7 @@ TOC:
 | replicaset_incomplete_no_data_timeframe | null                                     | No       |                                                                           |
 | replicaset_incomplete_notify_no_data    | False                                    | No       |                                                                           |
 | replicaset_incomplete_ok_threshold      | null                                     | No       |                                                                           |
-| replicaset_incomplete_priority          | null                                     | No       | Number from 1 (high) to 5 (low).                                          |
+| replicaset_incomplete_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                          |
 
 
 ## Pod Ready
@@ -97,7 +107,7 @@ TOC:
 | pod_ready_no_data_timeframe | null                                     | No       |                                  |
 | pod_ready_notify_no_data    | False                                    | No       |                                  |
 | pod_ready_ok_threshold      | null                                     | No       |                                  |
-| pod_ready_priority          | null                                     | No       | Number from 1 (high) to 5 (low). |
+| pod_ready_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## Node Memorypressure
@@ -115,7 +125,7 @@ TOC:
 | node_memorypressure_no_data_timeframe | null                                     | No       |                                                                         |
 | node_memorypressure_notify_no_data    | False                                    | No       |                                                                         |
 | node_memorypressure_ok_threshold      | null                                     | No       |                                                                         |
-| node_memorypressure_priority          | null                                     | No       | Number from 1 (high) to 5 (low).                                        |
+| node_memorypressure_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                        |
 
 
 ## Network Unavailable
@@ -133,7 +143,7 @@ TOC:
 | network_unavailable_no_data_timeframe | null                                     | No       |                                                                         |
 | network_unavailable_notify_no_data    | False                                    | No       |                                                                         |
 | network_unavailable_ok_threshold      | null                                     | No       |                                                                         |
-| network_unavailable_priority          | null                                     | No       | Number from 1 (high) to 5 (low).                                        |
+| network_unavailable_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                        |
 
 
 ## Deploy Desired Vs Status
@@ -152,7 +162,7 @@ TOC:
 | deploy_desired_vs_status_no_data_timeframe | null                                     | No       |                                  |
 | deploy_desired_vs_status_notify_no_data    | False                                    | No       |                                  |
 | deploy_desired_vs_status_ok_threshold      | null                                     | No       |                                  |
-| deploy_desired_vs_status_priority          | null                                     | No       | Number from 1 (high) to 5 (low). |
+| deploy_desired_vs_status_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## Node Memory Used Percent
@@ -171,7 +181,7 @@ TOC:
 | node_memory_used_percent_no_data_timeframe | null     | No       |                                  |
 | node_memory_used_percent_notify_no_data    | False    | No       |                                  |
 | node_memory_used_percent_ok_threshold      | null     | No       |                                  |
-| node_memory_used_percent_priority          | null     | No       | Number from 1 (high) to 5 (low). |
+| node_memory_used_percent_priority          | 2        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## Hpa Status
@@ -188,7 +198,7 @@ TOC:
 | hpa_status_no_data_timeframe | null                                     | No       |                                  |
 | hpa_status_notify_no_data    | False                                    | No       |                                  |
 | hpa_status_ok_threshold      | null                                     | No       |                                  |
-| hpa_status_priority          | null                                     | No       | Number from 1 (high) to 5 (low). |
+| hpa_status_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## CPU Requests Low
@@ -199,7 +209,7 @@ TOC:
 | cpu_requests_low_warning           | 1        | No       |                                  |
 | cpu_requests_low_critical          | 0.5      | No       |                                  |
 | cpu_requests_low_evaluation_period | last_5m  | No       |                                  |
-| cpu_requests_low_severity          | low      | No       |                                  |
+| cpu_requests_low_severity          | warning  | No       |                                  |
 | cpu_requests_low_note              | ""       | No       |                                  |
 | cpu_requests_low_docs              | ""       | No       |                                  |
 | cpu_requests_low_filter_override   | ""       | No       |                                  |
@@ -207,7 +217,7 @@ TOC:
 | cpu_requests_low_no_data_timeframe | null     | No       |                                  |
 | cpu_requests_low_notify_no_data    | False    | No       |                                  |
 | cpu_requests_low_ok_threshold      | null     | No       |                                  |
-| cpu_requests_low_priority          | null     | No       | Number from 1 (high) to 5 (low). |
+| cpu_requests_low_priority          | 4        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## Replicaset Unavailable
@@ -225,7 +235,7 @@ TOC:
 | replicaset_unavailable_no_data_timeframe | null                                     | No       |                                               |
 | replicaset_unavailable_notify_no_data    | False                                    | No       |                                               |
 | replicaset_unavailable_ok_threshold      | null                                     | No       |                                               |
-| replicaset_unavailable_priority          | null                                     | No       | Number from 1 (high) to 5 (low).              |
+| replicaset_unavailable_priority          | 2                                        | No       | Number from 1 (high) to 5 (low).              |
 
 
 ## Memory Limits Low
@@ -244,7 +254,7 @@ TOC:
 | memory_limits_low_no_data_timeframe | null       | No       |                                  |
 | memory_limits_low_notify_no_data    | False      | No       |                                  |
 | memory_limits_low_ok_threshold      | null       | No       |                                  |
-| memory_limits_low_priority          | null       | No       | Number from 1 (high) to 5 (low). |
+| memory_limits_low_priority          | 3          | No       | Number from 1 (high) to 5 (low). |
 
 
 ## Pid Pressure
@@ -262,7 +272,7 @@ TOC:
 | pid_pressure_no_data_timeframe | null                                     | No       |                                                                  |
 | pid_pressure_notify_no_data    | False                                    | No       |                                                                  |
 | pid_pressure_ok_threshold      | null                                     | No       |                                                                  |
-| pid_pressure_priority          | null                                     | No       | Number from 1 (high) to 5 (low).                                 |
+| pid_pressure_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                 |
 
 
 ## Persistent Volumes
@@ -281,7 +291,7 @@ TOC:
 | persistent_volumes_no_data_timeframe | null     | No       |                                  |
 | persistent_volumes_notify_no_data    | False    | No       |                                  |
 | persistent_volumes_ok_threshold      | null     | No       |                                  |
-| persistent_volumes_priority          | null     | No       | Number from 1 (high) to 5 (low). |
+| persistent_volumes_priority          | 3        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## CPU Limits Low
@@ -300,7 +310,7 @@ TOC:
 | cpu_limits_low_no_data_timeframe | null     | No       |                                  |
 | cpu_limits_low_notify_no_data    | False    | No       |                                  |
 | cpu_limits_low_ok_threshold      | null     | No       |                                  |
-| cpu_limits_low_priority          | null     | No       | Number from 1 (high) to 5 (low). |
+| cpu_limits_low_priority          | 3        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## CPU On Dns Pods High
@@ -323,7 +333,7 @@ TOC:
 | cpu_on_dns_pods_high_no_data_timeframe | null                                     | No       |                                                                                                      |
 | cpu_on_dns_pods_high_notify_no_data    | False                                    | No       |                                                                                                      |
 | cpu_on_dns_pods_high_ok_threshold      | null                                     | No       |                                                                                                      |
-| cpu_on_dns_pods_high_priority          | null                                     | No       | Number from 1 (high) to 5 (low).                                                                     |
+| cpu_on_dns_pods_high_priority          | 2                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
 ## Node Diskpressure
@@ -341,7 +351,7 @@ TOC:
 | node_diskpressure_no_data_timeframe | null                                     | No       |                                                                       |
 | node_diskpressure_notify_no_data    | False                                    | No       |                                                                       |
 | node_diskpressure_ok_threshold      | null                                     | No       |                                                                       |
-| node_diskpressure_priority          | null                                     | No       | Number from 1 (high) to 5 (low).                                      |
+| node_diskpressure_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                      |
 
 
 ## Memory Requests Low
@@ -360,7 +370,7 @@ TOC:
 | memory_requests_low_no_data_timeframe | null                                     | No       |                                  |
 | memory_requests_low_notify_no_data    | False                                    | No       |                                  |
 | memory_requests_low_ok_threshold      | null                                     | No       |                                  |
-| memory_requests_low_priority          | null                                     | No       | Number from 1 (high) to 5 (low). |
+| memory_requests_low_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## Module Variables
