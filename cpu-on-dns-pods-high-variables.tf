@@ -35,7 +35,23 @@ variable "cpu_on_dns_pods_high_docs" {
 
 variable "cpu_on_dns_pods_high_filter_override" {
   type    = string
-  default = "kube_service:kube-dns OR short_image:coredns OR short_image:ucp-coredns OR short_image:ucp-kube-dns"
+  default = ""
+}
+
+variable "dns_filter_tags" {
+  description = <<-EOD
+    Getting all the DNS containers by default is hard to do.
+    What we try is to make a list of datadog tags / filters that should help us find those
+    We then build a filter in the following way: ($originalfilterstring) AND (item1 OR item2 OR item3...)
+    If that doesn't work for your use-cause you can override the filter list or use cpu_on_dns_pods_high_filter_override
+  EOD
+  type = list(string)
+  default = [
+    "kube_service:kube-dns",
+    "short_image:coredns",
+    "short_image:ucp-coredns",
+    "short_image:ucp-kube-dns",
+  ]
 }
 
 variable "cpu_on_dns_pods_high_alerting_enabled" {
