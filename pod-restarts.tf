@@ -9,7 +9,7 @@ module "pod_restarts" {
   source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
 
   name             = "Restarting Pods"
-  query            = "change(sum(${var.pod_restarts_evaluation_period}),${var.pod_restarts_evaluation_period}):exclude_null(avg:kubernetes.containers.restarts{${local.pod_restarts_filter}} by {pod_name}) > ${var.pod_restarts_critical}"
+  query            = "change(avg(${var.pod_restarts_evaluation_period}),${var.pod_restarts_evaluation_period}):exclude_null(avg:kubernetes.containers.restarts{${local.pod_restarts_filter}} by {pod_name}) > ${var.pod_restarts_critical}"
   alert_message    = "Pods are restarting multiple times in the last ${var.pod_restarts_evaluation_period}"
   recovery_message = "Pods restarting recovered"
 
