@@ -45,7 +45,7 @@ variable "dns_filter_tags" {
     We then build a filter in the following way: ($originalfilterstring) AND (item1 OR item2 OR item3...)
     If that doesn't work for your use-cause you can override the filter list or use cpu_on_dns_pods_high_filter_override
   EOD
-  type = list(string)
+  type        = list(string)
   default = [
     "kube_service:kube-dns",
     "short_image:coredns",
@@ -78,5 +78,5 @@ variable "cpu_on_dns_pods_high_priority" {
   description = "Number from 1 (high) to 5 (low)."
 
   type    = number
-  default = null
+  default = 2
 }

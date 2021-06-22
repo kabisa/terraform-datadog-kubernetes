@@ -52,5 +52,5 @@ variable "node_status_priority" {
   description = "Number from 1 (high) to 5 (low)."
 
   type    = number
-  default = null
+  default = 2
 }
