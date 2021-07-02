@@ -1,6 +1,6 @@
 variable "memory_limits_low_enabled" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "memory_limits_low_warning" {
