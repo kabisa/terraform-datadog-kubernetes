@@ -1,6 +1,6 @@
 variable "cpu_requests_low_enabled" {
   type    = bool
-  default = true
+  default = false
 }
 
 variable "cpu_requests_low_warning" {
