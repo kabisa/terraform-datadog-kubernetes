@@ -30,7 +30,7 @@ variable "memory_limits_low_perc_note" {
 
 variable "memory_limits_low_perc_docs" {
   type    = string
-  default = ""
+  default = "If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 }
 
 variable "memory_limits_low_perc_filter_override" {
