@@ -9,9 +9,9 @@ module "memory_limits_low_perc" {
   source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
 
   name             = "Available Memory for Limits in percentage Low"
-  query            = "max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.memory.limits{${local.cpu_requests_low_perc_filter}} / max:kubernetes.memory.capacity{${local.cpu_requests_low_perc_filter}} ) * 100 > ${var.cpu_requests_low_perc_critical}"
+  query            = "max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.memory.limits{${local.cpu_requests_low_perc_filter}}  by {host,cluster_name}/ max:kubernetes.memory.capacity{${local.cpu_requests_low_perc_filter}} by {host,cluster_name}) * 100 > ${var.cpu_requests_low_perc_critical}"
   alert_message    = "Kubernetes cluster memory room for limits in percentage is too low"
-  recovery_message = "Kubernetes cluster memory limits in percentage is ok again."
+  recovery_message = "Kubernetes cluster memory limits in percentage has recovered"
 
   # monitor level vars
   enabled            = var.memory_limits_low_perc_enabled

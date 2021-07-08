@@ -11,7 +11,7 @@ module "cpu_requests_low" {
   name             = "Available CPU for Requests Low"
   query            = "max(${var.cpu_requests_low_evaluation_period}):sum:kubernetes.cpu.capacity{${local.cpu_requests_low_filter}} by {host,cluster_name} - sum:kubernetes.cpu.requests{${local.cpu_requests_low_filter}} by {host,cluster_name} < ${var.cpu_requests_low_critical}"
   alert_message    = "Kubernetes cluster cpu room for requests is too low"
-  recovery_message = "Kubernetes cluster cpu requests is ok again."
+  recovery_message = "Kubernetes cluster cpu requests has recovered"
 
   # monitor level vars
   enabled            = var.cpu_requests_low_enabled

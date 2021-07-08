@@ -11,7 +11,7 @@ module "memory_limits_low" {
   name             = "Available Memory for Limits Low"
   query            = "avg(${var.memory_limits_low_evaluation_period}):max:kubernetes.memory.capacity{${local.memory_limits_low_filter}} by {host,cluster_name} - max:kubernetes.memory.limits{${local.memory_limits_low_filter}} by {host,cluster_name} < ${var.memory_limits_low_critical}"
   alert_message    = "Kubernetes cluster memory room for limits is too low"
-  recovery_message = "Kubernetes cluster memory limits is ok again."
+  recovery_message = "Kubernetes cluster memory limits has recovered"
 
   # monitor level vars
   enabled            = var.memory_limits_low_enabled

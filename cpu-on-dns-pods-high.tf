@@ -13,7 +13,7 @@ module "cpu_on_dns_pods_high" {
   name             = "CPU Usage on DNS pods is high"
   query            = "avg(${var.cpu_on_dns_pods_high_evaluation_period}):avg:docker.cpu.usage{${local.cpu_on_dns_pods_high_filter}} by {cluster_name,host,container_name} > ${var.cpu_on_dns_pods_high_critical}"
   alert_message    = "Kubernetes CPU usage on DNS pods is too high"
-  recovery_message = "Kubernetes CPU usage on DNS pods is ok again."
+  recovery_message = "Kubernetes CPU usage on DNS pods has recovered"
 
   # monitor level vars
   enabled            = var.cpu_on_dns_pods_high_enabled
