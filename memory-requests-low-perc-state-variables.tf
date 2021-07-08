@@ -1,6 +1,6 @@
 variable "memory_requests_low_perc_state_enabled" {
   type        = bool
-  default     = true
+  default     = false
   description = "Memory state limits are only available when the state metrics api is deployed https://github.com/kubernetes/kube-state-metrics"
 }
 
