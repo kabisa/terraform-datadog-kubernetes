@@ -6,12 +6,12 @@ variable "cpu_limits_low_perc_state_enabled" {
 
 variable "cpu_limits_low_perc_state_warning" {
   type    = number
-  default = 80
+  default = 95
 }
 
 variable "cpu_limits_low_perc_state_critical" {
   type    = number
-  default = 95
+  default = 100
 }
 
 variable "cpu_limits_low_perc_state_evaluation_period" {

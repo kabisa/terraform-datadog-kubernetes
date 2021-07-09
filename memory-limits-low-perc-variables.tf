@@ -5,12 +5,12 @@ variable "memory_limits_low_perc_enabled" {
 
 variable "memory_limits_low_perc_warning" {
   type    = number
-  default = 85
+  default = 95
 }
 
 variable "memory_limits_low_perc_critical" {
   type    = number
-  default = 95
+  default = 100
 }
 
 variable "memory_limits_low_perc_evaluation_period" {
