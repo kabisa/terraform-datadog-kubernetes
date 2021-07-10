@@ -14,11 +14,6 @@ variable "daemonset_incomplete_evaluation_period" {
   default = "last_30m"
 }
 
-variable "daemonset_incomplete_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "daemonset_incomplete_note" {
   type    = string
   default = ""

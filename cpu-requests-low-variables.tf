@@ -19,11 +19,6 @@ variable "cpu_requests_low_evaluation_period" {
   default = "last_5m"
 }
 
-variable "cpu_requests_low_severity" {
-  type    = string
-  default = "warning"
-}
-
 variable "cpu_requests_low_note" {
   type    = string
   default = ""
@@ -63,5 +58,5 @@ variable "cpu_requests_low_priority" {
   description = "Number from 1 (high) to 5 (low)."
 
   type    = number
-  default = 4
+  default = 3
 }

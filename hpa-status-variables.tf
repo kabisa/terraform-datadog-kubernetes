@@ -8,11 +8,6 @@ variable "hpa_status_evaluation_period" {
   default = "last_15m"
 }
 
-variable "hpa_status_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "hpa_status_note" {
   type    = string
   default = ""

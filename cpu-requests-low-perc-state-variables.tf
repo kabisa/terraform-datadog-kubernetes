@@ -19,11 +19,6 @@ variable "cpu_requests_low_perc_state_evaluation_period" {
   default = "last_5m"
 }
 
-variable "cpu_requests_low_perc_state_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "cpu_requests_low_perc_state_note" {
   type    = string
   default = ""
@@ -63,5 +58,5 @@ variable "cpu_requests_low_perc_state_priority" {
   description = "Number from 1 (high) to 5 (low)."
 
   type    = number
-  default = null
+  default = 3
 }

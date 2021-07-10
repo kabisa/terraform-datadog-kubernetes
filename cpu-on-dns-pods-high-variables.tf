@@ -18,11 +18,6 @@ variable "cpu_on_dns_pods_high_evaluation_period" {
   default = "last_30m"
 }
 
-variable "cpu_on_dns_pods_high_severity" {
-  type    = string
-  default = "major"
-}
-
 variable "cpu_on_dns_pods_high_note" {
   type    = string
   default = ""

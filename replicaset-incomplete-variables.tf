@@ -14,11 +14,6 @@ variable "replicaset_incomplete_evaluation_period" {
   default = "last_15m"
 }
 
-variable "replicaset_incomplete_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "replicaset_incomplete_note" {
   type    = string
   default = "There's also a monitor defined for when the replicaset is completely unavailable"

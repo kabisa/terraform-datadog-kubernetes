@@ -8,11 +8,6 @@ variable "pod_ready_evaluation_period" {
   default = "last_30m"
 }
 
-variable "pod_ready_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "pod_ready_note" {
   type    = string
   default = ""

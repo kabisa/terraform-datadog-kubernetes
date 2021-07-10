@@ -19,11 +19,6 @@ variable "cpu_limits_low_evaluation_period" {
   default = "last_5m"
 }
 
-variable "cpu_limits_low_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "cpu_limits_low_note" {
   type    = string
   default = ""

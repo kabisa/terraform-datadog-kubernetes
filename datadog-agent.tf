@@ -6,9 +6,9 @@ locals {
 }
 
 module "datadog_agent" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.2"
 
-  name             = "Node Not Ready"
+  name             = "Datadog agent not running"
   query            = "avg(${var.datadog_agent_evaluation_period}):avg:datadog.agent.running{${local.datadog_agent_filter}} by {host,cluster_name} < 1"
   alert_message    = "Datadog Agent not running on {{host.name}} in Cluster: {{cluster_name.name}}"
   recovery_message = "Agent running again"
@@ -19,7 +19,6 @@ module "datadog_agent" {
   critical_threshold = 1
   # no warning threshold for this monitor
   priority = var.datadog_agent_priority
-  severity = var.datadog_agent_severity
   docs     = var.datadog_agent_docs
   note     = var.datadog_agent_note
 

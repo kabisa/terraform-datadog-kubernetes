@@ -6,7 +6,7 @@ locals {
 }
 
 module "node_ready" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.2"
 
   name             = "Node Not Ready"
   query            = "avg(${var.node_ready_evaluation_period}):count_nonzero(sum:kubernetes_state.nodes.by_condition{${local.node_ready_filter} AND (NOT condition:ready) AND (status:true OR status:unknown)} by {cluster_name,host}) > ${var.node_ready_critical}"
@@ -19,7 +19,6 @@ module "node_ready" {
   critical_threshold = var.node_ready_critical
   # no warning threshold for this monitor
   priority = var.node_ready_priority
-  severity = var.node_ready_severity
   docs     = var.node_ready_docs
   note     = var.node_ready_note
 

@@ -8,11 +8,6 @@ variable "node_status_evaluation_period" {
   default = "last_5m"
 }
 
-variable "node_status_severity" {
-  type    = string
-  default = "major"
-}
-
 variable "node_status_note" {
   type    = string
   default = ""

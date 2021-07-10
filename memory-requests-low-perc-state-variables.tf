@@ -19,11 +19,6 @@ variable "memory_requests_low_perc_state_evaluation_period" {
   default = "last_5m"
 }
 
-variable "memory_requests_low_perc_state_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "memory_requests_low_perc_state_note" {
   type    = string
   default = ""

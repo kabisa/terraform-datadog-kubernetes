@@ -6,7 +6,7 @@ locals {
 }
 
 module "node_diskpressure" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.2"
 
   name             = "Nodes with Diskpressure"
   query            = "avg(${var.node_diskpressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.node_diskpressure_filter} AND condition:diskpressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.node_diskpressure_critical}"
@@ -19,7 +19,6 @@ module "node_diskpressure" {
   critical_threshold = var.node_diskpressure_critical
   # no warning threshold for this monitor
   priority = var.node_diskpressure_priority
-  severity = var.node_diskpressure_severity
   docs     = var.node_diskpressure_docs
   note     = var.node_diskpressure_note
 

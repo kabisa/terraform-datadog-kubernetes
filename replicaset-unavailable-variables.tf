@@ -14,11 +14,6 @@ variable "replicaset_unavailable_evaluation_period" {
   default = "last_5m"
 }
 
-variable "replicaset_unavailable_severity" {
-  type    = string
-  default = "major"
-}
-
 variable "replicaset_unavailable_note" {
   type    = string
   default = "There's also a monitor defined for when the replicaset is only partially available"

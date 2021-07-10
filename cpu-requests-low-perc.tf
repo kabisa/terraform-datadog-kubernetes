@@ -6,7 +6,7 @@ locals {
 }
 
 module "cpu_requests_low_perc" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.2"
 
   name             = "Available CPU for requests in percentages Low"
   query            = "max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.cpu.requests{${local.cpu_requests_low_perc_filter}} by {host,cluster_name} / max:kubernetes.cpu.capacity{${local.cpu_requests_low_perc_filter}} by {host,cluster_name} ) * 100 > ${var.cpu_requests_low_perc_critical}"
@@ -19,7 +19,6 @@ module "cpu_requests_low_perc" {
   critical_threshold = var.cpu_requests_low_perc_critical
   warning_threshold  = var.cpu_requests_low_perc_warning
   priority           = var.cpu_requests_low_perc_priority
-  severity           = var.cpu_requests_low_perc_severity
   docs               = var.cpu_requests_low_perc_docs
   note               = var.cpu_requests_low_perc_note
 

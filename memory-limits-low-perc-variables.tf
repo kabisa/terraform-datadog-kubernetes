@@ -18,11 +18,6 @@ variable "memory_limits_low_perc_evaluation_period" {
   default = "last_5m"
 }
 
-variable "memory_limits_low_perc_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "memory_limits_low_perc_note" {
   type    = string
   default = ""

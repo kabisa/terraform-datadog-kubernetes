@@ -20,11 +20,6 @@ variable "deploy_desired_vs_status_evaluation_period" {
   default = "last_15m"
 }
 
-variable "deploy_desired_vs_status_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "deploy_desired_vs_status_note" {
   type    = string
   default = ""

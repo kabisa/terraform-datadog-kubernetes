@@ -13,11 +13,6 @@ variable "node_ready_evaluation_period" {
   default = "last_5m"
 }
 
-variable "node_ready_severity" {
-  type    = string
-  default = "major"
-}
-
 variable "node_ready_note" {
   type    = string
   default = ""

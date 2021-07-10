@@ -6,7 +6,7 @@ locals {
 }
 
 module "memory_limits_low_perc" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.2"
 
   name             = "Available Memory for Limits in percentage Low"
   query            = "max(${var.memory_limits_low_perc_evaluation_period}):( max:kubernetes.memory.limits{${local.memory_limits_low_perc_filter}}  by {host,cluster_name}/ max:kubernetes.memory.capacity{${local.memory_limits_low_perc_filter}} by {host,cluster_name}) * 100 > ${var.memory_limits_low_perc_critical}"
@@ -19,7 +19,6 @@ module "memory_limits_low_perc" {
   critical_threshold = var.memory_limits_low_perc_critical
   warning_threshold  = var.memory_limits_low_perc_warning
   priority           = var.memory_limits_low_perc_priority
-  severity           = var.memory_limits_low_perc_severity
   docs               = var.memory_limits_low_perc_docs
   note               = var.memory_limits_low_perc_note
 

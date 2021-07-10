@@ -20,11 +20,6 @@ variable "node_memory_used_percent_evaluation_period" {
   default = "last_5m"
 }
 
-variable "node_memory_used_percent_severity" {
-  type    = string
-  default = "major"
-}
-
 variable "node_memory_used_percent_note" {
   type    = string
   default = ""

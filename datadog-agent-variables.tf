@@ -8,11 +8,6 @@ variable "datadog_agent_evaluation_period" {
   default = "last_5m"
 }
 
-variable "datadog_agent_severity" {
-  type    = string
-  default = "major"
-}
-
 variable "datadog_agent_note" {
   type    = string
   default = ""
