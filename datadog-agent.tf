@@ -9,14 +9,14 @@ module "datadog_agent" {
   source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
 
   name             = "Node Not Ready"
-  query            = "avg(${var.datadog_agent_evaluation_period}):count_nonzero(sum:kubernetes_state.nodes.by_condition{${local.datadog_agent_filter} AND (NOT condition:ready) AND (status:true OR status:unknown)} by {cluster_name,host}) > ${var.datadog_agent_critical}"
+  query            = "avg(${var.datadog_agent_evaluation_period}):avg:datadog.agent.running{${local.datadog_agent_filter}} by {host,cluster_name} < 1"
   alert_message    = "Datadog Agent not running on {{host.name}} in Cluster: {{cluster_name.name}}"
   recovery_message = "Agent running again"
 
   # monitor level vars
   enabled            = var.datadog_agent_enabled
   alerting_enabled   = var.datadog_agent_alerting_enabled
-  critical_threshold = var.datadog_agent_critical
+  critical_threshold = 1
   # no warning threshold for this monitor
   priority = var.datadog_agent_priority
   severity = var.datadog_agent_severity

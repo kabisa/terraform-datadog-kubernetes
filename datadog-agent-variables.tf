@@ -3,11 +3,6 @@ variable "datadog_agent_enabled" {
   default = true
 }
 
-variable "datadog_agent_critical" {
-  type    = number
-  default = 1
-}
-
 variable "datadog_agent_evaluation_period" {
   type    = string
   default = "last_5m"
