@@ -1,6 +1,7 @@
 variable "memory_requests_low_enabled" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = false
+  description = "This monitor is based on absolute values and thus less useful. Prefer setting memory_requests_low_perc_enabled to true."
 }
 
 variable "memory_requests_low_warning" {
@@ -18,11 +19,6 @@ variable "memory_requests_low_evaluation_period" {
   default = "last_5m"
 }
 
-variable "memory_requests_low_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "memory_requests_low_note" {
   type    = string
   default = ""
@@ -30,7 +26,7 @@ variable "memory_requests_low_note" {
 
 variable "memory_requests_low_docs" {
   type    = string
-  default = "Based on usage this might be expected behaviour. In Kubernetes however it is a common practice to over provision resources by setting higher limits. If everything has already been allocated by requests, no hardware resources will be left to over provision with."
+  default = "If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
 }
 
 variable "memory_requests_low_filter_override" {

@@ -14,11 +14,6 @@ variable "network_unavailable_evaluation_period" {
   default = "last_5m"
 }
 
-variable "network_unavailable_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "network_unavailable_note" {
   type    = string
   default = ""

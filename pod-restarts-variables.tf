@@ -18,11 +18,6 @@ variable "pod_restarts_evaluation_period" {
   default = "last_10m"
 }
 
-variable "pod_restarts_severity" {
-  type    = string
-  default = "major"
-}
-
 variable "pod_restarts_note" {
   type    = string
   default = ""

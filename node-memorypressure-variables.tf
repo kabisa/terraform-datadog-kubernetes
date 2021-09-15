@@ -14,11 +14,6 @@ variable "node_memorypressure_evaluation_period" {
   default = "last_5m"
 }
 
-variable "node_memorypressure_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "node_memorypressure_note" {
   type    = string
   default = ""

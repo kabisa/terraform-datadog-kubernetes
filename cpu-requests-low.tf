@@ -6,12 +6,12 @@ locals {
 }
 
 module "cpu_requests_low" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.2"
 
   name             = "Available CPU for Requests Low"
   query            = "max(${var.cpu_requests_low_evaluation_period}):sum:kubernetes.cpu.capacity{${local.cpu_requests_low_filter}} by {host,cluster_name} - sum:kubernetes.cpu.requests{${local.cpu_requests_low_filter}} by {host,cluster_name} < ${var.cpu_requests_low_critical}"
   alert_message    = "Kubernetes cluster cpu room for requests is too low"
-  recovery_message = "Kubernetes cluster cpu requests is ok again."
+  recovery_message = "Kubernetes cluster cpu requests has recovered"
 
   # monitor level vars
   enabled            = var.cpu_requests_low_enabled
@@ -19,7 +19,6 @@ module "cpu_requests_low" {
   critical_threshold = var.cpu_requests_low_critical
   warning_threshold  = var.cpu_requests_low_warning
   priority           = var.cpu_requests_low_priority
-  severity           = var.cpu_requests_low_severity
   docs               = var.cpu_requests_low_docs
   note               = var.cpu_requests_low_note
 

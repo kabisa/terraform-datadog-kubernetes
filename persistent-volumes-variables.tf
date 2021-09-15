@@ -18,11 +18,6 @@ variable "persistent_volumes_evaluation_period" {
   default = "last_5m"
 }
 
-variable "persistent_volumes_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "persistent_volumes_note" {
   type    = string
   default = ""

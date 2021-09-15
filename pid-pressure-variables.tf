@@ -14,11 +14,6 @@ variable "pid_pressure_evaluation_period" {
   default = "last_5m"
 }
 
-variable "pid_pressure_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "pid_pressure_note" {
   type    = string
   default = ""

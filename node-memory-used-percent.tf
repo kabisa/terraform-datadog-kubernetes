@@ -6,7 +6,7 @@ locals {
 }
 
 module "node_memory_used_percent" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.0"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.2"
 
   name             = "Memory Used Percent"
   query            = "avg(${var.node_memory_used_percent_evaluation_period}):( 100 * max:kubernetes.memory.usage{${local.node_memory_used_percent_filter}} by {host,cluster_name} ) / max:kubernetes.memory.capacity{${local.node_memory_used_percent_filter}} by {host,cluster_name} > ${var.node_memory_used_percent_critical}"
@@ -19,7 +19,6 @@ module "node_memory_used_percent" {
   critical_threshold = var.node_memory_used_percent_critical
   warning_threshold  = var.node_memory_used_percent_warning
   priority           = var.node_memory_used_percent_priority
-  severity           = var.node_memory_used_percent_severity
   docs               = var.node_memory_used_percent_docs
   note               = var.node_memory_used_percent_note
 

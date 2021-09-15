@@ -14,11 +14,6 @@ variable "node_diskpressure_evaluation_period" {
   default = "last_5m"
 }
 
-variable "node_diskpressure_severity" {
-  type    = string
-  default = "minor"
-}
-
 variable "node_diskpressure_note" {
   type    = string
   default = ""
