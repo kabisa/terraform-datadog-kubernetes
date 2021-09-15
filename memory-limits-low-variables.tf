@@ -1,7 +1,7 @@
 variable "memory_limits_low_enabled" {
   type        = bool
   default     = false
-  description = "This monitor is based on absolute values and thus less useful"
+  description = "This monitor is based on absolute values and thus less useful. Prefer setting memory_limits_low_perc_enabled to true."
 }
 
 variable "memory_limits_low_warning" {
