@@ -1,4 +1,10 @@
 
+[//]: # (This file is generated. Do not edit)
+
+# Terraform module for Datadog Kubernetes
+
+TOC:
+
 # Getting started
 [pre-commit](http://pre-commit.com/) was used to do Terraform linting and validating.
 
@@ -6,16 +12,6 @@ Steps:
    - Install [pre-commit](http://pre-commit.com/). E.g. `brew install pre-commit`.
    - Run `pre-commit install` in the repo.
    - That’s it! Now every time you commit a code change (`.tf` file), the hooks in the `hooks:` config `.pre-commit-config.yaml` will execute.
-
-
-[//]: # (This file is generated. Do not edit)
-
-# Terraform module for Datadog Kubernetes
-
-TOC:
-<!--ts-->
-<!--te-->
-
 ## Daemonset Incomplete
 
 | variable                               | default                                  | required | description                                                              |
@@ -528,17 +524,17 @@ TOC:
 
 ## Module Variables
 
-| variable                 | default    | required | description                                                  |
-|--------------------------|------------|----------|--------------------------------------------------------------|
-| env                      |            | Yes      |                                                              |
-| alert_env                |            | Yes      |                                                              |
-| service                  | Kubernetes | No       |                                                              |
-| notification_channel     |            | Yes      |                                                              |
-| additional_tags          | []         | No       |                                                              |
-| filter_str               |            | Yes      |                                                              |
-| locked                   | True       | No       | Makes sure only the creator or admin can modify the monitor. |
-| state_metrics_monitoring | True       | No       |                                                              |
-| name_prefix              | ""         | No       |                                                              |
-| name_suffix              | ""         | No       |                                                              |
+| variable                 | default    | required | description                                                                          |
+|--------------------------|------------|----------|--------------------------------------------------------------------------------------|
+| env                      |            | Yes      |                                                                                      |
+| alert_env                |            | Yes      |                                                                                      |
+| service                  | Kubernetes | No       |                                                                                      |
+| notification_channel     |            | Yes      | The @user or @pagerduty parameters that indicate to Datadog where to send the alerts |
+| additional_tags          | []         | No       |                                                                                      |
+| filter_str               |            | Yes      |                                                                                      |
+| locked                   | True       | No       | Makes sure only the creator or admin can modify the monitor.                         |
+| state_metrics_monitoring | True       | No       |                                                                                      |
+| name_prefix              | ""         | No       |                                                                                      |
+| name_suffix              | ""         | No       |                                                                                      |
 
 

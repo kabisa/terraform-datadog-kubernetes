@@ -12,7 +12,8 @@ variable "service" {
 }
 
 variable "notification_channel" {
-  type = string
+  type        = string
+  description = "The @user or @pagerduty parameters that indicate to Datadog where to send the alerts"
 }
 
 variable "additional_tags" {
