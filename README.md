@@ -1,5 +1,6 @@
 
 ![Kabisa](https://avatars.githubusercontent.com/u/1531725)
+
 [//]: # (This file is generated. Do not edit)
 
 # Terraform module for Datadog Kubernetes
