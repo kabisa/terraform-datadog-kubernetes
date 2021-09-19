@@ -1,10 +1,9 @@
-![Kabisa][https://avatars.githubusercontent.com/u/1531725]
 
 [//]: # (This file is generated. Do not edit)
 
 # Terraform module for Datadog Kubernetes
 
-TOC:
+Monitors:
 * [Terraform module for Datadog Kubernetes](#terraform-module-for-datadog-kubernetes)
   * [Daemonset Incomplete](#daemonset-incomplete)
   * [Node Status](#node-status)
@@ -44,6 +43,7 @@ Steps:
    - Install [pre-commit](http://pre-commit.com/). E.g. `brew install pre-commit`.
    - Run `pre-commit install` in the repo.
    - That’s it! Now every time you commit a code change (`.tf` file), the hooks in the `hooks:` config `.pre-commit-config.yaml` will execute.
+
 ## Daemonset Incomplete
 
 | variable                               | default                                  | required | description                                                              |
