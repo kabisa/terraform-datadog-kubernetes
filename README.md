@@ -14,41 +14,6 @@ Steps:
 
 TOC:
 <!--ts-->
-   * [Getting started](#getting-started)
-   * [Terraform module for Datadog Kubernetes](#terraform-module-for-datadog-kubernetes)
-      * [Daemonset Incomplete](#daemonset-incomplete)
-      * [Node Status](#node-status)
-      * [Memory Requests Low Perc State](#memory-requests-low-perc-state)
-      * [Replicaset Incomplete](#replicaset-incomplete)
-      * [CPU Requests Low Perc State](#cpu-requests-low-perc-state)
-      * [Pod Ready](#pod-ready)
-      * [Node Memorypressure](#node-memorypressure)
-      * [Network Unavailable](#network-unavailable)
-      * [Deploy Desired Vs Status](#deploy-desired-vs-status)
-      * [Node Memory Used Percent](#node-memory-used-percent)
-      * [Datadog Agent](#datadog-agent)
-      * [Hpa Status](#hpa-status)
-      * [CPU Requests Low](#cpu-requests-low)
-      * [Replicaset Unavailable](#replicaset-unavailable)
-      * [Memory Limits Low](#memory-limits-low)
-      * [Pid Pressure](#pid-pressure)
-      * [Persistent Volumes](#persistent-volumes)
-      * [Memory Requests Low Perc](#memory-requests-low-perc)
-      * [CPU Limits Low](#cpu-limits-low)
-      * [Memory Limits Low Perc State](#memory-limits-low-perc-state)
-      * [Pod Restarts](#pod-restarts)
-      * [CPU On Dns Pods High](#cpu-on-dns-pods-high)
-      * [CPU Requests Low Perc](#cpu-requests-low-perc)
-      * [Node Ready](#node-ready)
-      * [Node Diskpressure](#node-diskpressure)
-      * [CPU Limits Low Perc State](#cpu-limits-low-perc-state)
-      * [Memory Limits Low Perc](#memory-limits-low-perc)
-      * [CPU Limits Low Perc](#cpu-limits-low-perc)
-      * [Memory Requests Low](#memory-requests-low)
-      * [Module Variables](#module-variables)
-
-<!-- Added by: sjuuljanssen, at: zo 19 sep 2021 12:15:31 CEST -->
-
 <!--te-->
 
 ## Daemonset Incomplete
@@ -563,17 +528,17 @@ TOC:
 
 ## Module Variables
 
-| variable                 | default    | required | description                                                 |
-|--------------------------|------------|----------|-------------------------------------------------------------|
-| env                      |            | Yes      |                                                             |
-| alert_env                |            | Yes      |                                                             |
-| service                  | Kubernetes | No       |                                                             |
-| notification_channel     |            | Yes      |                                                             |
-| additional_tags          | []         | No       |                                                             |
-| filter_str               |            | Yes      |                                                             |
-| locked                   | True       | No       | Makes sure only the creator or admin can modify the monitor |
-| state_metrics_monitoring | True       | No       |                                                             |
-| name_prefix              | ""         | No       |                                                             |
-| name_suffix              | ""         | No       |                                                             |
+| variable                 | default    | required | description                                                  |
+|--------------------------|------------|----------|--------------------------------------------------------------|
+| env                      |            | Yes      |                                                              |
+| alert_env                |            | Yes      |                                                              |
+| service                  | Kubernetes | No       |                                                              |
+| notification_channel     |            | Yes      |                                                              |
+| additional_tags          | []         | No       |                                                              |
+| filter_str               |            | Yes      |                                                              |
+| locked                   | True       | No       | Makes sure only the creator or admin can modify the monitor. |
+| state_metrics_monitoring | True       | No       |                                                              |
+| name_prefix              | ""         | No       |                                                              |
+| name_suffix              | ""         | No       |                                                              |
 
 

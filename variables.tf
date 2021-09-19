@@ -27,7 +27,7 @@ variable "filter_str" {
 variable "locked" {
   type        = bool
   default     = true
-  description = "Makes sure only the creator or admin can modify the monitor"
+  description = "Makes sure only the creator or admin can modify the monitor."
 }
 
 variable "state_metrics_monitoring" {
