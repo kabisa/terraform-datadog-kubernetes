@@ -1,9 +1,41 @@
+![Kabisa][https://avatars.githubusercontent.com/u/1531725]
 
 [//]: # (This file is generated. Do not edit)
 
 # Terraform module for Datadog Kubernetes
 
 TOC:
+* [Terraform module for Datadog Kubernetes](#terraform-module-for-datadog-kubernetes)
+  * [Daemonset Incomplete](#daemonset-incomplete)
+  * [Node Status](#node-status)
+  * [Memory Requests Low Perc State](#memory-requests-low-perc-state)
+  * [Replicaset Incomplete](#replicaset-incomplete)
+  * [CPU Requests Low Perc State](#cpu-requests-low-perc-state)
+  * [Pod Ready](#pod-ready)
+  * [Node Memorypressure](#node-memorypressure)
+  * [Network Unavailable](#network-unavailable)
+  * [Deploy Desired Vs Status](#deploy-desired-vs-status)
+  * [Node Memory Used Percent](#node-memory-used-percent)
+  * [Datadog Agent](#datadog-agent)
+  * [Hpa Status](#hpa-status)
+  * [CPU Requests Low](#cpu-requests-low)
+  * [Replicaset Unavailable](#replicaset-unavailable)
+  * [Memory Limits Low](#memory-limits-low)
+  * [Pid Pressure](#pid-pressure)
+  * [Persistent Volumes](#persistent-volumes)
+  * [Memory Requests Low Perc](#memory-requests-low-perc)
+  * [CPU Limits Low](#cpu-limits-low)
+  * [Memory Limits Low Perc State](#memory-limits-low-perc-state)
+  * [Pod Restarts](#pod-restarts)
+  * [CPU On Dns Pods High](#cpu-on-dns-pods-high)
+  * [CPU Requests Low Perc](#cpu-requests-low-perc)
+  * [Node Ready](#node-ready)
+  * [Node Diskpressure](#node-diskpressure)
+  * [CPU Limits Low Perc State](#cpu-limits-low-perc-state)
+  * [Memory Limits Low Perc](#memory-limits-low-perc)
+  * [CPU Limits Low Perc](#cpu-limits-low-perc)
+  * [Memory Requests Low](#memory-requests-low)
+  * [Module Variables](#module-variables)
 
 # Getting started
 [pre-commit](http://pre-commit.com/) was used to do Terraform linting and validating.
