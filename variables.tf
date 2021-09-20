@@ -12,7 +12,8 @@ variable "service" {
 }
 
 variable "notification_channel" {
-  type = string
+  type        = string
+  description = "The @user or @pagerduty parameters that indicate to Datadog where to send the alerts"
 }
 
 variable "additional_tags" {
@@ -25,8 +26,9 @@ variable "filter_str" {
 }
 
 variable "locked" {
-  type    = bool
-  default = true
+  type        = bool
+  default     = true
+  description = "Makes sure only the creator or admin can modify the monitor."
 }
 
 variable "state_metrics_monitoring" {
