@@ -1,5 +1,5 @@
 
-![Kabisa](https://avatars.githubusercontent.com/u/1531725)
+![Datadog](https://imgix.datadoghq.com/img/about/presskit/logo-v/dd_vertical_purple.png)
 
 [//]: # (This file is generated. Do not edit)
 
@@ -43,10 +43,12 @@ Monitors:
 
 Steps:
    - Install [pre-commit](http://pre-commit.com/). E.g. `brew install pre-commit`.
-   - Run `pre-commit install` in the repo.
+   - Run `pre-commit install` in this repo. (Every time you cloud a repo with pre-commit enabled you will need to run the pre-commit install command)
    - That’s it! Now every time you commit a code change (`.tf` file), the hooks in the `hooks:` config `.pre-commit-config.yaml` will execute.
 
 ## Daemonset Incomplete
+
+In kubernetes a daemonset is responsible for running the same pod across all Nodes. An example for a reason for this not not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0
 
 | variable                               | default                                  | required | description                                                              |
 |----------------------------------------|------------------------------------------|----------|--------------------------------------------------------------------------|
@@ -65,6 +67,8 @@ Steps:
 
 ## Node Status
 
+This cluster state metric provides a high-level overview of a node’s health and whether the scheduler can place pods on that node. It runs checks on the following node conditions\nhttps://kubernetes.io/docs/concepts/architecture/nodes/#condition
+
 | variable                      | default                                  | required | description                      |
 |-------------------------------|------------------------------------------|----------|----------------------------------|
 | node_status_enabled           | True                                     | No       |                                  |
@@ -80,6 +84,8 @@ Steps:
 
 
 ## Memory Requests Low Perc State
+
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 | variable                                         | default                                  | required | description                                                                                          |
 |--------------------------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
@@ -99,6 +105,8 @@ Steps:
 
 ## Replicaset Incomplete
 
+In kubernetes a Replicaset is responsible for making sure a specific number of pods runs. An example for a reason when that's not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0
+
 | variable                                | default                                  | required | description                                                               |
 |-----------------------------------------|------------------------------------------|----------|---------------------------------------------------------------------------|
 | replicaset_incomplete_enabled           | True                                     | No       |                                                                           |
@@ -115,6 +123,8 @@ Steps:
 
 
 ## CPU Requests Low Perc State
+
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 | variable                                      | default                                  | required | description                                                                                          |
 |-----------------------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
@@ -134,6 +144,8 @@ Steps:
 
 ## Pod Ready
 
+A pod may be running but not available, meaning it is not ready and able to accept traffic. This is normal during certain circumstances, such as when a pod is newly launched or when a change is made and deployed to the specification of that pod. But if you see spikes in the number of unavailable pods, or pods that are consistently unavailable, it might indicate a problem with their configuration.\nhttps://www.datadoghq.com/blog/monitoring-kubernetes-performance-metrics/
+
 | variable                    | default                                  | required | description                      |
 |-----------------------------|------------------------------------------|----------|----------------------------------|
 | pod_ready_enabled           | True                                     | No       |                                  |
@@ -149,6 +161,8 @@ Steps:
 
 
 ## Node Memorypressure
+
+Memory pressure is a resourcing condition indicating that your node is running out of memory. Similar to CPU resourcing, you don’t want to run out of memory. You especially need to watch for this condition because it could mean there’s a memory leak in one of your applications.
 
 | variable                              | default                                  | required | description                                                             |
 |---------------------------------------|------------------------------------------|----------|-------------------------------------------------------------------------|
@@ -167,6 +181,8 @@ Steps:
 
 ## Network Unavailable
 
+All your nodes need network  connections, and this status indicates that there’s something wrong with a node’s network connection. Either it wasn’t set up properly (due to route exhaustion or a misconfiguration), or there’s a physical problem with the network connection to your hardware.
+
 | variable                              | default                                  | required | description                                                             |
 |---------------------------------------|------------------------------------------|----------|-------------------------------------------------------------------------|
 | network_unavailable_enabled           | True                                     | No       |                                                                         |
@@ -183,6 +199,8 @@ Steps:
 
 
 ## Deploy Desired Vs Status
+
+The amount of expected pods to run minus the actual number
 
 | variable                                   | default                                  | required | description                      |
 |--------------------------------------------|------------------------------------------|----------|----------------------------------|
@@ -236,6 +254,8 @@ Steps:
 
 ## Hpa Status
 
+The Horizontal Pod Autoscaler automatically scales the number of Pods in a replication controller, deployment, replica set or stateful set based on observed CPU utilization\nWhen the HPA is unavailable, the situation could arise that not enough resources are provisioned to handle the incoming load\nhttps://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+
 | variable                     | default                                  | required | description                      |
 |------------------------------|------------------------------------------|----------|----------------------------------|
 | hpa_status_enabled           | True                                     | No       |                                  |
@@ -251,6 +271,8 @@ Steps:
 
 
 ## CPU Requests Low
+
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 | variable                           | default                                  | required | description                                                                                          |
 |------------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
@@ -270,6 +292,8 @@ Steps:
 
 ## Replicaset Unavailable
 
+In kubernetes a Replicaset is responsible for making sure a specific number of pods runs. An example for a reason when that's not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when running == 0 and desired > 1
+
 | variable                                 | default                                  | required | description                                   |
 |------------------------------------------|------------------------------------------|----------|-----------------------------------------------|
 | replicaset_unavailable_enabled           | True                                     | No       |                                               |
@@ -286,6 +310,8 @@ Steps:
 
 
 ## Memory Limits Low
+
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 | variable                            | default                                  | required | description                                                                                          |
 |-------------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
@@ -304,6 +330,8 @@ Steps:
 
 
 ## Pid Pressure
+
+PID pressure is a rare condition where a pod or container spawns too many processes and starves the node of available process IDs. Each node has a limited number of process IDs to distribute amongst running processes; and if it runs out of IDs, no other processes can be started. Kubernetes lets you set PID thresholds for pods to limit their ability to perform runaway process-spawning, and a PID pressure condition means that one or more pods are using up their allocated PIDs and need to be examined.
 
 | variable                       | default                                  | required | description                                                      |
 |--------------------------------|------------------------------------------|----------|------------------------------------------------------------------|
@@ -340,6 +368,8 @@ Steps:
 
 ## Memory Requests Low Perc
 
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+
 | variable                                   | default                                  | required | description                      |
 |--------------------------------------------|------------------------------------------|----------|----------------------------------|
 | memory_requests_low_perc_enabled           | True                                     | No       |                                  |
@@ -358,6 +388,8 @@ Steps:
 
 ## CPU Limits Low
 
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+
 | variable                         | default                                  | required | description                                                                                          |
 |----------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
 | cpu_limits_low_enabled           | False                                    | No       | This monitor is based on absolute values and thus less useful. Prefer setting cpu_limits_low_perc_enabled to true. |
@@ -375,6 +407,8 @@ Steps:
 
 
 ## Memory Limits Low Perc State
+
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 | variable                                       | default                                  | required | description                                                                                          |
 |------------------------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
@@ -434,6 +468,8 @@ Steps:
 
 ## CPU Requests Low Perc
 
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+
 | variable                                | default                                  | required | description                      |
 |-----------------------------------------|------------------------------------------|----------|----------------------------------|
 | cpu_requests_low_perc_enabled           | True                                     | No       |                                  |
@@ -452,6 +488,8 @@ Steps:
 
 ## Node Ready
 
+Checks to see if the node is in ready status or not
+
 | variable                     | default                                  | required | description                      |
 |------------------------------|------------------------------------------|----------|----------------------------------|
 | node_ready_enabled           | True                                     | No       |                                  |
@@ -469,6 +507,8 @@ Steps:
 
 ## Node Diskpressure
 
+Disk pressure is a condition indicating that a node is using too much disk space or is using disk space too fast, according to the thresholds you have set in your Kubernetes configuration. This is important to monitor because it might mean that you need to add more disk space, if your application legitimately needs more space. Or it might mean that an application is misbehaving and filling up the disk prematurely in an unanticipated manner. Either way, it’s a condition which needs your attention.
+
 | variable                            | default                                  | required | description                                                           |
 |-------------------------------------|------------------------------------------|----------|-----------------------------------------------------------------------|
 | node_diskpressure_enabled           | True                                     | No       |                                                                       |
@@ -485,6 +525,8 @@ Steps:
 
 
 ## CPU Limits Low Perc State
+
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 | variable                                    | default                                  | required | description                                                                                          |
 |---------------------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
@@ -504,6 +546,8 @@ Steps:
 
 ## Memory Limits Low Perc
 
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+
 | variable                                 | default                                  | required | description                      |
 |------------------------------------------|------------------------------------------|----------|----------------------------------|
 | memory_limits_low_perc_enabled           | True                                     | No       |                                  |
@@ -522,6 +566,8 @@ Steps:
 
 ## CPU Limits Low Perc
 
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+
 | variable                              | default                                  | required | description                      |
 |---------------------------------------|------------------------------------------|----------|----------------------------------|
 | cpu_limits_low_perc_enabled           | True                                     | No       |                                  |
@@ -539,6 +585,8 @@ Steps:
 
 
 ## Memory Requests Low
+
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 | variable                              | default                                  | required | description                                                                                          |
 |---------------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
