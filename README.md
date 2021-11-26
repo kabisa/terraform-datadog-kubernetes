@@ -115,7 +115,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 ## Replicaset Incomplete
 
-In kubernetes a Replicaset is responsible for making sure a specific number of pods runs. An example for a reason when that's not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0
+In kubernetes a Replicaset is responsible for making sure a specific number of pods run. An example for a reason when that's not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0
 
 Query:
 ```terraform
