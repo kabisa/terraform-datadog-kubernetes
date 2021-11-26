@@ -95,7 +95,7 @@ avg(${var.node_status_evaluation_period}):avg:kubernetes_state.node.status{${loc
 
 ## Memory Requests Low Perc State
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 | variable                                         | default                                  | required | description                                                                                          |
 |--------------------------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
