@@ -21,7 +21,7 @@ variable "daemonset_incomplete_note" {
 
 variable "daemonset_incomplete_docs" {
   type    = string
-  default = "In kubernetes a daemonset is responsible for running the same pod across all Nodes. An example for a reason for this not not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0"
+  default = "In kubernetes a daemonset is responsible for running the same pod across all Nodes. An example for when this fails, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0"
 }
 
 variable "daemonset_incomplete_filter_override" {

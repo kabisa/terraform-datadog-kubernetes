@@ -43,7 +43,7 @@ Monitors:
 
 Steps:
    - Install [pre-commit](http://pre-commit.com/). E.g. `brew install pre-commit`.
-   - Run `pre-commit install` in this repo. (Every time you clone a repo with pre-commit enabled you will need to run the pre-commit install command)
+   - Run `pre-commit install` in this repo. (Every time you cloud a repo with pre-commit enabled you will need to run the pre-commit install command)
    - That’s it! Now every time you commit a code change (`.tf` file), the hooks in the `hooks:` config `.pre-commit-config.yaml` will execute.
 
 ## Daemonset Incomplete
@@ -61,7 +61,7 @@ min(${var.daemonset_incomplete_evaluation_period}):max:kubernetes_state.daemonse
 | daemonset_incomplete_critical          | 0                                        | No       | alert is raised when (desired - running) > daemonset_incomplete_critical |
 | daemonset_incomplete_evaluation_period | last_30m                                 | No       |                                                                          |
 | daemonset_incomplete_note              | ""                                       | No       |                                                                          |
-| daemonset_incomplete_docs              | In kubernetes a daemonset is responsible for running the same pod across all Nodes. An example for a reason for this not not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0 | No       |                                                                          |
+| daemonset_incomplete_docs              | In kubernetes a daemonset is responsible for running the same pod across all Nodes. An example for when this fails, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0 | No       |                                                                          |
 | daemonset_incomplete_filter_override   | ""                                       | No       |                                                                          |
 | daemonset_incomplete_alerting_enabled  | True                                     | No       |                                                                          |
 | daemonset_incomplete_no_data_timeframe | null                                     | No       |                                                                          |
@@ -95,7 +95,7 @@ avg(${var.node_status_evaluation_period}):avg:kubernetes_state.node.status{${loc
 
 ## Memory Requests Low Perc State
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 | variable                                         | default                                  | required | description                                                                                          |
 |--------------------------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
@@ -104,7 +104,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 | memory_requests_low_perc_state_critical          | 95                                       | No       |                                                                                                      |
 | memory_requests_low_perc_state_evaluation_period | last_5m                                  | No       |                                                                                                      |
 | memory_requests_low_perc_state_note              | ""                                       | No       |                                                                                                      |
-| memory_requests_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
+| memory_requests_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | memory_requests_low_perc_state_filter_override   | ""                                       | No       |                                                                                                      |
 | memory_requests_low_perc_state_alerting_enabled  | True                                     | No       |                                                                                                      |
 | memory_requests_low_perc_state_no_data_timeframe | null                                     | No       |                                                                                                      |
@@ -115,7 +115,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 ## Replicaset Incomplete
 
-In kubernetes a Replicaset is responsible for making sure a specific number of pods runs. An example for a reason when that's not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0
+In kubernetes a Replicaset is responsible for making sure a specific number of pods run. An example for a reason when that's not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0
 
 Query:
 ```terraform
@@ -128,7 +128,7 @@ min(${var.replicaset_incomplete_evaluation_period}):max:kubernetes_state.replica
 | replicaset_incomplete_critical          | 0                                        | No       | alert is raised when (desired - running) > replicaset_incomplete_critical |
 | replicaset_incomplete_evaluation_period | last_15m                                 | No       |                                                                           |
 | replicaset_incomplete_note              | There's also a monitor defined for when the replicaset is completely unavailable | No       |                                                                           |
-| replicaset_incomplete_docs              | In kubernetes a Replicaset is responsible for making sure a specific number of pods runs. An example for a reason when that's not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0 | No       |                                                                           |
+| replicaset_incomplete_docs              | In kubernetes a Replicaset is responsible for making sure a specific number of pods run. An example for a reason when that's not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0 | No       |                                                                           |
 | replicaset_incomplete_filter_override   | ""                                       | No       |                                                                           |
 | replicaset_incomplete_alerting_enabled  | True                                     | No       |                                                                           |
 | replicaset_incomplete_no_data_timeframe | null                                     | No       |                                                                           |
@@ -139,7 +139,7 @@ min(${var.replicaset_incomplete_evaluation_period}):max:kubernetes_state.replica
 
 ## CPU Requests Low Perc State
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -153,7 +153,7 @@ max(${var.cpu_requests_low_perc_state_evaluation_period}):( sum:kubernetes_state
 | cpu_requests_low_perc_state_critical          | 95                                       | No       |                                                                                                      |
 | cpu_requests_low_perc_state_evaluation_period | last_5m                                  | No       |                                                                                                      |
 | cpu_requests_low_perc_state_note              | ""                                       | No       |                                                                                                      |
-| cpu_requests_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
+| cpu_requests_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | cpu_requests_low_perc_state_filter_override   | ""                                       | No       |                                                                                                      |
 | cpu_requests_low_perc_state_alerting_enabled  | True                                     | No       |                                                                                                      |
 | cpu_requests_low_perc_state_no_data_timeframe | null                                     | No       |                                                                                                      |
@@ -322,7 +322,7 @@ The Horizontal Pod Autoscaler automatically scales the number of Pods in a repli
 
 ## CPU Requests Low
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -336,7 +336,7 @@ max(${var.cpu_requests_low_evaluation_period}):sum:kubernetes.cpu.capacity{${loc
 | cpu_requests_low_critical          | 0.5                                      | No       |                                                                                                      |
 | cpu_requests_low_evaluation_period | last_5m                                  | No       |                                                                                                      |
 | cpu_requests_low_note              | ""                                       | No       |                                                                                                      |
-| cpu_requests_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
+| cpu_requests_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | cpu_requests_low_filter_override   | ""                                       | No       |                                                                                                      |
 | cpu_requests_low_alerting_enabled  | True                                     | No       |                                                                                                      |
 | cpu_requests_low_no_data_timeframe | null                                     | No       |                                                                                                      |
@@ -371,7 +371,7 @@ max(${var.replicaset_unavailable_evaluation_period}):( ${local.rs_pods_ready} ) 
 
 ## Memory Limits Low
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -385,7 +385,7 @@ avg(${var.memory_limits_low_evaluation_period}):max:kubernetes.memory.capacity{$
 | memory_limits_low_critical          | 3000000000                               | No       |                                                                                                      |
 | memory_limits_low_evaluation_period | last_5m                                  | No       |                                                                                                      |
 | memory_limits_low_note              | ""                                       | No       |                                                                                                      |
-| memory_limits_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
+| memory_limits_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | memory_limits_low_filter_override   | ""                                       | No       |                                                                                                      |
 | memory_limits_low_alerting_enabled  | True                                     | No       |                                                                                                      |
 | memory_limits_low_no_data_timeframe | null                                     | No       |                                                                                                      |
@@ -443,7 +443,7 @@ avg(${var.persistent_volumes_evaluation_period}):max:kubernetes_state.persistent
 
 ## Memory Requests Low Perc
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -457,7 +457,7 @@ max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.memory.requ
 | memory_requests_low_perc_critical          | 95                                       | No       |                                  |
 | memory_requests_low_perc_evaluation_period | last_5m                                  | No       |                                  |
 | memory_requests_low_perc_note              | ""                                       | No       |                                  |
-| memory_requests_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
+| memory_requests_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
 | memory_requests_low_perc_filter_override   | ""                                       | No       |                                  |
 | memory_requests_low_perc_alerting_enabled  | True                                     | No       |                                  |
 | memory_requests_low_perc_no_data_timeframe | null                                     | No       |                                  |
@@ -468,7 +468,7 @@ max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.memory.requ
 
 ## CPU Limits Low
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -482,7 +482,7 @@ max(${var.cpu_limits_low_evaluation_period}):sum:kubernetes.cpu.capacity{${local
 | cpu_limits_low_critical          | -30                                      | No       |                                                                                                      |
 | cpu_limits_low_evaluation_period | last_5m                                  | No       |                                                                                                      |
 | cpu_limits_low_note              | ""                                       | No       |                                                                                                      |
-| cpu_limits_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
+| cpu_limits_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | cpu_limits_low_filter_override   | ""                                       | No       |                                                                                                      |
 | cpu_limits_low_alerting_enabled  | True                                     | No       |                                                                                                      |
 | cpu_limits_low_no_data_timeframe | null                                     | No       |                                                                                                      |
@@ -493,7 +493,7 @@ max(${var.cpu_limits_low_evaluation_period}):sum:kubernetes.cpu.capacity{${local
 
 ## Memory Limits Low Perc State
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -507,7 +507,7 @@ max(${var.memory_limits_low_perc_state_evaluation_period}):( sum:kubernetes_stat
 | memory_limits_low_perc_state_critical          | 100                                      | No       |                                                                                                      |
 | memory_limits_low_perc_state_evaluation_period | last_5m                                  | No       |                                                                                                      |
 | memory_limits_low_perc_state_note              | ""                                       | No       |                                                                                                      |
-| memory_limits_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
+| memory_limits_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | memory_limits_low_perc_state_filter_override   | ""                                       | No       |                                                                                                      |
 | memory_limits_low_perc_state_alerting_enabled  | True                                     | No       |                                                                                                      |
 | memory_limits_low_perc_state_no_data_timeframe | null                                     | No       |                                                                                                      |
@@ -568,7 +568,7 @@ avg(${var.cpu_on_dns_pods_high_evaluation_period}):avg:docker.cpu.usage{${local.
 
 ## CPU Requests Low Perc
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -582,7 +582,7 @@ max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.cpu.request
 | cpu_requests_low_perc_critical          | 95                                       | No       |                                  |
 | cpu_requests_low_perc_evaluation_period | last_5m                                  | No       |                                  |
 | cpu_requests_low_perc_note              | ""                                       | No       |                                  |
-| cpu_requests_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
+| cpu_requests_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
 | cpu_requests_low_perc_filter_override   | ""                                       | No       |                                  |
 | cpu_requests_low_perc_alerting_enabled  | True                                     | No       |                                  |
 | cpu_requests_low_perc_no_data_timeframe | null                                     | No       |                                  |
@@ -641,7 +641,7 @@ avg(${var.node_diskpressure_evaluation_period}):max:kubernetes_state.nodes.by_co
 
 ## CPU Limits Low Perc State
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -655,7 +655,7 @@ max(${var.cpu_limits_low_perc_state_evaluation_period}):( sum:kubernetes_state.c
 | cpu_limits_low_perc_state_critical          | 100                                      | No       |                                                                                                      |
 | cpu_limits_low_perc_state_evaluation_period | last_5m                                  | No       |                                                                                                      |
 | cpu_limits_low_perc_state_note              | ""                                       | No       |                                                                                                      |
-| cpu_limits_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
+| cpu_limits_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | cpu_limits_low_perc_state_filter_override   | ""                                       | No       |                                                                                                      |
 | cpu_limits_low_perc_state_alerting_enabled  | True                                     | No       |                                                                                                      |
 | cpu_limits_low_perc_state_no_data_timeframe | null                                     | No       |                                                                                                      |
@@ -666,7 +666,7 @@ max(${var.cpu_limits_low_perc_state_evaluation_period}):( sum:kubernetes_state.c
 
 ## Memory Limits Low Perc
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -680,7 +680,7 @@ max(${var.memory_limits_low_perc_evaluation_period}):( max:kubernetes.memory.lim
 | memory_limits_low_perc_critical          | 100                                      | No       |                                  |
 | memory_limits_low_perc_evaluation_period | last_5m                                  | No       |                                  |
 | memory_limits_low_perc_note              | ""                                       | No       |                                  |
-| memory_limits_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
+| memory_limits_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
 | memory_limits_low_perc_filter_override   | ""                                       | No       |                                  |
 | memory_limits_low_perc_alerting_enabled  | True                                     | No       |                                  |
 | memory_limits_low_perc_no_data_timeframe | null                                     | No       |                                  |
@@ -691,7 +691,7 @@ max(${var.memory_limits_low_perc_evaluation_period}):( max:kubernetes.memory.lim
 
 ## CPU Limits Low Perc
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -705,7 +705,7 @@ max(${var.cpu_limits_low_perc_evaluation_period}):( max:kubernetes.cpu.limits{${
 | cpu_limits_low_perc_critical          | 100                                      | No       |                                  |
 | cpu_limits_low_perc_evaluation_period | last_5m                                  | No       |                                  |
 | cpu_limits_low_perc_note              | ""                                       | No       |                                  |
-| cpu_limits_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
+| cpu_limits_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
 | cpu_limits_low_perc_filter_override   | ""                                       | No       |                                  |
 | cpu_limits_low_perc_alerting_enabled  | True                                     | No       |                                  |
 | cpu_limits_low_perc_no_data_timeframe | null                                     | No       |                                  |
@@ -716,7 +716,7 @@ max(${var.cpu_limits_low_perc_evaluation_period}):( max:kubernetes.cpu.limits{${
 
 ## Memory Requests Low
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
@@ -730,7 +730,7 @@ avg(${var.memory_requests_low_evaluation_period}):max:kubernetes.memory.capacity
 | memory_requests_low_critical          | 3000000000                               | No       |                                                                                                      |
 | memory_requests_low_evaluation_period | last_5m                                  | No       |                                                                                                      |
 | memory_requests_low_note              | ""                                       | No       |                                                                                                      |
-| memory_requests_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
+| memory_requests_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | memory_requests_low_filter_override   | ""                                       | No       |                                                                                                      |
 | memory_requests_low_alerting_enabled  | True                                     | No       |                                                                                                      |
 | memory_requests_low_no_data_timeframe | null                                     | No       |                                                                                                      |
