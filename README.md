@@ -568,7 +568,7 @@ avg(${var.cpu_on_dns_pods_high_evaluation_period}):avg:docker.cpu.usage{${local.
 
 ## CPU Requests Low Perc
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
