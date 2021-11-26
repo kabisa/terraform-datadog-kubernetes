@@ -716,7 +716,7 @@ max(${var.cpu_limits_low_perc_evaluation_period}):( max:kubernetes.cpu.limits{${
 
 ## Memory Requests Low
 
-If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 
 Query:
 ```terraform
