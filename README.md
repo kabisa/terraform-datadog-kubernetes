@@ -499,7 +499,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
 Query:
 ```terraform
-min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:failed,${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}
+min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}
 ```
 
 | variable                      | default                                  | required | description                      |
@@ -626,7 +626,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
 Query:
 ```terraform
-min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:pending,${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}
+min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}
 ```
 
 | variable                       | default                                  | required | description                      |
@@ -810,5 +810,6 @@ avg(${var.memory_requests_low_evaluation_period}):max:kubernetes.memory.capacity
 | state_metrics_monitoring | True       | No       |                                                                                      |
 | name_prefix              | ""         | No       |                                                                                      |
 | name_suffix              | ""         | No       |                                                                                      |
+| filter_str_concatenation | ,          | No       | If you use an IN expression you need to switch from , to AND                         |
 
 

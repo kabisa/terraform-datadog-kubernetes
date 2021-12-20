@@ -51,3 +51,8 @@ variable "name_suffix" {
   type    = string
   default = ""
 }
+
+variable "filter_str_concatenation" {
+  description = "If you use an IN expression you need to switch from , to AND"
+  default     = ","
+}
