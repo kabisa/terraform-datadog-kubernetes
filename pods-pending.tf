@@ -9,7 +9,7 @@ module "pods_pending" {
   source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0.rc1"
 
   name  = "Pods Pending"
-  query = "min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}"
+  query = "min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:pending,${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}"
 
   # alert specific configuration
   require_full_window = true

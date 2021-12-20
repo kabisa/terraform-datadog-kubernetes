@@ -9,7 +9,7 @@ module "pods_failed" {
   source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0.rc1"
 
   name  = "Pods Failed"
-  query = "min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}"
+  query = "min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:failed,${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}"
 
   # alert specific configuration
   require_full_window = true

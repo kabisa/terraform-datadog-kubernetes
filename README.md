@@ -499,7 +499,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
 Query:
 ```terraform
-min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}
+min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:failed,${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}
 ```
 
 | variable                      | default                                  | required | description                      |
@@ -626,7 +626,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
 Query:
 ```terraform
-min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}
+min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:pending,${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}
 ```
 
 | variable                       | default                                  | required | description                      |
