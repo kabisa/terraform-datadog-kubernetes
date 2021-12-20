@@ -6,7 +6,7 @@ locals {
 }
 
 module "deploy_desired_vs_status" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.2"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0.rc1"
 
   name             = "Desired pods vs current pods (Deployments)"
   query            = "avg(${var.deploy_desired_vs_status_evaluation_period}):max:kubernetes_state.deployment.replicas_desired{${local.deploy_desired_vs_status_filter}} by {cluster_name,host} - max:kubernetes_state.deployment.replicas{${local.deploy_desired_vs_status_filter}} by {cluster_name,host} > ${var.deploy_desired_vs_status_critical}"
@@ -25,6 +25,7 @@ module "deploy_desired_vs_status" {
   # module level vars
   env                  = var.alert_env
   service              = var.service
+  service_display_name = var.service_display_name
   notification_channel = var.notification_channel
   additional_tags      = var.additional_tags
   locked               = var.locked

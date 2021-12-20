@@ -26,10 +26,12 @@ Monitors:
   * [Persistent Volumes](#persistent-volumes)
   * [Memory Requests Low Perc](#memory-requests-low-perc)
   * [CPU Limits Low](#cpu-limits-low)
+  * [Pods Failed](#pods-failed)
   * [Memory Limits Low Perc State](#memory-limits-low-perc-state)
   * [Pod Restarts](#pod-restarts)
   * [CPU On Dns Pods High](#cpu-on-dns-pods-high)
   * [CPU Requests Low Perc](#cpu-requests-low-perc)
+  * [Pods Pending](#pods-pending)
   * [Node Ready](#node-ready)
   * [Node Diskpressure](#node-diskpressure)
   * [CPU Limits Low Perc State](#cpu-limits-low-perc-state)
@@ -491,6 +493,33 @@ max(${var.cpu_limits_low_evaluation_period}):sum:kubernetes.cpu.capacity{${local
 | cpu_limits_low_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
+## Pods Failed
+
+https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
+
+Query:
+```terraform
+min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}
+```
+
+| variable                      | default                                  | required | description                      |
+|-------------------------------|------------------------------------------|----------|----------------------------------|
+| pods_failed_enabled           | True                                     | No       |                                  |
+| pods_failed_warning           | null                                     | No       |                                  |
+| pods_failed_critical          | 0.0                                      | No       |                                  |
+| pods_failed_evaluation_period | last_10m                                 | No       |                                  |
+| pods_failed_note              | ""                                       | No       |                                  |
+| pods_failed_docs              | https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/ | No       |                                  |
+| pods_failed_filter_override   | ""                                       | No       |                                  |
+| pods_failed_alerting_enabled  | True                                     | No       |                                  |
+| pods_failed_no_data_timeframe | null                                     | No       |                                  |
+| pods_failed_notify_no_data    | False                                    | No       |                                  |
+| pods_failed_ok_threshold      | null                                     | No       |                                  |
+| pods_failed_name_prefix       | ""                                       | No       |                                  |
+| pods_failed_name_suffix       | ""                                       | No       |                                  |
+| pods_failed_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
+
+
 ## Memory Limits Low Perc State
 
 If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
@@ -589,6 +618,33 @@ max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.cpu.request
 | cpu_requests_low_perc_notify_no_data    | False                                    | No       |                                  |
 | cpu_requests_low_perc_ok_threshold      | null                                     | No       |                                  |
 | cpu_requests_low_perc_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
+
+
+## Pods Pending
+
+https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
+
+Query:
+```terraform
+min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}
+```
+
+| variable                       | default                                  | required | description                      |
+|--------------------------------|------------------------------------------|----------|----------------------------------|
+| pods_pending_enabled           | True                                     | No       |                                  |
+| pods_pending_warning           | null                                     | No       |                                  |
+| pods_pending_critical          | 0.0                                      | No       |                                  |
+| pods_pending_evaluation_period | last_10m                                 | No       |                                  |
+| pods_pending_note              | ""                                       | No       |                                  |
+| pods_pending_docs              | https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/ | No       |                                  |
+| pods_pending_filter_override   | ""                                       | No       |                                  |
+| pods_pending_alerting_enabled  | True                                     | No       |                                  |
+| pods_pending_no_data_timeframe | null                                     | No       |                                  |
+| pods_pending_notify_no_data    | False                                    | No       |                                  |
+| pods_pending_ok_threshold      | null                                     | No       |                                  |
+| pods_pending_name_prefix       | ""                                       | No       |                                  |
+| pods_pending_name_suffix       | ""                                       | No       |                                  |
+| pods_pending_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## Node Ready
@@ -746,6 +802,7 @@ avg(${var.memory_requests_low_evaluation_period}):max:kubernetes.memory.capacity
 | env                      |            | Yes      |                                                                                      |
 | alert_env                |            | Yes      |                                                                                      |
 | service                  | Kubernetes | No       |                                                                                      |
+| service_display_name     | null       | No       | Readable version of service name of what you're monitoring.                          |
 | notification_channel     |            | Yes      | The @user or @pagerduty parameters that indicate to Datadog where to send the alerts |
 | additional_tags          | []         | No       |                                                                                      |
 | filter_str               |            | Yes      |                                                                                      |

@@ -6,7 +6,7 @@ locals {
 }
 
 module "datadog_agent" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.6.2"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0.rc1"
 
   name             = "Datadog agent not running"
   query            = "avg(${var.datadog_agent_evaluation_period}):avg:datadog.agent.running{${local.datadog_agent_filter}} by {host,cluster_name} < 1"
@@ -25,6 +25,7 @@ module "datadog_agent" {
   # module level vars
   env                  = var.alert_env
   service              = var.service
+  service_display_name = var.service_display_name
   notification_channel = var.notification_channel
   additional_tags      = var.additional_tags
   locked               = var.locked

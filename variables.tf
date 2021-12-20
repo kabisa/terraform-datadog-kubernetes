@@ -11,6 +11,12 @@ variable "service" {
   default = "Kubernetes"
 }
 
+variable "service_display_name" {
+  description = "Readable version of service name of what you're monitoring."
+  type        = string
+  default     = null
+}
+
 variable "notification_channel" {
   type        = string
   description = "The @user or @pagerduty parameters that indicate to Datadog where to send the alerts"
