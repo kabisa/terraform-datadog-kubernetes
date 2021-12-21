@@ -11,6 +11,12 @@ variable "service" {
   default = "Kubernetes"
 }
 
+variable "service_display_name" {
+  description = "Readable version of service name of what you're monitoring."
+  type        = string
+  default     = null
+}
+
 variable "notification_channel" {
   type        = string
   description = "The @user or @pagerduty parameters that indicate to Datadog where to send the alerts"
@@ -44,4 +50,9 @@ variable "name_prefix" {
 variable "name_suffix" {
   type    = string
   default = ""
+}
+
+variable "filter_str_concatenation" {
+  description = "If you use an IN expression you need to switch from , to AND"
+  default     = ","
 }
