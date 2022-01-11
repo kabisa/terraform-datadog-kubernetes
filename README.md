@@ -16,6 +16,7 @@ Monitors:
   * [Node Memorypressure](#node-memorypressure)
   * [Network Unavailable](#network-unavailable)
   * [Deploy Desired Vs Status](#deploy-desired-vs-status)
+  * [Pod Count Per Node High](#pod-count-per-node-high)
   * [Node Memory Used Percent](#node-memory-used-percent)
   * [Datadog Agent](#datadog-agent)
   * [Hpa Status](#hpa-status)
@@ -258,6 +259,31 @@ avg(${var.deploy_desired_vs_status_evaluation_period}):max:kubernetes_state.depl
 | deploy_desired_vs_status_notify_no_data    | False                                    | No       |                                  |
 | deploy_desired_vs_status_ok_threshold      | null                                     | No       |                                  |
 | deploy_desired_vs_status_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
+
+
+## Pod Count Per Node High
+
+Query:
+```terraform
+avg(${var.pod_count_per_node_high_evaluation_period}):sum:kubernetes.pods.running{${local.pod_count_per_node_high_filter}} by {host} > ${var.pod_count_per_node_high_critical}
+```
+
+| variable                                  | default  | required | description                      |
+|-------------------------------------------|----------|----------|----------------------------------|
+| pod_count_per_node_high_enabled           | True     | No       |                                  |
+| pod_count_per_node_high_warning           | 90.0     | No       |                                  |
+| pod_count_per_node_high_critical          | 100.0    | No       |                                  |
+| pod_count_per_node_high_evaluation_period | last_10m | No       |                                  |
+| pod_count_per_node_high_note              | ""       | No       |                                  |
+| pod_count_per_node_high_docs              | ""       | No       |                                  |
+| pod_count_per_node_high_filter_override   | ""       | No       |                                  |
+| pod_count_per_node_high_alerting_enabled  | True     | No       |                                  |
+| pod_count_per_node_high_no_data_timeframe | null     | No       |                                  |
+| pod_count_per_node_high_notify_no_data    | False    | No       |                                  |
+| pod_count_per_node_high_ok_threshold      | null     | No       |                                  |
+| pod_count_per_node_high_name_prefix       | ""       | No       |                                  |
+| pod_count_per_node_high_name_suffix       | ""       | No       |                                  |
+| pod_count_per_node_high_priority          | 2        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## Node Memory Used Percent
