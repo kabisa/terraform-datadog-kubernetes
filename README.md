@@ -55,7 +55,7 @@ In kubernetes a daemonset is responsible for running the same pod across all Nod
 
 Query:
 ```terraform
-min(${var.daemonset_incomplete_evaluation_period}):max:kubernetes_state.daemonset.scheduled{${local.daemonset_incomplete_filter}} by {daemonset,cluster_name} - min:kubernetes_state.daemonset.ready{${local.daemonset_incomplete_filter}} by {daemonset,cluster_name} > 0
+min(last_30m):max:kubernetes_state.daemonset.scheduled{tag:xxx} by {daemonset,cluster_name} - min:kubernetes_state.daemonset.ready{tag:xxx} by {daemonset,cluster_name} > 0
 ```
 
 | variable                               | default                                  | required | description                                                              |
@@ -79,7 +79,7 @@ This cluster state metric provides a high-level overview of a nodeâ€™s health an
 
 Query:
 ```terraform
-avg(${var.node_status_evaluation_period}):avg:kubernetes_state.node.status{${local.node_status_filter}} by {cluster_name,node} < 1
+avg(last_5m):avg:kubernetes_state.node.status{tag:xxx} by {cluster_name,node} < 1
 ```
 
 | variable                      | default                                  | required | description                      |
@@ -122,7 +122,7 @@ In kubernetes a Replicaset is responsible for making sure a specific number of p
 
 Query:
 ```terraform
-min(${var.replicaset_incomplete_evaluation_period}):max:kubernetes_state.replicaset.replicas_desired{${local.replicaset_incomplete_filter}} by {kube_replica_set,cluster_name} - min:kubernetes_state.replicaset.replicas_ready{${local.replicaset_incomplete_filter}} by {kube_replica_set,cluster_name} > ${var.replicaset_incomplete_critical}
+min(last_15m):max:kubernetes_state.replicaset.replicas_desired{tag:xxx} by {kube_replica_set,cluster_name} - min:kubernetes_state.replicaset.replicas_ready{tag:xxx} by {kube_replica_set,cluster_name} > 
 ```
 
 | variable                                | default                                  | required | description                                                               |
@@ -146,7 +146,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_requests_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.cpu_requested{${local.cpu_requests_low_perc_state_filter}} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{${local.cpu_requests_low_perc_state_filter}} by {host,cluster_name} ) * 100 > ${var.cpu_requests_low_perc_state_critical}
+max(last_5m):( sum:kubernetes_state.container.cpu_requested{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,cluster_name} ) * 100 > 95
 ```
 
 | variable                                      | default                                  | required | description                                                                                          |
@@ -171,7 +171,7 @@ A pod may be running but not available, meaning it is not ready and able to acce
 
 Query:
 ```terraform
-min(${var.pod_ready_evaluation_period}):sum:kubernetes_state.pod.count{${local.pod_ready_filter}} by {cluster_name,namespace} - sum:kubernetes_state.pod.ready{${local.pod_ready_filter}} by {cluster_name,namespace} > 0
+min(last_30m):sum:kubernetes_state.pod.count{tag:xxx} by {cluster_name,namespace} - sum:kubernetes_state.pod.ready{tag:xxx} by {cluster_name,namespace} > 0
 ```
 
 | variable                    | default                                  | required | description                      |
@@ -194,7 +194,7 @@ Memory pressure is a resourcing condition indicating that your node is running o
 
 Query:
 ```terraform
-avg(${var.node_memorypressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.node_memorypressure_filter} AND condition:memorypressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.node_memorypressure_critical}
+avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:memorypressure AND (status:true OR status:unknown)} by {cluster_name,host} > 
 ```
 
 | variable                              | default                                  | required | description                                                             |
@@ -218,7 +218,7 @@ All your nodes need network  connections, and this status indicates that thereâ€
 
 Query:
 ```terraform
-avg(${var.network_unavailable_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.network_unavailable_filter} AND condition:networkunavailable AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.network_unavailable_critical}
+avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:networkunavailable AND (status:true OR status:unknown)} by {cluster_name,host} > 
 ```
 
 | variable                              | default                                  | required | description                                                             |
@@ -242,7 +242,7 @@ The amount of expected pods to run minus the actual number
 
 Query:
 ```terraform
-avg(${var.deploy_desired_vs_status_evaluation_period}):max:kubernetes_state.deployment.replicas_desired{${local.deploy_desired_vs_status_filter}} by {cluster_name,host} - max:kubernetes_state.deployment.replicas{${local.deploy_desired_vs_status_filter}} by {cluster_name,host} > ${var.deploy_desired_vs_status_critical}
+avg(last_15m):max:kubernetes_state.deployment.replicas_desired{tag:xxx} by {cluster_name,host} - max:kubernetes_state.deployment.replicas{tag:xxx} by {cluster_name,host} > 10
 ```
 
 | variable                                   | default                                  | required | description                      |
@@ -265,7 +265,7 @@ avg(${var.deploy_desired_vs_status_evaluation_period}):max:kubernetes_state.depl
 
 Query:
 ```terraform
-avg(${var.pod_count_per_node_high_evaluation_period}):sum:kubernetes.pods.running{${local.pod_count_per_node_high_filter}} by {host} > ${var.pod_count_per_node_high_critical}
+avg(last_10m):sum:kubernetes.pods.running{tag:xxx} by {host} > 100.0
 ```
 
 | variable                                  | default  | required | description                      |
@@ -290,7 +290,7 @@ avg(${var.pod_count_per_node_high_evaluation_period}):sum:kubernetes.pods.runnin
 
 Query:
 ```terraform
-avg(${var.node_memory_used_percent_evaluation_period}):( 100 * max:kubernetes.memory.usage{${local.node_memory_used_percent_filter}} by {host,cluster_name} ) / max:kubernetes.memory.capacity{${local.node_memory_used_percent_filter}} by {host,cluster_name} > ${var.node_memory_used_percent_critical}
+avg(last_5m):( 100 * max:kubernetes.memory.usage{tag:xxx} by {host,cluster_name} ) / max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name} > 90
 ```
 
 | variable                                   | default  | required | description                      |
@@ -313,7 +313,7 @@ avg(${var.node_memory_used_percent_evaluation_period}):( 100 * max:kubernetes.me
 
 Query:
 ```terraform
-avg(${var.datadog_agent_evaluation_period}):avg:datadog.agent.running{${local.datadog_agent_filter}} by {host,cluster_name} < 1
+avg(last_5m):avg:datadog.agent.running{tag:xxx} by {host,cluster_name} < 1
 ```
 
 | variable                        | default  | required | description                      |
@@ -354,7 +354,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_requests_low_evaluation_period}):sum:kubernetes.cpu.capacity{${local.cpu_requests_low_filter}} by {host,cluster_name} - sum:kubernetes.cpu.requests{${local.cpu_requests_low_filter}} by {host,cluster_name} < ${var.cpu_requests_low_critical}
+max(last_5m):sum:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} - sum:kubernetes.cpu.requests{tag:xxx} by {host,cluster_name} < 0.5
 ```
 
 | variable                           | default                                  | required | description                                                                                          |
@@ -379,7 +379,7 @@ In kubernetes a Replicaset is responsible for making sure a specific number of p
 
 Query:
 ```terraform
-max(${var.replicaset_unavailable_evaluation_period}):( ${local.rs_pods_ready} ) / ${local.rs_pods_desired} / ( ${local.rs_pods_desired} - 1 ) <= 0
+max(last_5m):( ${local.rs_pods_ready} ) / ${local.rs_pods_desired} / ( ${local.rs_pods_desired} - 1 ) <= 0
 ```
 
 | variable                                 | default                                  | required | description                                   |
@@ -403,7 +403,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-avg(${var.memory_limits_low_evaluation_period}):max:kubernetes.memory.capacity{${local.memory_limits_low_filter}} by {host,cluster_name} - max:kubernetes.memory.limits{${local.memory_limits_low_filter}} by {host,cluster_name} < ${var.memory_limits_low_critical}
+avg(last_5m):max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.limits{tag:xxx} by {host,cluster_name} < 3000000000
 ```
 
 | variable                            | default                                  | required | description                                                                                          |
@@ -428,7 +428,7 @@ PID pressure is a rare condition where a pod or container spawns too many proces
 
 Query:
 ```terraform
-avg(${var.pid_pressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.pid_pressure_filter} AND condition:pidpressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.pid_pressure_critical}
+avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:pidpressure AND (status:true OR status:unknown)} by {cluster_name,host} > 
 ```
 
 | variable                       | default                                  | required | description                                                      |
@@ -450,7 +450,7 @@ avg(${var.pid_pressure_evaluation_period}):max:kubernetes_state.nodes.by_conditi
 
 Query:
 ```terraform
-avg(${var.persistent_volumes_evaluation_period}):max:kubernetes_state.persistentvolumes.by_phase{${local.persistent_volumes_filter} AND phase:failed} > ${var.persistent_volumes_critical}
+avg(last_5m):max:kubernetes_state.persistentvolumes.by_phase{tag:xxx AND phase:failed} > 1
 ```
 
 | variable                             | default  | required | description                      |
@@ -500,7 +500,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_limits_low_evaluation_period}):sum:kubernetes.cpu.capacity{${local.cpu_limits_low_filter}} by {host,cluster_name} - sum:kubernetes.cpu.limits{${local.cpu_limits_low_filter}} by {host,cluster_name} < ${var.cpu_limits_low_critical}
+max(last_5m):sum:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} - sum:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} < -30
 ```
 
 | variable                         | default                                  | required | description                                                                                          |
@@ -525,7 +525,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
 Query:
 ```terraform
-min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}
+min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}tag:xxx} by {namespace}) > 
 ```
 
 | variable                      | default                                  | required | description                      |
@@ -552,7 +552,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.memory_limits_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.memory_limit{${local.memory_limits_low_perc_state_filter}} by {host,cluster_name} / sum:kubernetes_state.node.memory_allocatable{${local.memory_limits_low_perc_state_filter}} by {host,cluster_name}) * 100 > ${var.memory_limits_low_perc_state_critical}
+max(last_5m):( sum:kubernetes_state.container.memory_limit{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.memory_allocatable{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                                       | default                                  | required | description                                                                                          |
@@ -575,7 +575,7 @@ max(${var.memory_limits_low_perc_state_evaluation_period}):( sum:kubernetes_stat
 
 Query:
 ```terraform
-change(avg(${var.pod_restarts_evaluation_period}),${var.pod_restarts_evaluation_period}):exclude_null(avg:kubernetes.containers.restarts{${local.pod_restarts_filter}} by {pod_name}) > ${var.pod_restarts_critical}
+change(avg(last_10m),last_10m):exclude_null(avg:kubernetes.containers.restarts{tag:xxx} by {pod_name}) > 5
 ```
 
 | variable                       | default  | required | description                      |
@@ -598,7 +598,7 @@ change(avg(${var.pod_restarts_evaluation_period}),${var.pod_restarts_evaluation_
 
 Query:
 ```terraform
-avg(${var.cpu_on_dns_pods_high_evaluation_period}):avg:docker.cpu.usage{${local.cpu_on_dns_pods_high_filter}} by {cluster_name,host,container_name} > ${var.cpu_on_dns_pods_high_critical}
+avg(last_30m):avg:docker.cpu.usage{tag:xxx} by {cluster_name,host,container_name} > 85
 ```
 
 | variable                               | default                                  | required | description                                                                                          |
@@ -627,7 +627,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.cpu.requests{${local.cpu_requests_low_perc_filter}} by {host,cluster_name} / max:kubernetes.cpu.capacity{${local.cpu_requests_low_perc_filter}} by {host,cluster_name} ) * 100 > ${var.cpu_requests_low_perc_critical}
+max(last_5m):( max:kubernetes.cpu.requests{tag:xxx} by {host,cluster_name} / max:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} ) * 100 > 95
 ```
 
 | variable                                | default                                  | required | description                      |
@@ -652,7 +652,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
 Query:
 ```terraform
-min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}
+min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}tag:xxx} by {namespace}) > 
 ```
 
 | variable                       | default                                  | required | description                      |
@@ -679,7 +679,7 @@ Checks to see if the node is in ready status or not
 
 Query:
 ```terraform
-avg(${var.node_ready_evaluation_period}):count_nonzero(sum:kubernetes_state.nodes.by_condition{${local.node_ready_filter} AND (NOT condition:ready) AND (status:true OR status:unknown)} by {cluster_name,host}) > ${var.node_ready_critical}
+avg(last_5m):count_nonzero(sum:kubernetes_state.nodes.by_condition{tag:xxx AND (NOT condition:ready) AND (status:true OR status:unknown)} by {cluster_name,host}) > 1
 ```
 
 | variable                     | default                                  | required | description                      |
@@ -703,7 +703,7 @@ Disk pressure is a condition indicating that a node is using too much disk space
 
 Query:
 ```terraform
-avg(${var.node_diskpressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.node_diskpressure_filter} AND condition:diskpressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.node_diskpressure_critical}
+avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:diskpressure AND (status:true OR status:unknown)} by {cluster_name,host} > 
 ```
 
 | variable                            | default                                  | required | description                                                           |
@@ -727,7 +727,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_limits_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.cpu_limit{${local.cpu_limits_low_perc_state_filter}} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{${local.cpu_limits_low_perc_state_filter}} by {host,cluster_name}) * 100 > ${var.cpu_limits_low_perc_state_critical}
+max(last_5m):( sum:kubernetes_state.container.cpu_limit{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                                    | default                                  | required | description                                                                                          |
@@ -752,7 +752,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.memory_limits_low_perc_evaluation_period}):( max:kubernetes.memory.limits{${local.memory_limits_low_perc_filter}}  by {host,cluster_name}/ max:kubernetes.memory.capacity{${local.memory_limits_low_perc_filter}} by {host,cluster_name}) * 100 > ${var.memory_limits_low_perc_critical}
+max(last_5m):( max:kubernetes.memory.limits{tag:xxx}  by {host,cluster_name}/ max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                                 | default                                  | required | description                      |
@@ -777,7 +777,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_limits_low_perc_evaluation_period}):( max:kubernetes.cpu.limits{${local.cpu_limits_low_perc_filter}} by {host,cluster_name} / max:kubernetes.cpu.capacity{${local.cpu_limits_low_perc_filter}} by {host,cluster_name}) * 100 > ${var.cpu_limits_low_perc_critical}
+max(last_5m):( max:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} / max:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                              | default                                  | required | description                      |
@@ -802,7 +802,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-avg(${var.memory_requests_low_evaluation_period}):max:kubernetes.memory.capacity{${local.memory_requests_low_filter}} by {host,cluster_name} - max:kubernetes.memory.requests{${local.memory_requests_low_filter}} by {host,cluster_name} < ${var.memory_requests_low_critical}
+avg(last_5m):max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.requests{tag:xxx} by {host,cluster_name} < 3000000000
 ```
 
 | variable                              | default                                  | required | description                                                                                          |
