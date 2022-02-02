@@ -1,8 +1,6 @@
 locals {
   hpa_status_filter = (
-    var.hpa_status_filter_override != ""
-    ? var.hpa_status_filter_override
-    : var.filter_str
+    var.hpa_status_filter_override != "" ? var.hpa_status_filter_override : var.filter_str
   )
 }
 

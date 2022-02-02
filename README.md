@@ -1,9 +1,13 @@
 
 ![Datadog](https://imgix.datadoghq.com/img/about/presskit/logo-v/dd_vertical_purple.png)
 
-[//]: # (This file is generated. Do not edit)
+[//]: # (This file is generated. Do not edit, module description can be added by editing / creating module_description.md)
 
 # Terraform module for Datadog Kubernetes
+
+This module mainly check on Kubernetes resource level and cluster health.
+System level monitoring can best be implemented with the [system module](https://github.com/kabisa/terraform-datadog-system).
+Docker/Container level monitoring can best be implemented with the [docker module](https://github.com/kabisa/terraform-datadog-docker-container).
 
 Monitors:
 * [Terraform module for Datadog Kubernetes](#terraform-module-for-datadog-kubernetes)
@@ -41,7 +45,7 @@ Monitors:
   * [Memory Requests Low](#memory-requests-low)
   * [Module Variables](#module-variables)
 
-# Getting started
+# Getting started developing
 [pre-commit](http://pre-commit.com/) was used to do Terraform linting and validating.
 
 Steps:
@@ -55,7 +59,7 @@ In kubernetes a daemonset is responsible for running the same pod across all Nod
 
 Query:
 ```terraform
-min(${var.daemonset_incomplete_evaluation_period}):max:kubernetes_state.daemonset.scheduled{${local.daemonset_incomplete_filter}} by {daemonset,cluster_name} - min:kubernetes_state.daemonset.ready{${local.daemonset_incomplete_filter}} by {daemonset,cluster_name} > 0
+min(last_30m):max:kubernetes_state.daemonset.scheduled{tag:xxx} by {daemonset,cluster_name} - min:kubernetes_state.daemonset.ready{tag:xxx} by {daemonset,cluster_name} > 0
 ```
 
 | variable                               | default                                  | required | description                                                              |
@@ -67,9 +71,9 @@ min(${var.daemonset_incomplete_evaluation_period}):max:kubernetes_state.daemonse
 | daemonset_incomplete_docs              | In kubernetes a daemonset is responsible for running the same pod across all Nodes. An example for when this fails, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0 | No       |                                                                          |
 | daemonset_incomplete_filter_override   | ""                                       | No       |                                                                          |
 | daemonset_incomplete_alerting_enabled  | True                                     | No       |                                                                          |
-| daemonset_incomplete_no_data_timeframe | null                                     | No       |                                                                          |
+| daemonset_incomplete_no_data_timeframe | None                                     | No       |                                                                          |
 | daemonset_incomplete_notify_no_data    | False                                    | No       |                                                                          |
-| daemonset_incomplete_ok_threshold      | null                                     | No       |                                                                          |
+| daemonset_incomplete_ok_threshold      | None                                     | No       |                                                                          |
 | daemonset_incomplete_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                         |
 
 
@@ -79,7 +83,7 @@ This cluster state metric provides a high-level overview of a node’s health an
 
 Query:
 ```terraform
-avg(${var.node_status_evaluation_period}):avg:kubernetes_state.node.status{${local.node_status_filter}} by {cluster_name,node} < 1
+avg(last_5m):avg:kubernetes_state.node.status{tag:xxx} by {cluster_name,node} < 1
 ```
 
 | variable                      | default                                  | required | description                      |
@@ -90,9 +94,9 @@ avg(${var.node_status_evaluation_period}):avg:kubernetes_state.node.status{${loc
 | node_status_docs              | This cluster state metric provides a high-level overview of a node’s health and whether the scheduler can place pods on that node. It runs checks on the following node conditions\nhttps://kubernetes.io/docs/concepts/architecture/nodes/#condition | No       |                                  |
 | node_status_filter_override   | ""                                       | No       |                                  |
 | node_status_alerting_enabled  | True                                     | No       |                                  |
-| node_status_no_data_timeframe | null                                     | No       |                                  |
+| node_status_no_data_timeframe | None                                     | No       |                                  |
 | node_status_notify_no_data    | False                                    | No       |                                  |
-| node_status_ok_threshold      | null                                     | No       |                                  |
+| node_status_ok_threshold      | None                                     | No       |                                  |
 | node_status_priority          | 2                                        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -110,9 +114,9 @@ If the node where a Pod is running has enough of a resource available, it's poss
 | memory_requests_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | memory_requests_low_perc_state_filter_override   | ""                                       | No       |                                                                                                      |
 | memory_requests_low_perc_state_alerting_enabled  | True                                     | No       |                                                                                                      |
-| memory_requests_low_perc_state_no_data_timeframe | null                                     | No       |                                                                                                      |
+| memory_requests_low_perc_state_no_data_timeframe | None                                     | No       |                                                                                                      |
 | memory_requests_low_perc_state_notify_no_data    | False                                    | No       |                                                                                                      |
-| memory_requests_low_perc_state_ok_threshold      | null                                     | No       |                                                                                                      |
+| memory_requests_low_perc_state_ok_threshold      | None                                     | No       |                                                                                                      |
 | memory_requests_low_perc_state_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
@@ -122,7 +126,7 @@ In kubernetes a Replicaset is responsible for making sure a specific number of p
 
 Query:
 ```terraform
-min(${var.replicaset_incomplete_evaluation_period}):max:kubernetes_state.replicaset.replicas_desired{${local.replicaset_incomplete_filter}} by {kube_replica_set,cluster_name} - min:kubernetes_state.replicaset.replicas_ready{${local.replicaset_incomplete_filter}} by {kube_replica_set,cluster_name} > ${var.replicaset_incomplete_critical}
+min(last_15m):max:kubernetes_state.replicaset.replicas_desired{tag:xxx} by {kube_replica_set,cluster_name} - min:kubernetes_state.replicaset.replicas_ready{tag:xxx} by {kube_replica_set,cluster_name} > 
 ```
 
 | variable                                | default                                  | required | description                                                               |
@@ -134,9 +138,9 @@ min(${var.replicaset_incomplete_evaluation_period}):max:kubernetes_state.replica
 | replicaset_incomplete_docs              | In kubernetes a Replicaset is responsible for making sure a specific number of pods run. An example for a reason when that's not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0 | No       |                                                                           |
 | replicaset_incomplete_filter_override   | ""                                       | No       |                                                                           |
 | replicaset_incomplete_alerting_enabled  | True                                     | No       |                                                                           |
-| replicaset_incomplete_no_data_timeframe | null                                     | No       |                                                                           |
+| replicaset_incomplete_no_data_timeframe | None                                     | No       |                                                                           |
 | replicaset_incomplete_notify_no_data    | False                                    | No       |                                                                           |
-| replicaset_incomplete_ok_threshold      | null                                     | No       |                                                                           |
+| replicaset_incomplete_ok_threshold      | None                                     | No       |                                                                           |
 | replicaset_incomplete_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                          |
 
 
@@ -146,7 +150,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_requests_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.cpu_requested{${local.cpu_requests_low_perc_state_filter}} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{${local.cpu_requests_low_perc_state_filter}} by {host,cluster_name} ) * 100 > ${var.cpu_requests_low_perc_state_critical}
+max(last_5m):( sum:kubernetes_state.container.cpu_requested{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,cluster_name} ) * 100 > 95
 ```
 
 | variable                                      | default                                  | required | description                                                                                          |
@@ -159,9 +163,9 @@ max(${var.cpu_requests_low_perc_state_evaluation_period}):( sum:kubernetes_state
 | cpu_requests_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | cpu_requests_low_perc_state_filter_override   | ""                                       | No       |                                                                                                      |
 | cpu_requests_low_perc_state_alerting_enabled  | True                                     | No       |                                                                                                      |
-| cpu_requests_low_perc_state_no_data_timeframe | null                                     | No       |                                                                                                      |
+| cpu_requests_low_perc_state_no_data_timeframe | None                                     | No       |                                                                                                      |
 | cpu_requests_low_perc_state_notify_no_data    | False                                    | No       |                                                                                                      |
-| cpu_requests_low_perc_state_ok_threshold      | null                                     | No       |                                                                                                      |
+| cpu_requests_low_perc_state_ok_threshold      | None                                     | No       |                                                                                                      |
 | cpu_requests_low_perc_state_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
@@ -171,7 +175,7 @@ A pod may be running but not available, meaning it is not ready and able to acce
 
 Query:
 ```terraform
-min(${var.pod_ready_evaluation_period}):sum:kubernetes_state.pod.count{${local.pod_ready_filter}} by {cluster_name,namespace} - sum:kubernetes_state.pod.ready{${local.pod_ready_filter}} by {cluster_name,namespace} > 0
+min(last_30m):sum:kubernetes_state.pod.count{tag:xxx} by {cluster_name,namespace} - sum:kubernetes_state.pod.ready{tag:xxx} by {cluster_name,namespace} > 0
 ```
 
 | variable                    | default                                  | required | description                      |
@@ -182,9 +186,9 @@ min(${var.pod_ready_evaluation_period}):sum:kubernetes_state.pod.count{${local.p
 | pod_ready_docs              | A pod may be running but not available, meaning it is not ready and able to accept traffic. This is normal during certain circumstances, such as when a pod is newly launched or when a change is made and deployed to the specification of that pod. But if you see spikes in the number of unavailable pods, or pods that are consistently unavailable, it might indicate a problem with their configuration.\nhttps://www.datadoghq.com/blog/monitoring-kubernetes-performance-metrics/ | No       |                                  |
 | pod_ready_filter_override   | ""                                       | No       |                                  |
 | pod_ready_alerting_enabled  | True                                     | No       |                                  |
-| pod_ready_no_data_timeframe | null                                     | No       |                                  |
+| pod_ready_no_data_timeframe | None                                     | No       |                                  |
 | pod_ready_notify_no_data    | False                                    | No       |                                  |
-| pod_ready_ok_threshold      | null                                     | No       |                                  |
+| pod_ready_ok_threshold      | None                                     | No       |                                  |
 | pod_ready_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -194,7 +198,7 @@ Memory pressure is a resourcing condition indicating that your node is running o
 
 Query:
 ```terraform
-avg(${var.node_memorypressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.node_memorypressure_filter} AND condition:memorypressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.node_memorypressure_critical}
+avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:memorypressure AND (status:true OR status:unknown)} by {cluster_name,host} > 
 ```
 
 | variable                              | default                                  | required | description                                                             |
@@ -206,9 +210,9 @@ avg(${var.node_memorypressure_evaluation_period}):max:kubernetes_state.nodes.by_
 | node_memorypressure_docs              | Memory pressure is a resourcing condition indicating that your node is running out of memory. Similar to CPU resourcing, you don’t want to run out of memory. You especially need to watch for this condition because it could mean there’s a memory leak in one of your applications. | No       |                                                                         |
 | node_memorypressure_filter_override   | ""                                       | No       |                                                                         |
 | node_memorypressure_alerting_enabled  | True                                     | No       |                                                                         |
-| node_memorypressure_no_data_timeframe | null                                     | No       |                                                                         |
+| node_memorypressure_no_data_timeframe | None                                     | No       |                                                                         |
 | node_memorypressure_notify_no_data    | False                                    | No       |                                                                         |
-| node_memorypressure_ok_threshold      | null                                     | No       |                                                                         |
+| node_memorypressure_ok_threshold      | None                                     | No       |                                                                         |
 | node_memorypressure_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                        |
 
 
@@ -218,7 +222,7 @@ All your nodes need network  connections, and this status indicates that there�
 
 Query:
 ```terraform
-avg(${var.network_unavailable_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.network_unavailable_filter} AND condition:networkunavailable AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.network_unavailable_critical}
+avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:networkunavailable AND (status:true OR status:unknown)} by {cluster_name,host} > 
 ```
 
 | variable                              | default                                  | required | description                                                             |
@@ -230,9 +234,9 @@ avg(${var.network_unavailable_evaluation_period}):max:kubernetes_state.nodes.by_
 | network_unavailable_docs              | All your nodes need network  connections, and this status indicates that there’s something wrong with a node’s network connection. Either it wasn’t set up properly (due to route exhaustion or a misconfiguration), or there’s a physical problem with the network connection to your hardware. | No       |                                                                         |
 | network_unavailable_filter_override   | ""                                       | No       |                                                                         |
 | network_unavailable_alerting_enabled  | True                                     | No       |                                                                         |
-| network_unavailable_no_data_timeframe | null                                     | No       |                                                                         |
+| network_unavailable_no_data_timeframe | None                                     | No       |                                                                         |
 | network_unavailable_notify_no_data    | False                                    | No       |                                                                         |
-| network_unavailable_ok_threshold      | null                                     | No       |                                                                         |
+| network_unavailable_ok_threshold      | None                                     | No       |                                                                         |
 | network_unavailable_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                        |
 
 
@@ -242,7 +246,7 @@ The amount of expected pods to run minus the actual number
 
 Query:
 ```terraform
-avg(${var.deploy_desired_vs_status_evaluation_period}):max:kubernetes_state.deployment.replicas_desired{${local.deploy_desired_vs_status_filter}} by {cluster_name,host} - max:kubernetes_state.deployment.replicas{${local.deploy_desired_vs_status_filter}} by {cluster_name,host} > ${var.deploy_desired_vs_status_critical}
+avg(last_15m):max:kubernetes_state.deployment.replicas_desired{tag:xxx} by {cluster_name,host} - max:kubernetes_state.deployment.replicas{tag:xxx} by {cluster_name,host} > 10
 ```
 
 | variable                                   | default                                  | required | description                      |
@@ -255,9 +259,9 @@ avg(${var.deploy_desired_vs_status_evaluation_period}):max:kubernetes_state.depl
 | deploy_desired_vs_status_docs              | The amount of expected pods to run minus the actual number | No       |                                  |
 | deploy_desired_vs_status_filter_override   | ""                                       | No       |                                  |
 | deploy_desired_vs_status_alerting_enabled  | True                                     | No       |                                  |
-| deploy_desired_vs_status_no_data_timeframe | null                                     | No       |                                  |
+| deploy_desired_vs_status_no_data_timeframe | None                                     | No       |                                  |
 | deploy_desired_vs_status_notify_no_data    | False                                    | No       |                                  |
-| deploy_desired_vs_status_ok_threshold      | null                                     | No       |                                  |
+| deploy_desired_vs_status_ok_threshold      | None                                     | No       |                                  |
 | deploy_desired_vs_status_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -265,7 +269,7 @@ avg(${var.deploy_desired_vs_status_evaluation_period}):max:kubernetes_state.depl
 
 Query:
 ```terraform
-avg(${var.pod_count_per_node_high_evaluation_period}):sum:kubernetes.pods.running{${local.pod_count_per_node_high_filter}} by {host} > ${var.pod_count_per_node_high_critical}
+avg(last_10m):sum:kubernetes.pods.running{tag:xxx} by {host} > 100.0
 ```
 
 | variable                                  | default  | required | description                      |
@@ -278,9 +282,9 @@ avg(${var.pod_count_per_node_high_evaluation_period}):sum:kubernetes.pods.runnin
 | pod_count_per_node_high_docs              | ""       | No       |                                  |
 | pod_count_per_node_high_filter_override   | ""       | No       |                                  |
 | pod_count_per_node_high_alerting_enabled  | True     | No       |                                  |
-| pod_count_per_node_high_no_data_timeframe | null     | No       |                                  |
+| pod_count_per_node_high_no_data_timeframe | None     | No       |                                  |
 | pod_count_per_node_high_notify_no_data    | False    | No       |                                  |
-| pod_count_per_node_high_ok_threshold      | null     | No       |                                  |
+| pod_count_per_node_high_ok_threshold      | None     | No       |                                  |
 | pod_count_per_node_high_name_prefix       | ""       | No       |                                  |
 | pod_count_per_node_high_name_suffix       | ""       | No       |                                  |
 | pod_count_per_node_high_priority          | 2        | No       | Number from 1 (high) to 5 (low). |
@@ -290,7 +294,7 @@ avg(${var.pod_count_per_node_high_evaluation_period}):sum:kubernetes.pods.runnin
 
 Query:
 ```terraform
-avg(${var.node_memory_used_percent_evaluation_period}):( 100 * max:kubernetes.memory.usage{${local.node_memory_used_percent_filter}} by {host,cluster_name} ) / max:kubernetes.memory.capacity{${local.node_memory_used_percent_filter}} by {host,cluster_name} > ${var.node_memory_used_percent_critical}
+avg(last_5m):( 100 * max:kubernetes.memory.usage{tag:xxx} by {host,cluster_name} ) / max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name} > 90
 ```
 
 | variable                                   | default  | required | description                      |
@@ -303,9 +307,9 @@ avg(${var.node_memory_used_percent_evaluation_period}):( 100 * max:kubernetes.me
 | node_memory_used_percent_docs              | ""       | No       |                                  |
 | node_memory_used_percent_filter_override   | ""       | No       |                                  |
 | node_memory_used_percent_alerting_enabled  | True     | No       |                                  |
-| node_memory_used_percent_no_data_timeframe | null     | No       |                                  |
+| node_memory_used_percent_no_data_timeframe | None     | No       |                                  |
 | node_memory_used_percent_notify_no_data    | False    | No       |                                  |
-| node_memory_used_percent_ok_threshold      | null     | No       |                                  |
+| node_memory_used_percent_ok_threshold      | None     | No       |                                  |
 | node_memory_used_percent_priority          | 2        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -313,7 +317,7 @@ avg(${var.node_memory_used_percent_evaluation_period}):( 100 * max:kubernetes.me
 
 Query:
 ```terraform
-avg(${var.datadog_agent_evaluation_period}):avg:datadog.agent.running{${local.datadog_agent_filter}} by {host,cluster_name} < 1
+avg(last_5m):avg:datadog.agent.running{tag:xxx} by {host,cluster_name} < 1
 ```
 
 | variable                        | default  | required | description                      |
@@ -324,15 +328,20 @@ avg(${var.datadog_agent_evaluation_period}):avg:datadog.agent.running{${local.da
 | datadog_agent_docs              | ""       | No       |                                  |
 | datadog_agent_filter_override   | ""       | No       |                                  |
 | datadog_agent_alerting_enabled  | True     | No       |                                  |
-| datadog_agent_no_data_timeframe | null     | No       |                                  |
+| datadog_agent_no_data_timeframe | None     | No       |                                  |
 | datadog_agent_notify_no_data    | False    | No       |                                  |
-| datadog_agent_ok_threshold      | null     | No       |                                  |
+| datadog_agent_ok_threshold      | None     | No       |                                  |
 | datadog_agent_priority          | 2        | No       | Number from 1 (high) to 5 (low). |
 
 
 ## Hpa Status
 
 The Horizontal Pod Autoscaler automatically scales the number of Pods in a replication controller, deployment, replica set or stateful set based on observed CPU utilization\nWhen the HPA is unavailable, the situation could arise that not enough resources are provisioned to handle the incoming load\nhttps://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+
+Query:
+```terraform
+avg(last_15m):avg:kubernetes_state.hpa.condition{tag:xxx} by {hpa,kube_namespace,status,condition} < 1
+```
 
 | variable                     | default                                  | required | description                      |
 |------------------------------|------------------------------------------|----------|----------------------------------|
@@ -342,9 +351,9 @@ The Horizontal Pod Autoscaler automatically scales the number of Pods in a repli
 | hpa_status_docs              | The Horizontal Pod Autoscaler automatically scales the number of Pods in a replication controller, deployment, replica set or stateful set based on observed CPU utilization\nWhen the HPA is unavailable, the situation could arise that not enough resources are provisioned to handle the incoming load\nhttps://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/ | No       |                                  |
 | hpa_status_filter_override   | ""                                       | No       |                                  |
 | hpa_status_alerting_enabled  | True                                     | No       |                                  |
-| hpa_status_no_data_timeframe | null                                     | No       |                                  |
+| hpa_status_no_data_timeframe | None                                     | No       |                                  |
 | hpa_status_notify_no_data    | False                                    | No       |                                  |
-| hpa_status_ok_threshold      | null                                     | No       |                                  |
+| hpa_status_ok_threshold      | None                                     | No       |                                  |
 | hpa_status_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -354,7 +363,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_requests_low_evaluation_period}):sum:kubernetes.cpu.capacity{${local.cpu_requests_low_filter}} by {host,cluster_name} - sum:kubernetes.cpu.requests{${local.cpu_requests_low_filter}} by {host,cluster_name} < ${var.cpu_requests_low_critical}
+max(last_5m):sum:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} - sum:kubernetes.cpu.requests{tag:xxx} by {host,cluster_name} < 0.5
 ```
 
 | variable                           | default                                  | required | description                                                                                          |
@@ -367,9 +376,9 @@ max(${var.cpu_requests_low_evaluation_period}):sum:kubernetes.cpu.capacity{${loc
 | cpu_requests_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | cpu_requests_low_filter_override   | ""                                       | No       |                                                                                                      |
 | cpu_requests_low_alerting_enabled  | True                                     | No       |                                                                                                      |
-| cpu_requests_low_no_data_timeframe | null                                     | No       |                                                                                                      |
+| cpu_requests_low_no_data_timeframe | None                                     | No       |                                                                                                      |
 | cpu_requests_low_notify_no_data    | False                                    | No       |                                                                                                      |
-| cpu_requests_low_ok_threshold      | null                                     | No       |                                                                                                      |
+| cpu_requests_low_ok_threshold      | None                                     | No       |                                                                                                      |
 | cpu_requests_low_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
@@ -379,7 +388,7 @@ In kubernetes a Replicaset is responsible for making sure a specific number of p
 
 Query:
 ```terraform
-max(${var.replicaset_unavailable_evaluation_period}):( ${local.rs_pods_ready} ) / ${local.rs_pods_desired} / ( ${local.rs_pods_desired} - 1 ) <= 0
+max(last_5m):( ${local.rs_pods_ready} ) / ${local.rs_pods_desired} / ( ${local.rs_pods_desired} - 1 ) <= 0
 ```
 
 | variable                                 | default                                  | required | description                                   |
@@ -391,9 +400,9 @@ max(${var.replicaset_unavailable_evaluation_period}):( ${local.rs_pods_ready} ) 
 | replicaset_unavailable_docs              | In kubernetes a Replicaset is responsible for making sure a specific number of pods runs. An example for a reason when that's not is the case, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when running == 0 and desired > 1 | No       |                                               |
 | replicaset_unavailable_filter_override   | ""                                       | No       |                                               |
 | replicaset_unavailable_alerting_enabled  | True                                     | No       |                                               |
-| replicaset_unavailable_no_data_timeframe | null                                     | No       |                                               |
+| replicaset_unavailable_no_data_timeframe | None                                     | No       |                                               |
 | replicaset_unavailable_notify_no_data    | False                                    | No       |                                               |
-| replicaset_unavailable_ok_threshold      | null                                     | No       |                                               |
+| replicaset_unavailable_ok_threshold      | None                                     | No       |                                               |
 | replicaset_unavailable_priority          | 2                                        | No       | Number from 1 (high) to 5 (low).              |
 
 
@@ -403,7 +412,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-avg(${var.memory_limits_low_evaluation_period}):max:kubernetes.memory.capacity{${local.memory_limits_low_filter}} by {host,cluster_name} - max:kubernetes.memory.limits{${local.memory_limits_low_filter}} by {host,cluster_name} < ${var.memory_limits_low_critical}
+avg(last_5m):max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.limits{tag:xxx} by {host,cluster_name} < 3000000000
 ```
 
 | variable                            | default                                  | required | description                                                                                          |
@@ -416,9 +425,9 @@ avg(${var.memory_limits_low_evaluation_period}):max:kubernetes.memory.capacity{$
 | memory_limits_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | memory_limits_low_filter_override   | ""                                       | No       |                                                                                                      |
 | memory_limits_low_alerting_enabled  | True                                     | No       |                                                                                                      |
-| memory_limits_low_no_data_timeframe | null                                     | No       |                                                                                                      |
+| memory_limits_low_no_data_timeframe | None                                     | No       |                                                                                                      |
 | memory_limits_low_notify_no_data    | False                                    | No       |                                                                                                      |
-| memory_limits_low_ok_threshold      | null                                     | No       |                                                                                                      |
+| memory_limits_low_ok_threshold      | None                                     | No       |                                                                                                      |
 | memory_limits_low_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
@@ -428,7 +437,7 @@ PID pressure is a rare condition where a pod or container spawns too many proces
 
 Query:
 ```terraform
-avg(${var.pid_pressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.pid_pressure_filter} AND condition:pidpressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.pid_pressure_critical}
+avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:pidpressure AND (status:true OR status:unknown)} by {cluster_name,host} > 
 ```
 
 | variable                       | default                                  | required | description                                                      |
@@ -440,9 +449,9 @@ avg(${var.pid_pressure_evaluation_period}):max:kubernetes_state.nodes.by_conditi
 | pid_pressure_docs              | PID pressure is a rare condition where a pod or container spawns too many processes and starves the node of available process IDs. Each node has a limited number of process IDs to distribute amongst running processes; and if it runs out of IDs, no other processes can be started. Kubernetes lets you set PID thresholds for pods to limit their ability to perform runaway process-spawning, and a PID pressure condition means that one or more pods are using up their allocated PIDs and need to be examined. | No       |                                                                  |
 | pid_pressure_filter_override   | ""                                       | No       |                                                                  |
 | pid_pressure_alerting_enabled  | True                                     | No       |                                                                  |
-| pid_pressure_no_data_timeframe | null                                     | No       |                                                                  |
+| pid_pressure_no_data_timeframe | None                                     | No       |                                                                  |
 | pid_pressure_notify_no_data    | False                                    | No       |                                                                  |
-| pid_pressure_ok_threshold      | null                                     | No       |                                                                  |
+| pid_pressure_ok_threshold      | None                                     | No       |                                                                  |
 | pid_pressure_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                 |
 
 
@@ -450,7 +459,7 @@ avg(${var.pid_pressure_evaluation_period}):max:kubernetes_state.nodes.by_conditi
 
 Query:
 ```terraform
-avg(${var.persistent_volumes_evaluation_period}):max:kubernetes_state.persistentvolumes.by_phase{${local.persistent_volumes_filter} AND phase:failed} > ${var.persistent_volumes_critical}
+avg(last_5m):max:kubernetes_state.persistentvolumes.by_phase{tag:xxx AND phase:failed} > 1
 ```
 
 | variable                             | default  | required | description                      |
@@ -463,9 +472,9 @@ avg(${var.persistent_volumes_evaluation_period}):max:kubernetes_state.persistent
 | persistent_volumes_docs              | ""       | No       |                                  |
 | persistent_volumes_filter_override   | ""       | No       |                                  |
 | persistent_volumes_alerting_enabled  | True     | No       |                                  |
-| persistent_volumes_no_data_timeframe | null     | No       |                                  |
+| persistent_volumes_no_data_timeframe | None     | No       |                                  |
 | persistent_volumes_notify_no_data    | False    | No       |                                  |
-| persistent_volumes_ok_threshold      | null     | No       |                                  |
+| persistent_volumes_ok_threshold      | None     | No       |                                  |
 | persistent_volumes_priority          | 3        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -488,9 +497,9 @@ max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.memory.requ
 | memory_requests_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
 | memory_requests_low_perc_filter_override   | ""                                       | No       |                                  |
 | memory_requests_low_perc_alerting_enabled  | True                                     | No       |                                  |
-| memory_requests_low_perc_no_data_timeframe | null                                     | No       |                                  |
+| memory_requests_low_perc_no_data_timeframe | None                                     | No       |                                  |
 | memory_requests_low_perc_notify_no_data    | False                                    | No       |                                  |
-| memory_requests_low_perc_ok_threshold      | null                                     | No       |                                  |
+| memory_requests_low_perc_ok_threshold      | None                                     | No       |                                  |
 | memory_requests_low_perc_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -500,22 +509,22 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_limits_low_evaluation_period}):sum:kubernetes.cpu.capacity{${local.cpu_limits_low_filter}} by {host,cluster_name} - sum:kubernetes.cpu.limits{${local.cpu_limits_low_filter}} by {host,cluster_name} < ${var.cpu_limits_low_critical}
+max(last_5m):sum:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} - sum:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} < ${-30}
 ```
 
 | variable                         | default                                  | required | description                                                                                          |
 |----------------------------------|------------------------------------------|----------|------------------------------------------------------------------------------------------------------|
 | cpu_limits_low_enabled           | False                                    | No       | This monitor is based on absolute values and thus less useful. Prefer setting cpu_limits_low_perc_enabled to true. |
 | cpu_limits_low_warning           | 0                                        | No       |                                                                                                      |
-| cpu_limits_low_critical          | -30                                      | No       |                                                                                                      |
+| cpu_limits_low_critical          | ${-30}                                   | No       |                                                                                                      |
 | cpu_limits_low_evaluation_period | last_5m                                  | No       |                                                                                                      |
 | cpu_limits_low_note              | ""                                       | No       |                                                                                                      |
 | cpu_limits_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | cpu_limits_low_filter_override   | ""                                       | No       |                                                                                                      |
 | cpu_limits_low_alerting_enabled  | True                                     | No       |                                                                                                      |
-| cpu_limits_low_no_data_timeframe | null                                     | No       |                                                                                                      |
+| cpu_limits_low_no_data_timeframe | None                                     | No       |                                                                                                      |
 | cpu_limits_low_notify_no_data    | False                                    | No       |                                                                                                      |
-| cpu_limits_low_ok_threshold      | null                                     | No       |                                                                                                      |
+| cpu_limits_low_ok_threshold      | None                                     | No       |                                                                                                      |
 | cpu_limits_low_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
@@ -525,22 +534,22 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
 Query:
 ```terraform
-min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}
+min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}tag:xxx} by {namespace}) > 
 ```
 
 | variable                      | default                                  | required | description                      |
 |-------------------------------|------------------------------------------|----------|----------------------------------|
 | pods_failed_enabled           | True                                     | No       |                                  |
-| pods_failed_warning           | null                                     | No       |                                  |
+| pods_failed_warning           | None                                     | No       |                                  |
 | pods_failed_critical          | 0.0                                      | No       |                                  |
 | pods_failed_evaluation_period | last_10m                                 | No       |                                  |
 | pods_failed_note              | ""                                       | No       |                                  |
 | pods_failed_docs              | https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/ | No       |                                  |
 | pods_failed_filter_override   | ""                                       | No       |                                  |
 | pods_failed_alerting_enabled  | True                                     | No       |                                  |
-| pods_failed_no_data_timeframe | null                                     | No       |                                  |
+| pods_failed_no_data_timeframe | None                                     | No       |                                  |
 | pods_failed_notify_no_data    | False                                    | No       |                                  |
-| pods_failed_ok_threshold      | null                                     | No       |                                  |
+| pods_failed_ok_threshold      | None                                     | No       |                                  |
 | pods_failed_name_prefix       | ""                                       | No       |                                  |
 | pods_failed_name_suffix       | ""                                       | No       |                                  |
 | pods_failed_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
@@ -552,7 +561,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.memory_limits_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.memory_limit{${local.memory_limits_low_perc_state_filter}} by {host,cluster_name} / sum:kubernetes_state.node.memory_allocatable{${local.memory_limits_low_perc_state_filter}} by {host,cluster_name}) * 100 > ${var.memory_limits_low_perc_state_critical}
+max(last_5m):( sum:kubernetes_state.container.memory_limit{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.memory_allocatable{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                                       | default                                  | required | description                                                                                          |
@@ -565,9 +574,9 @@ max(${var.memory_limits_low_perc_state_evaluation_period}):( sum:kubernetes_stat
 | memory_limits_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | memory_limits_low_perc_state_filter_override   | ""                                       | No       |                                                                                                      |
 | memory_limits_low_perc_state_alerting_enabled  | True                                     | No       |                                                                                                      |
-| memory_limits_low_perc_state_no_data_timeframe | null                                     | No       |                                                                                                      |
+| memory_limits_low_perc_state_no_data_timeframe | None                                     | No       |                                                                                                      |
 | memory_limits_low_perc_state_notify_no_data    | False                                    | No       |                                                                                                      |
-| memory_limits_low_perc_state_ok_threshold      | null                                     | No       |                                                                                                      |
+| memory_limits_low_perc_state_ok_threshold      | None                                     | No       |                                                                                                      |
 | memory_limits_low_perc_state_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
@@ -575,7 +584,7 @@ max(${var.memory_limits_low_perc_state_evaluation_period}):( sum:kubernetes_stat
 
 Query:
 ```terraform
-change(avg(${var.pod_restarts_evaluation_period}),${var.pod_restarts_evaluation_period}):exclude_null(avg:kubernetes.containers.restarts{${local.pod_restarts_filter}} by {pod_name}) > ${var.pod_restarts_critical}
+change(avg(last_10m),last_10m):exclude_null(avg:kubernetes.containers.restarts{tag:xxx} by {pod_name}) > 5
 ```
 
 | variable                       | default  | required | description                      |
@@ -588,9 +597,9 @@ change(avg(${var.pod_restarts_evaluation_period}),${var.pod_restarts_evaluation_
 | pod_restarts_docs              | ""       | No       |                                  |
 | pod_restarts_filter_override   | ""       | No       |                                  |
 | pod_restarts_alerting_enabled  | True     | No       |                                  |
-| pod_restarts_no_data_timeframe | null     | No       |                                  |
+| pod_restarts_no_data_timeframe | None     | No       |                                  |
 | pod_restarts_notify_no_data    | False    | No       |                                  |
-| pod_restarts_ok_threshold      | null     | No       |                                  |
+| pod_restarts_ok_threshold      | None     | No       |                                  |
 | pod_restarts_priority          | 2        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -598,7 +607,7 @@ change(avg(${var.pod_restarts_evaluation_period}),${var.pod_restarts_evaluation_
 
 Query:
 ```terraform
-avg(${var.cpu_on_dns_pods_high_evaluation_period}):avg:docker.cpu.usage{${local.cpu_on_dns_pods_high_filter}} by {cluster_name,host,container_name} > ${var.cpu_on_dns_pods_high_critical}
+avg(last_30m):avg:docker.cpu.usage{tag:xxx} by {cluster_name,host,container_name} > 85
 ```
 
 | variable                               | default                                  | required | description                                                                                          |
@@ -611,13 +620,13 @@ avg(${var.cpu_on_dns_pods_high_evaluation_period}):avg:docker.cpu.usage{${local.
 | cpu_on_dns_pods_high_docs              | ""                                       | No       |                                                                                                      |
 | cpu_on_dns_pods_high_filter_override   | ""                                       | No       |                                                                                                      |
 | dns_filter_tags                        | ['kube_service:kube-dns', 'short_image:coredns', 'short_image:ucp-coredns', 'short_image:ucp-kube-dns'] | No       | Getting all the DNS containers by default is hard to do.
-    What we try is to make a list of datadog tags / filters that should help us find those
-    We then build a filter in the following way: ($originalfilterstring) AND (item1 OR item2 OR item3...)
-    If that doesn't work for your use-cause you can override the filter list or use cpu_on_dns_pods_high_filter_override |
+What we try is to make a list of datadog tags / filters that should help us find those
+We then build a filter in the following way: ($originalfilterstring) AND (item1 OR item2 OR item3...)
+If that doesn't work for your use-cause you can override the filter list or use cpu_on_dns_pods_high_filter_override |
 | cpu_on_dns_pods_high_alerting_enabled  | True                                     | No       |                                                                                                      |
-| cpu_on_dns_pods_high_no_data_timeframe | null                                     | No       |                                                                                                      |
+| cpu_on_dns_pods_high_no_data_timeframe | None                                     | No       |                                                                                                      |
 | cpu_on_dns_pods_high_notify_no_data    | False                                    | No       |                                                                                                      |
-| cpu_on_dns_pods_high_ok_threshold      | null                                     | No       |                                                                                                      |
+| cpu_on_dns_pods_high_ok_threshold      | None                                     | No       |                                                                                                      |
 | cpu_on_dns_pods_high_priority          | 2                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
@@ -627,7 +636,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.cpu.requests{${local.cpu_requests_low_perc_filter}} by {host,cluster_name} / max:kubernetes.cpu.capacity{${local.cpu_requests_low_perc_filter}} by {host,cluster_name} ) * 100 > ${var.cpu_requests_low_perc_critical}
+max(last_5m):( max:kubernetes.cpu.requests{tag:xxx} by {host,cluster_name} / max:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} ) * 100 > 95
 ```
 
 | variable                                | default                                  | required | description                      |
@@ -640,9 +649,9 @@ max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.cpu.request
 | cpu_requests_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
 | cpu_requests_low_perc_filter_override   | ""                                       | No       |                                  |
 | cpu_requests_low_perc_alerting_enabled  | True                                     | No       |                                  |
-| cpu_requests_low_perc_no_data_timeframe | null                                     | No       |                                  |
+| cpu_requests_low_perc_no_data_timeframe | None                                     | No       |                                  |
 | cpu_requests_low_perc_notify_no_data    | False                                    | No       |                                  |
-| cpu_requests_low_perc_ok_threshold      | null                                     | No       |                                  |
+| cpu_requests_low_perc_ok_threshold      | None                                     | No       |                                  |
 | cpu_requests_low_perc_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -652,22 +661,22 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
 Query:
 ```terraform
-min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}
+min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}tag:xxx} by {namespace}) > 
 ```
 
 | variable                       | default                                  | required | description                      |
 |--------------------------------|------------------------------------------|----------|----------------------------------|
 | pods_pending_enabled           | True                                     | No       |                                  |
-| pods_pending_warning           | null                                     | No       |                                  |
+| pods_pending_warning           | None                                     | No       |                                  |
 | pods_pending_critical          | 0.0                                      | No       |                                  |
 | pods_pending_evaluation_period | last_10m                                 | No       |                                  |
 | pods_pending_note              | ""                                       | No       |                                  |
 | pods_pending_docs              | https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/ | No       |                                  |
 | pods_pending_filter_override   | ""                                       | No       |                                  |
 | pods_pending_alerting_enabled  | True                                     | No       |                                  |
-| pods_pending_no_data_timeframe | null                                     | No       |                                  |
+| pods_pending_no_data_timeframe | None                                     | No       |                                  |
 | pods_pending_notify_no_data    | False                                    | No       |                                  |
-| pods_pending_ok_threshold      | null                                     | No       |                                  |
+| pods_pending_ok_threshold      | None                                     | No       |                                  |
 | pods_pending_name_prefix       | ""                                       | No       |                                  |
 | pods_pending_name_suffix       | ""                                       | No       |                                  |
 | pods_pending_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
@@ -679,7 +688,7 @@ Checks to see if the node is in ready status or not
 
 Query:
 ```terraform
-avg(${var.node_ready_evaluation_period}):count_nonzero(sum:kubernetes_state.nodes.by_condition{${local.node_ready_filter} AND (NOT condition:ready) AND (status:true OR status:unknown)} by {cluster_name,host}) > ${var.node_ready_critical}
+avg(last_5m):count_nonzero(sum:kubernetes_state.nodes.by_condition{tag:xxx AND (NOT condition:ready) AND (status:true OR status:unknown)} by {cluster_name,host}) > 1
 ```
 
 | variable                     | default                                  | required | description                      |
@@ -691,9 +700,9 @@ avg(${var.node_ready_evaluation_period}):count_nonzero(sum:kubernetes_state.node
 | node_ready_docs              | Checks to see if the node is in ready status or not | No       |                                  |
 | node_ready_filter_override   | ""                                       | No       |                                  |
 | node_ready_alerting_enabled  | True                                     | No       |                                  |
-| node_ready_no_data_timeframe | null                                     | No       |                                  |
+| node_ready_no_data_timeframe | None                                     | No       |                                  |
 | node_ready_notify_no_data    | False                                    | No       |                                  |
-| node_ready_ok_threshold      | null                                     | No       |                                  |
+| node_ready_ok_threshold      | None                                     | No       |                                  |
 | node_ready_priority          | 2                                        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -703,7 +712,7 @@ Disk pressure is a condition indicating that a node is using too much disk space
 
 Query:
 ```terraform
-avg(${var.node_diskpressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.node_diskpressure_filter} AND condition:diskpressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.node_diskpressure_critical}
+avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:diskpressure AND (status:true OR status:unknown)} by {cluster_name,host} > 
 ```
 
 | variable                            | default                                  | required | description                                                           |
@@ -715,9 +724,9 @@ avg(${var.node_diskpressure_evaluation_period}):max:kubernetes_state.nodes.by_co
 | node_diskpressure_docs              | Disk pressure is a condition indicating that a node is using too much disk space or is using disk space too fast, according to the thresholds you have set in your Kubernetes configuration. This is important to monitor because it might mean that you need to add more disk space, if your application legitimately needs more space. Or it might mean that an application is misbehaving and filling up the disk prematurely in an unanticipated manner. Either way, it’s a condition which needs your attention. | No       |                                                                       |
 | node_diskpressure_filter_override   | ""                                       | No       |                                                                       |
 | node_diskpressure_alerting_enabled  | True                                     | No       |                                                                       |
-| node_diskpressure_no_data_timeframe | null                                     | No       |                                                                       |
+| node_diskpressure_no_data_timeframe | None                                     | No       |                                                                       |
 | node_diskpressure_notify_no_data    | False                                    | No       |                                                                       |
-| node_diskpressure_ok_threshold      | null                                     | No       |                                                                       |
+| node_diskpressure_ok_threshold      | None                                     | No       |                                                                       |
 | node_diskpressure_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                      |
 
 
@@ -727,7 +736,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_limits_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.cpu_limit{${local.cpu_limits_low_perc_state_filter}} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{${local.cpu_limits_low_perc_state_filter}} by {host,cluster_name}) * 100 > ${var.cpu_limits_low_perc_state_critical}
+max(last_5m):( sum:kubernetes_state.container.cpu_limit{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                                    | default                                  | required | description                                                                                          |
@@ -740,9 +749,9 @@ max(${var.cpu_limits_low_perc_state_evaluation_period}):( sum:kubernetes_state.c
 | cpu_limits_low_perc_state_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | cpu_limits_low_perc_state_filter_override   | ""                                       | No       |                                                                                                      |
 | cpu_limits_low_perc_state_alerting_enabled  | True                                     | No       |                                                                                                      |
-| cpu_limits_low_perc_state_no_data_timeframe | null                                     | No       |                                                                                                      |
+| cpu_limits_low_perc_state_no_data_timeframe | None                                     | No       |                                                                                                      |
 | cpu_limits_low_perc_state_notify_no_data    | False                                    | No       |                                                                                                      |
-| cpu_limits_low_perc_state_ok_threshold      | null                                     | No       |                                                                                                      |
+| cpu_limits_low_perc_state_ok_threshold      | None                                     | No       |                                                                                                      |
 | cpu_limits_low_perc_state_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
@@ -752,7 +761,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.memory_limits_low_perc_evaluation_period}):( max:kubernetes.memory.limits{${local.memory_limits_low_perc_filter}}  by {host,cluster_name}/ max:kubernetes.memory.capacity{${local.memory_limits_low_perc_filter}} by {host,cluster_name}) * 100 > ${var.memory_limits_low_perc_critical}
+max(last_5m):( max:kubernetes.memory.limits{tag:xxx}  by {host,cluster_name}/ max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                                 | default                                  | required | description                      |
@@ -765,9 +774,9 @@ max(${var.memory_limits_low_perc_evaluation_period}):( max:kubernetes.memory.lim
 | memory_limits_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
 | memory_limits_low_perc_filter_override   | ""                                       | No       |                                  |
 | memory_limits_low_perc_alerting_enabled  | True                                     | No       |                                  |
-| memory_limits_low_perc_no_data_timeframe | null                                     | No       |                                  |
+| memory_limits_low_perc_no_data_timeframe | None                                     | No       |                                  |
 | memory_limits_low_perc_notify_no_data    | False                                    | No       |                                  |
-| memory_limits_low_perc_ok_threshold      | null                                     | No       |                                  |
+| memory_limits_low_perc_ok_threshold      | None                                     | No       |                                  |
 | memory_limits_low_perc_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -777,7 +786,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_limits_low_perc_evaluation_period}):( max:kubernetes.cpu.limits{${local.cpu_limits_low_perc_filter}} by {host,cluster_name} / max:kubernetes.cpu.capacity{${local.cpu_limits_low_perc_filter}} by {host,cluster_name}) * 100 > ${var.cpu_limits_low_perc_critical}
+max(last_5m):( max:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} / max:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                              | default                                  | required | description                      |
@@ -790,9 +799,9 @@ max(${var.cpu_limits_low_perc_evaluation_period}):( max:kubernetes.cpu.limits{${
 | cpu_limits_low_perc_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                  |
 | cpu_limits_low_perc_filter_override   | ""                                       | No       |                                  |
 | cpu_limits_low_perc_alerting_enabled  | True                                     | No       |                                  |
-| cpu_limits_low_perc_no_data_timeframe | null                                     | No       |                                  |
+| cpu_limits_low_perc_no_data_timeframe | None                                     | No       |                                  |
 | cpu_limits_low_perc_notify_no_data    | False                                    | No       |                                  |
-| cpu_limits_low_perc_ok_threshold      | null                                     | No       |                                  |
+| cpu_limits_low_perc_ok_threshold      | None                                     | No       |                                  |
 | cpu_limits_low_perc_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
@@ -802,7 +811,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-avg(${var.memory_requests_low_evaluation_period}):max:kubernetes.memory.capacity{${local.memory_requests_low_filter}} by {host,cluster_name} - max:kubernetes.memory.requests{${local.memory_requests_low_filter}} by {host,cluster_name} < ${var.memory_requests_low_critical}
+avg(last_5m):max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.requests{tag:xxx} by {host,cluster_name} < 3000000000
 ```
 
 | variable                              | default                                  | required | description                                                                                          |
@@ -815,9 +824,9 @@ avg(${var.memory_requests_low_evaluation_period}):max:kubernetes.memory.capacity
 | memory_requests_low_docs              | If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more of a resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ | No       |                                                                                                      |
 | memory_requests_low_filter_override   | ""                                       | No       |                                                                                                      |
 | memory_requests_low_alerting_enabled  | True                                     | No       |                                                                                                      |
-| memory_requests_low_no_data_timeframe | null                                     | No       |                                                                                                      |
+| memory_requests_low_no_data_timeframe | None                                     | No       |                                                                                                      |
 | memory_requests_low_notify_no_data    | False                                    | No       |                                                                                                      |
-| memory_requests_low_ok_threshold      | null                                     | No       |                                                                                                      |
+| memory_requests_low_ok_threshold      | None                                     | No       |                                                                                                      |
 | memory_requests_low_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                                                     |
 
 
@@ -828,7 +837,7 @@ avg(${var.memory_requests_low_evaluation_period}):max:kubernetes.memory.capacity
 | env                      |            | Yes      |                                                                                      |
 | alert_env                |            | Yes      |                                                                                      |
 | service                  | Kubernetes | No       |                                                                                      |
-| service_display_name     | null       | No       | Readable version of service name of what you're monitoring.                          |
+| service_display_name     | None       | No       | Readable version of service name of what you're monitoring.                          |
 | notification_channel     |            | Yes      | The @user or @pagerduty parameters that indicate to Datadog where to send the alerts |
 | additional_tags          | []         | No       |                                                                                      |
 | filter_str               |            | Yes      |                                                                                      |
