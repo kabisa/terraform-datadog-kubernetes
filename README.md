@@ -18,6 +18,20 @@ We have two base modules we use to standardise development of our Monitor Module
 
 Modules are generated with this tool: https://github.com/kabisa/datadog-terraform-generator
 
+# Example Usage
+
+```terraform
+module "kubernetes" {
+  source = "kabisa/kubernetes/datadog"
+
+  notification_channel = "mail@example.com"
+  service              = "Kubernetes"
+  env                  = "prd"
+  alert_env            = "prd"
+  filter_str           = "cluster_name:production"
+}
+```
+
 Monitors:
 * [Terraform module for Datadog Kubernetes](#terraform-module-for-datadog-kubernetes)
   * [Daemonset Incomplete](#daemonset-incomplete)
