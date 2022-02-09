@@ -532,7 +532,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):sum:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} - sum:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} < ${-30}
+max(last_5m):sum:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} - sum:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} < -30
 ```
 
 | variable                         | default                                  | required | description                                                                                          |
