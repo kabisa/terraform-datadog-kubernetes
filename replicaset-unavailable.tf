@@ -8,7 +8,8 @@ locals {
 }
 
 module "replicaset_unavailable" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.1"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name = "Replicaset Unavailable"
   # This (ab)uses a division by zero to make sure we don't get alerts when nr of desired pods < 2

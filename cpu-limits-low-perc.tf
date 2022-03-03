@@ -6,7 +6,8 @@ locals {
 }
 
 module "cpu_limits_low_perc" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.1"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name             = "Available CPU for Limits in percentages Low"
   query            = "max(${var.cpu_limits_low_perc_evaluation_period}):( max:kubernetes.cpu.limits{${local.cpu_limits_low_perc_filter}} by {host,cluster_name} / max:kubernetes.cpu.capacity{${local.cpu_limits_low_perc_filter}} by {host,cluster_name}) * 100 > ${var.cpu_limits_low_perc_critical}"

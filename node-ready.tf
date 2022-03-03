@@ -6,7 +6,8 @@ locals {
 }
 
 module "node_ready" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.1"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name             = "Node Not Ready"
   query            = "avg(${var.node_ready_evaluation_period}):count_nonzero(sum:kubernetes_state.nodes.by_condition{${local.node_ready_filter} AND (NOT condition:ready) AND (status:true OR status:unknown)} by {cluster_name,host}) > ${var.node_ready_critical}"
