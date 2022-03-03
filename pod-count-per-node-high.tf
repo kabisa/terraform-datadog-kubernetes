@@ -17,14 +17,15 @@ module "pod_count_per_node_high" {
   recovery_message    = "Pod count per node high ({{ value }}) in {{ service }} has recovered"
 
   # monitor level vars
-  enabled           = var.pod_count_per_node_high_enabled
-  alerting_enabled  = var.pod_count_per_node_high_alerting_enabled
-  warning_threshold = var.pod_count_per_node_high_warning
-  warning_recovery  = var.pod_count_per_node_high_warning_recovery
-  critical_recovery = var.pod_count_per_node_high_critical_recovery
-  priority          = var.pod_count_per_node_high_priority
-  docs              = var.pod_count_per_node_high_docs
-  note              = var.pod_count_per_node_high_note
+  enabled            = var.pod_count_per_node_high_enabled
+  alerting_enabled   = var.pod_count_per_node_high_alerting_enabled
+  critical_threshold = var.pod_count_per_node_high_critical
+  critical_recovery  = var.pod_count_per_node_high_critical_recovery
+  warning_threshold  = var.pod_count_per_node_high_warning
+  warning_recovery   = var.pod_count_per_node_high_warning_recovery
+  priority           = var.pod_count_per_node_high_priority
+  docs               = var.pod_count_per_node_high_docs
+  note               = var.pod_count_per_node_high_note
 
   # module level vars
   env                  = var.env
