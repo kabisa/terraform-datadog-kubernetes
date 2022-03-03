@@ -6,7 +6,7 @@ locals {
 }
 
 module "cpu_limits_low" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.1"
 
   name             = "Available CPU for Limits Low"
   query            = "max(${var.cpu_limits_low_evaluation_period}):sum:kubernetes.cpu.capacity{${local.cpu_limits_low_filter}} by {host,cluster_name} - sum:kubernetes.cpu.limits{${local.cpu_limits_low_filter}} by {host,cluster_name} < ${var.cpu_limits_low_critical}"

@@ -292,7 +292,7 @@ avg(last_15m):max:kubernetes_state.deployment.replicas_desired{tag:xxx} by {clus
 
 Query:
 ```terraform
-avg(last_10m):sum:kubernetes.pods.running{tag:xxx} by {host} > 100.0
+min(last_10m):sum:kubernetes.pods.running{tag:xxx} by {host} > 100.0
 ```
 
 | variable                                  | default  | required | description                      |
@@ -300,6 +300,8 @@ avg(last_10m):sum:kubernetes.pods.running{tag:xxx} by {host} > 100.0
 | pod_count_per_node_high_enabled           | True     | No       |                                  |
 | pod_count_per_node_high_warning           | 90.0     | No       |                                  |
 | pod_count_per_node_high_critical          | 100.0    | No       |                                  |
+| pod_count_per_node_high_warning_recovery  | None     | No       |                                  |
+| pod_count_per_node_high_critical_recovery | None     | No       |                                  |
 | pod_count_per_node_high_evaluation_period | last_10m | No       |                                  |
 | pod_count_per_node_high_note              | ""       | No       |                                  |
 | pod_count_per_node_high_docs              | ""       | No       |                                  |
@@ -532,7 +534,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):sum:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} - sum:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} < -30
+max(last_5m):sum:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} - sum:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} < ${-30}
 ```
 
 | variable                         | default                                  | required | description                                                                                          |
