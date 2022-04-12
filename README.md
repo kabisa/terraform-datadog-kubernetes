@@ -642,20 +642,20 @@ Query:
 change(avg(last_10m),last_10m):exclude_null(avg:kubernetes.containers.restarts{tag:xxx} by {pod_name}) > 5
 ```
 
-| variable                       | default  | required | description                      |
-|--------------------------------|----------|----------|----------------------------------|
-| pod_restarts_enabled           | True     | No       |                                  |
-| pod_restarts_warning           | 3        | No       |                                  |
-| pod_restarts_critical          | 5        | No       |                                  |
-| pod_restarts_evaluation_period | last_10m | No       |                                  |
-| pod_restarts_note              | ""       | No       |                                  |
-| pod_restarts_docs              | ""       | No       |                                  |
-| pod_restarts_filter_override   | ""       | No       |                                  |
-| pod_restarts_alerting_enabled  | True     | No       |                                  |
-| pod_restarts_no_data_timeframe | None     | No       |                                  |
-| pod_restarts_notify_no_data    | False    | No       |                                  |
-| pod_restarts_ok_threshold      | None     | No       |                                  |
-| pod_restarts_priority          | 2        | No       | Number from 1 (high) to 5 (low). |
+| variable                       | default  | required | description                                                                       |
+|--------------------------------|----------|----------|-----------------------------------------------------------------------------------|
+| pod_restarts_enabled           | False    | No       | Deprecated in favour of multiple restarts monitoring for Daemonset and Deployment |
+| pod_restarts_warning           | 3        | No       |                                                                                   |
+| pod_restarts_critical          | 5        | No       |                                                                                   |
+| pod_restarts_evaluation_period | last_10m | No       |                                                                                   |
+| pod_restarts_note              | ""       | No       |                                                                                   |
+| pod_restarts_docs              | ""       | No       |                                                                                   |
+| pod_restarts_filter_override   | ""       | No       |                                                                                   |
+| pod_restarts_alerting_enabled  | True     | No       |                                                                                   |
+| pod_restarts_no_data_timeframe | None     | No       |                                                                                   |
+| pod_restarts_notify_no_data    | False    | No       |                                                                                   |
+| pod_restarts_ok_threshold      | None     | No       |                                                                                   |
+| pod_restarts_priority          | 2        | No       | Number from 1 (high) to 5 (low).                                                  |
 
 
 ## CPU On Dns Pods High

@@ -1,6 +1,7 @@
 variable "pod_restarts_enabled" {
-  type    = bool
-  default = true
+  type        = bool
+  description = "Deprecated in favour of multiple restarts monitoring for Daemonset and Deployment"
+  default     = false
 }
 
 variable "pod_restarts_warning" {
