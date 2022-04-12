@@ -19,7 +19,7 @@ module "replicaset_incomplete" {
   alerting_enabled   = var.replicaset_incomplete_alerting_enabled
   critical_threshold = var.replicaset_incomplete_critical
   # No warning threshold for this monitor
-  priority = var.replicaset_incomplete_priority
+  priority = min(var.replicaset_incomplete_priority + var.priority_offset, 5)
   docs     = var.replicaset_incomplete_docs
   note     = var.replicaset_incomplete_note
 

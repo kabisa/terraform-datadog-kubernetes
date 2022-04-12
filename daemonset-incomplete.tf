@@ -19,7 +19,7 @@ module "daemonset_incomplete" {
   alerting_enabled   = var.daemonset_incomplete_alerting_enabled
   critical_threshold = var.daemonset_incomplete_critical
   # no warning threshold for this monitor
-  priority = var.daemonset_incomplete_priority
+  priority = min(var.daemonset_incomplete_priority + var.priority_offset, 5)
   docs     = var.daemonset_incomplete_docs
   note     = var.daemonset_incomplete_note
 

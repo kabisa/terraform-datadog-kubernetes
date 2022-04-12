@@ -19,7 +19,7 @@ module "node_ready" {
   alerting_enabled   = var.node_ready_alerting_enabled
   critical_threshold = var.node_ready_critical
   # no warning threshold for this monitor
-  priority = var.node_ready_priority
+  priority = min(var.node_ready_priority + var.priority_offset, 5)
   docs     = var.node_ready_docs
   note     = var.node_ready_note
 

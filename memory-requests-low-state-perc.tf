@@ -19,7 +19,7 @@ module "memory_requests_low_perc_state" {
   alerting_enabled   = var.memory_requests_low_perc_state_alerting_enabled
   critical_threshold = var.memory_requests_low_perc_state_critical
   warning_threshold  = var.memory_requests_low_perc_state_warning
-  priority           = var.memory_requests_low_perc_state_priority
+  priority           = min(var.memory_requests_low_perc_state_priority + var.priority_offset, 5)
   docs               = var.memory_requests_low_perc_state_docs
   note               = var.memory_requests_low_perc_state_note
 

@@ -24,7 +24,7 @@ module "pod_count_per_node_high" {
   critical_recovery  = var.pod_count_per_node_high_critical_recovery
   warning_threshold  = var.pod_count_per_node_high_warning
   warning_recovery   = var.pod_count_per_node_high_warning_recovery
-  priority           = var.pod_count_per_node_high_priority
+  priority           = min(var.pod_count_per_node_high_priority + var.priority_offset, 5)
   docs               = var.pod_count_per_node_high_docs
   note               = var.pod_count_per_node_high_note
 

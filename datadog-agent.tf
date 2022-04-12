@@ -19,7 +19,7 @@ module "datadog_agent" {
   alerting_enabled   = var.datadog_agent_alerting_enabled
   critical_threshold = 1
   # no warning threshold for this monitor
-  priority = var.datadog_agent_priority
+  priority = min(var.datadog_agent_priority + var.priority_offset, 5)
   docs     = var.datadog_agent_docs
   note     = var.datadog_agent_note
 

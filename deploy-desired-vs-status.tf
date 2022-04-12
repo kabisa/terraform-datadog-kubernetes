@@ -19,7 +19,7 @@ module "deploy_desired_vs_status" {
   alerting_enabled   = var.deploy_desired_vs_status_alerting_enabled
   critical_threshold = var.deploy_desired_vs_status_critical
   warning_threshold  = var.deploy_desired_vs_status_warning
-  priority           = var.deploy_desired_vs_status_priority
+  priority           = min(var.deploy_desired_vs_status_priority + var.priority_offset, 5)
   docs               = var.deploy_desired_vs_status_docs
   note               = var.deploy_desired_vs_status_note
 

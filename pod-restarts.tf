@@ -19,7 +19,7 @@ module "pod_restarts" {
   alerting_enabled   = var.pod_restarts_alerting_enabled
   critical_threshold = var.pod_restarts_critical
   warning_threshold  = var.pod_restarts_warning
-  priority           = var.pod_restarts_priority
+  priority           = min(var.pod_restarts_priority + var.priority_offset, 5)
   docs               = var.pod_restarts_docs
   note               = var.pod_restarts_note
 

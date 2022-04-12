@@ -19,7 +19,7 @@ module "node_memorypressure" {
   alerting_enabled   = var.node_memorypressure_alerting_enabled
   critical_threshold = var.node_memorypressure_critical
   # no warning threshold for this monitor
-  priority = var.node_memorypressure_priority
+  priority = min(var.node_memorypressure_priority + var.priority_offset, 5)
   docs     = var.node_memorypressure_docs
   note     = var.node_memorypressure_note
 

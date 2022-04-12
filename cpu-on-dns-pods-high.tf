@@ -21,7 +21,7 @@ module "cpu_on_dns_pods_high" {
   alerting_enabled   = var.cpu_on_dns_pods_high_alerting_enabled
   critical_threshold = var.cpu_on_dns_pods_high_critical
   warning_threshold  = var.cpu_on_dns_pods_high_warning
-  priority           = var.cpu_on_dns_pods_high_priority
+  priority           = min(var.cpu_on_dns_pods_high_priority + var.priority_offset, 5)
   docs               = var.cpu_on_dns_pods_high_docs
   note               = var.cpu_on_dns_pods_high_note
 

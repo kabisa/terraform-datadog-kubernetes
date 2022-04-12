@@ -19,7 +19,7 @@ module "pod_ready" {
   alerting_enabled   = var.pod_ready_alerting_enabled
   critical_threshold = 0
   # No warning possible for status that is either 0 or 1
-  priority = var.pod_ready_priority
+  priority = min(var.pod_ready_priority + var.priority_offset, 5)
   docs     = var.pod_ready_docs
   note     = var.pod_ready_note
 

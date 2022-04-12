@@ -22,7 +22,7 @@ module "pods_failed" {
   alerting_enabled   = var.pods_failed_alerting_enabled
   warning_threshold  = var.pods_failed_warning
   critical_threshold = var.pods_failed_critical
-  priority           = var.pods_failed_priority
+  priority           = min(var.pods_failed_priority + var.priority_offset, 5)
   docs               = var.pods_failed_docs
   note               = var.pods_failed_note
 

@@ -10,7 +10,7 @@ module "node_memory_used_percent" {
   version = "0.7.1"
 
   name             = "Memory Used Percent"
-  query            = "avg(${var.node_memory_used_percent_evaluation_period}):( 100 * max:kubernetes.memory.usage{${local.node_memory_used_percent_filter}} by {host,cluster_name} ) / max:kubernetes.memory.capacity{${local.node_memory_used_percent_filter}} by {host,cluster_name} > ${var.node_memory_used_percent_critical}"
+  query            = "avg(${var.node_memory_used_percent_evaluation_period}):( 100 * max:kubernetes.memory.usage{${local.node_memory_used_percent_filter}} by {host,cluster_name} ) / max:system.mem.total{${local.node_memory_used_percent_filter}} by {host,cluster_name} > ${var.node_memory_used_percent_critical}"
   alert_message    = "Available memory on ${var.service} Node {{host.name}} has dropped below {{threshold}} and has {{value}}% available"
   recovery_message = "Available memory on ${var.service} Node {{host.name}} has recovered {{value}}%"
 
@@ -19,7 +19,7 @@ module "node_memory_used_percent" {
   alerting_enabled   = var.node_memory_used_percent_alerting_enabled
   critical_threshold = var.node_memory_used_percent_critical
   warning_threshold  = var.node_memory_used_percent_warning
-  priority           = var.node_memory_used_percent_priority
+  priority           = min(var.node_memory_used_percent_priority + var.priority_offset, 5)
   docs               = var.node_memory_used_percent_docs
   note               = var.node_memory_used_percent_note
 

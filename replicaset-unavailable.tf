@@ -22,7 +22,7 @@ module "replicaset_unavailable" {
   alerting_enabled   = var.replicaset_unavailable_alerting_enabled
   critical_threshold = 0
   # No warning threshold for this monitor
-  priority = var.replicaset_unavailable_priority
+  priority = min(var.replicaset_unavailable_priority + var.priority_offset, 5)
   docs     = var.replicaset_unavailable_docs
   note     = var.replicaset_unavailable_note
 

@@ -19,7 +19,7 @@ module "cpu_requests_low_perc_state" {
   alerting_enabled   = var.cpu_requests_low_perc_state_alerting_enabled
   critical_threshold = var.cpu_requests_low_perc_state_critical
   warning_threshold  = var.cpu_requests_low_perc_state_warning
-  priority           = var.cpu_requests_low_perc_state_priority
+  priority           = min(var.cpu_requests_low_perc_state_priority + var.priority_offset, 5)
   docs               = var.cpu_requests_low_perc_state_docs
   note               = var.cpu_requests_low_perc_state_note
 

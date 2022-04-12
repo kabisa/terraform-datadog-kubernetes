@@ -19,7 +19,7 @@ module "hpa_status" {
   alerting_enabled   = var.hpa_status_alerting_enabled
   critical_threshold = 1
   # No warning_threshold possible
-  priority = var.hpa_status_priority
+  priority = min(var.hpa_status_priority + var.priority_offset, 5)
   docs     = var.hpa_status_docs
   note     = var.hpa_status_note
 

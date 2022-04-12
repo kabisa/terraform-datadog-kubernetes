@@ -20,7 +20,7 @@ module "node_status" {
   alerting_enabled   = var.node_status_alerting_enabled
   critical_threshold = 1
   # No warning possible for status that is either 0 or 1
-  priority = var.node_status_priority
+  priority = min(var.node_status_priority + var.priority_offset, 5)
   docs     = var.node_status_docs
   note     = var.node_status_note
 

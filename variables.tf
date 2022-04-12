@@ -56,3 +56,8 @@ variable "filter_str_concatenation" {
   description = "If you use an IN expression you need to switch from , to AND"
   default     = ","
 }
+
+variable "priority_offset" {
+  description = "For non production workloads we can +1 on the priorities"
+  default     = 0
+}

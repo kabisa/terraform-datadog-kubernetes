@@ -19,7 +19,7 @@ module "node_diskpressure" {
   alerting_enabled   = var.node_diskpressure_alerting_enabled
   critical_threshold = var.node_diskpressure_critical
   # no warning threshold for this monitor
-  priority = var.node_diskpressure_priority
+  priority = min(var.node_diskpressure_priority + var.priority_offset, 5)
   docs     = var.node_diskpressure_docs
   note     = var.node_diskpressure_note
 

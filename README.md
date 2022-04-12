@@ -319,7 +319,7 @@ min(last_10m):sum:kubernetes.pods.running{tag:xxx} by {host} > 100.0
 
 Query:
 ```terraform
-avg(last_5m):( 100 * max:kubernetes.memory.usage{tag:xxx} by {host,cluster_name} ) / max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name} > 90
+avg(last_5m):( 100 * max:kubernetes.memory.usage{tag:xxx} by {host,cluster_name} ) / max:system.mem.total{tag:xxx} by {host,cluster_name} > 90
 ```
 
 | variable                                   | default  | required | description                      |
@@ -388,7 +388,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):sum:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} - sum:kubernetes.cpu.requests{tag:xxx} by {host,cluster_name} < 0.5
+max(last_5m):max:system.cpu.num_cores{tag:xxx} by {cluster_name,host} - sum:kubernetes.cpu.requests{tag:xxx} by {cluster_name,host} < 0.5
 ```
 
 | variable                           | default                                  | required | description                                                                                          |
@@ -437,7 +437,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-avg(last_5m):max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.limits{tag:xxx} by {host,cluster_name} < 3000000000
+avg(last_5m):max:system.mem.total{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.limits{tag:xxx} by {host,cluster_name} < 3000000000
 ```
 
 | variable                            | default                                  | required | description                                                                                          |
@@ -509,7 +509,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.memory.requests{${local.cpu_requests_low_perc_filter}} / max:kubernetes.memory.capacity{${local.cpu_requests_low_perc_filter}} ) * 100 > ${var.cpu_requests_low_perc_critical}
+max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.memory.requests{${local.cpu_requests_low_perc_filter}} / max:system.mem.total{${local.cpu_requests_low_perc_filter}} ) * 100 > ${var.cpu_requests_low_perc_critical}
 ```
 
 | variable                                   | default                                  | required | description                      |
@@ -534,7 +534,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):sum:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} - sum:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} < ${-30}
+min(last_5m):max:system.cpu.num_cores{tag:xxx} by {cluster_name,host} - sum:kubernetes.cpu.limits{tag:xxx} by {cluster_name,host} < ${-30}
 ```
 
 | variable                         | default                                  | required | description                                                                                          |
@@ -661,7 +661,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):( max:kubernetes.cpu.requests{tag:xxx} by {host,cluster_name} / max:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name} ) * 100 > 95
+max(last_5m):100 * sum:kubernetes.cpu.requests{tag:xxx} by {cluster_name,host} / max:system.cpu.num_cores{tag:xxx} by {cluster_name,host} > 95
 ```
 
 | variable                                | default                                  | required | description                      |
@@ -786,7 +786,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):( max:kubernetes.memory.limits{tag:xxx}  by {host,cluster_name}/ max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name}) * 100 > 100
+max(last_5m):( max:kubernetes.memory.limits{tag:xxx}  by {host,cluster_name}/ max:system.mem.total{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                                 | default                                  | required | description                      |
@@ -811,7 +811,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):( max:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} / max:kubernetes.cpu.capacity{tag:xxx} by {host,cluster_name}) * 100 > 100
+max(last_5m):(sum:kubernetes.cpu.requests{tag:xxx} by {host,cluster_name} / max:system.cpu.num_cores{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                              | default                                  | required | description                      |
@@ -836,7 +836,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-avg(last_5m):max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.requests{tag:xxx} by {host,cluster_name} < 3000000000
+avg(last_5m):max:system.mem.total{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.requests{tag:xxx} by {host,cluster_name} < 3000000000
 ```
 
 | variable                              | default                                  | required | description                                                                                          |
@@ -871,5 +871,6 @@ avg(last_5m):max:kubernetes.memory.capacity{tag:xxx} by {host,cluster_name} - ma
 | name_prefix              | ""         | No       |                                                                                      |
 | name_suffix              | ""         | No       |                                                                                      |
 | filter_str_concatenation | ,          | No       | If you use an IN expression you need to switch from , to AND                         |
+| priority_offset          | 0          | No       | For non production workloads we can +1 on the priorities                             |
 
 

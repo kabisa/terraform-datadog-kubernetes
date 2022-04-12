@@ -22,7 +22,7 @@ module "pods_pending" {
   alerting_enabled   = var.pods_pending_alerting_enabled
   warning_threshold  = var.pods_pending_warning
   critical_threshold = var.pods_pending_critical
-  priority           = var.pods_pending_priority
+  priority           = min(var.pods_pending_priority + var.priority_offset, 5)
   docs               = var.pods_pending_docs
   note               = var.pods_pending_note
 

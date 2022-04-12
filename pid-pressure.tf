@@ -19,7 +19,7 @@ module "pid_pressure" {
   alerting_enabled   = var.pid_pressure_alerting_enabled
   critical_threshold = var.pid_pressure_critical
   # no warning threshold for this monitor
-  priority = var.pid_pressure_priority
+  priority = min(var.pid_pressure_priority + var.priority_offset, 5)
   docs     = var.pid_pressure_docs
   note     = var.pid_pressure_note
 
