@@ -869,7 +869,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):(sum:kubernetes.cpu.requests{tag:xxx} by {host,cluster_name} / max:system.cpu.num_cores{tag:xxx} by {host,cluster_name}) * 100 > 100
+max(last_5m):(sum:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} / max:system.cpu.num_cores{tag:xxx} by {host,cluster_name}) * 100 > 100
 ```
 
 | variable                              | default                                  | required | description                      |
