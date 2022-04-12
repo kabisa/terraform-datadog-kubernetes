@@ -1,7 +1,7 @@
 locals {
   deployment_multiple_restarts_filter = coalesce(
     var.deployment_multiple_restarts_filter_override,
-    var.filter_str
+    "${var.filter_str}${var.filter_str_concatenation}kube_deployment:*"
   )
 }
 

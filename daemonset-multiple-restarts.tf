@@ -1,7 +1,7 @@
 locals {
   daemonset_multiple_restarts_filter = coalesce(
     var.daemonset_multiple_restarts_filter_override,
-    var.filter_str
+    "${var.filter_str}${var.filter_str_concatenation}kube_daemon_set:*"
   )
 }
 
