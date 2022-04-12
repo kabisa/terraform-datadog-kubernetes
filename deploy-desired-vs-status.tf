@@ -24,7 +24,7 @@ module "deploy_desired_vs_status" {
   note               = var.deploy_desired_vs_status_note
 
   # module level vars
-  env                  = var.alert_env
+  env                  = var.env
   service              = var.service
   service_display_name = var.service_display_name
   notification_channel = var.notification_channel

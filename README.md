@@ -43,6 +43,7 @@ Monitors:
   * [Node Memorypressure](#node-memorypressure)
   * [Network Unavailable](#network-unavailable)
   * [Deploy Desired Vs Status](#deploy-desired-vs-status)
+  * [Deployment Multiple Restarts](#deployment-multiple-restarts)
   * [Pod Count Per Node High](#pod-count-per-node-high)
   * [Node Memory Used Percent](#node-memory-used-percent)
   * [Datadog Agent](#datadog-agent)
@@ -59,6 +60,7 @@ Monitors:
   * [Pod Restarts](#pod-restarts)
   * [CPU On Dns Pods High](#cpu-on-dns-pods-high)
   * [CPU Requests Low Perc](#cpu-requests-low-perc)
+  * [Daemonset Multiple Restarts](#daemonset-multiple-restarts)
   * [Pods Pending](#pods-pending)
   * [Node Ready](#node-ready)
   * [Node Diskpressure](#node-diskpressure)
@@ -286,6 +288,34 @@ avg(last_15m):max:kubernetes_state.deployment.replicas_desired{tag:xxx} by {clus
 | deploy_desired_vs_status_notify_no_data    | False                                    | No       |                                  |
 | deploy_desired_vs_status_ok_threshold      | None                                     | No       |                                  |
 | deploy_desired_vs_status_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
+
+
+## Deployment Multiple Restarts
+
+If a container restarts once, it can be considered 'normal behaviour' for K8s. A Deployment restarting multiple times though is a problem
+
+Query:
+```terraform
+max(last_15m):clamp_min(max:kubernetes.containers.restarts{tag:xxx} by {kube_deployment} - hour_before(max:kubernetes.containers.restarts{tag:xxx} by {kube_deployment}), 0) > 5.0
+```
+
+| variable                                                   | default                                  | required | description                      |
+|------------------------------------------------------------|------------------------------------------|----------|----------------------------------|
+| deployment_multiple_restarts_enabled                       | True                                     | No       |                                  |
+| deployment_multiple_restarts_warning                       | None                                     | No       |                                  |
+| deployment_multiple_restarts_critical                      | 5.0                                      | No       |                                  |
+| deployment_multiple_restarts_evaluation_period             | last_15m                                 | No       |                                  |
+| deployment_multiple_restarts_note                          | ""                                       | No       |                                  |
+| deployment_multiple_restarts_docs                          | If a container restarts once, it can be considered 'normal behaviour' for K8s. A Deployment restarting multiple times though is a problem | No       |                                  |
+| deployment_multiple_restarts_filter_override               | ""                                       | No       |                                  |
+| deployment_multiple_restarts_alerting_enabled              | True                                     | No       |                                  |
+| deployment_multiple_restarts_no_data_timeframe             | None                                     | No       |                                  |
+| deployment_multiple_restarts_notify_no_data                | False                                    | No       |                                  |
+| deployment_multiple_restarts_ok_threshold                  | None                                     | No       |                                  |
+| deployment_multiple_restarts_name_prefix                   | ""                                       | No       |                                  |
+| deployment_multiple_restarts_name_suffix                   | ""                                       | No       |                                  |
+| deployment_multiple_restarts_priority                      | 3                                        | No       | Number from 1 (high) to 5 (low). |
+| deployment_multiple_restarts_notification_channel_override | ""                                       | No       |                                  |
 
 
 ## Pod Count Per Node High
@@ -680,6 +710,34 @@ max(last_5m):100 * sum:kubernetes.cpu.requests{tag:xxx} by {cluster_name,host} /
 | cpu_requests_low_perc_priority          | 3                                        | No       | Number from 1 (high) to 5 (low). |
 
 
+## Daemonset Multiple Restarts
+
+If a container restarts once, it can be considered 'normal behaviour' for K8s. A Daemonset restarting multiple times though is a problem
+
+Query:
+```terraform
+max(last_15m):clamp_min(max:kubernetes.containers.restarts{tag:xxx} by {kube_daemon_set} - hour_before(max:kubernetes.containers.restarts{tag:xxx} by {kube_daemon_set}), 0) > 5.0
+```
+
+| variable                                                  | default                                  | required | description                      |
+|-----------------------------------------------------------|------------------------------------------|----------|----------------------------------|
+| daemonset_multiple_restarts_enabled                       | True                                     | No       |                                  |
+| daemonset_multiple_restarts_warning                       | None                                     | No       |                                  |
+| daemonset_multiple_restarts_critical                      | 5.0                                      | No       |                                  |
+| daemonset_multiple_restarts_evaluation_period             | last_15m                                 | No       |                                  |
+| daemonset_multiple_restarts_note                          | ""                                       | No       |                                  |
+| daemonset_multiple_restarts_docs                          | If a container restarts once, it can be considered 'normal behaviour' for K8s. A Daemonset restarting multiple times though is a problem | No       |                                  |
+| daemonset_multiple_restarts_filter_override               | ""                                       | No       |                                  |
+| daemonset_multiple_restarts_alerting_enabled              | True                                     | No       |                                  |
+| daemonset_multiple_restarts_no_data_timeframe             | None                                     | No       |                                  |
+| daemonset_multiple_restarts_notify_no_data                | False                                    | No       |                                  |
+| daemonset_multiple_restarts_ok_threshold                  | None                                     | No       |                                  |
+| daemonset_multiple_restarts_name_prefix                   | ""                                       | No       |                                  |
+| daemonset_multiple_restarts_name_suffix                   | ""                                       | No       |                                  |
+| daemonset_multiple_restarts_priority                      | 3                                        | No       | Number from 1 (high) to 5 (low). |
+| daemonset_multiple_restarts_notification_channel_override | ""                                       | No       |                                  |
+
+
 ## Pods Pending
 
 https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
@@ -860,7 +918,6 @@ avg(last_5m):max:system.mem.total{tag:xxx} by {host,cluster_name} - max:kubernet
 | variable                 | default    | required | description                                                                          |
 |--------------------------|------------|----------|--------------------------------------------------------------------------------------|
 | env                      |            | Yes      |                                                                                      |
-| alert_env                |            | Yes      |                                                                                      |
 | service                  | Kubernetes | No       |                                                                                      |
 | service_display_name     | None       | No       | Readable version of service name of what you're monitoring.                          |
 | notification_channel     |            | Yes      | The @user or @pagerduty parameters that indicate to Datadog where to send the alerts |
