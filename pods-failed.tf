@@ -6,7 +6,8 @@ locals {
 }
 
 module "pods_failed" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name  = "Pods Failed"
   query = "min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}"
@@ -21,7 +22,7 @@ module "pods_failed" {
   alerting_enabled   = var.pods_failed_alerting_enabled
   warning_threshold  = var.pods_failed_warning
   critical_threshold = var.pods_failed_critical
-  priority           = var.pods_failed_priority
+  priority           = min(var.pods_failed_priority + var.priority_offset, 5)
   docs               = var.pods_failed_docs
   note               = var.pods_failed_note
 

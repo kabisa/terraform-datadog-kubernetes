@@ -6,7 +6,8 @@ locals {
 }
 
 module "pod_ready" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name             = "Pod status not ready"
   query            = "min(${var.pod_ready_evaluation_period}):sum:kubernetes_state.pod.count{${local.pod_ready_filter}} by {cluster_name,namespace} - sum:kubernetes_state.pod.ready{${local.pod_ready_filter}} by {cluster_name,namespace} > 0"
@@ -18,7 +19,7 @@ module "pod_ready" {
   alerting_enabled   = var.pod_ready_alerting_enabled
   critical_threshold = 0
   # No warning possible for status that is either 0 or 1
-  priority = var.pod_ready_priority
+  priority = min(var.pod_ready_priority + var.priority_offset, 5)
   docs     = var.pod_ready_docs
   note     = var.pod_ready_note
 

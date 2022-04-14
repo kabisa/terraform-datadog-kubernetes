@@ -6,7 +6,8 @@ locals {
 }
 
 module "pods_pending" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name  = "Pods Pending"
   query = "min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}"
@@ -21,7 +22,7 @@ module "pods_pending" {
   alerting_enabled   = var.pods_pending_alerting_enabled
   warning_threshold  = var.pods_pending_warning
   critical_threshold = var.pods_pending_critical
-  priority           = var.pods_pending_priority
+  priority           = min(var.pods_pending_priority + var.priority_offset, 5)
   docs               = var.pods_pending_docs
   note               = var.pods_pending_note
 

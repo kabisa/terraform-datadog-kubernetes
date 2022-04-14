@@ -6,7 +6,8 @@ locals {
 }
 
 module "network_unavailable" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name             = "Nodes with Network Unavailable"
   query            = "avg(${var.network_unavailable_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.network_unavailable_filter} AND condition:networkunavailable AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.network_unavailable_critical}"
@@ -18,7 +19,7 @@ module "network_unavailable" {
   alerting_enabled   = var.network_unavailable_alerting_enabled
   critical_threshold = var.network_unavailable_critical
   # no warning threshold for this monitor
-  priority = var.network_unavailable_priority
+  priority = min(var.network_unavailable_priority + var.priority_offset, 5)
   docs     = var.network_unavailable_docs
   note     = var.network_unavailable_note
 

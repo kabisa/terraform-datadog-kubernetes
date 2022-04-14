@@ -6,10 +6,11 @@ locals {
 }
 
 module "cpu_limits_low_perc" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name             = "Available CPU for Limits in percentages Low"
-  query            = "max(${var.cpu_limits_low_perc_evaluation_period}):( max:kubernetes.cpu.limits{${local.cpu_limits_low_perc_filter}} by {host,cluster_name} / max:kubernetes.cpu.capacity{${local.cpu_limits_low_perc_filter}} by {host,cluster_name}) * 100 > ${var.cpu_limits_low_perc_critical}"
+  query            = "max(${var.cpu_limits_low_perc_evaluation_period}):(sum:kubernetes.cpu.limits{${local.cpu_limits_low_perc_filter}} by {host,cluster_name} / max:system.cpu.num_cores{${local.cpu_limits_low_perc_filter}} by {host,cluster_name}) * 100 > ${var.cpu_limits_low_perc_critical}"
   alert_message    = "Kubernetes cluster cpu room for limits / percentage is too low"
   recovery_message = "Kubernetes cluster cpu limits / percentage has recovered"
 
@@ -18,7 +19,7 @@ module "cpu_limits_low_perc" {
   alerting_enabled   = var.cpu_limits_low_perc_alerting_enabled
   critical_threshold = var.cpu_limits_low_perc_critical
   warning_threshold  = var.cpu_limits_low_perc_warning
-  priority           = var.cpu_limits_low_perc_priority
+  priority           = min(var.cpu_limits_low_perc_priority + var.priority_offset, 5)
   docs               = var.cpu_limits_low_perc_docs
   note               = var.cpu_limits_low_perc_note
 

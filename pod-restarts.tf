@@ -6,7 +6,8 @@ locals {
 }
 
 module "pod_restarts" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name             = "Restarting Pods"
   query            = "change(avg(${var.pod_restarts_evaluation_period}),${var.pod_restarts_evaluation_period}):exclude_null(avg:kubernetes.containers.restarts{${local.pod_restarts_filter}} by {pod_name}) > ${var.pod_restarts_critical}"
@@ -18,7 +19,7 @@ module "pod_restarts" {
   alerting_enabled   = var.pod_restarts_alerting_enabled
   critical_threshold = var.pod_restarts_critical
   warning_threshold  = var.pod_restarts_warning
-  priority           = var.pod_restarts_priority
+  priority           = min(var.pod_restarts_priority + var.priority_offset, 5)
   docs               = var.pod_restarts_docs
   note               = var.pod_restarts_note
 

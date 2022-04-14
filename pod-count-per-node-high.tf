@@ -6,10 +6,11 @@ locals {
 }
 
 module "pod_count_per_node_high" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name  = "Pod count per node high"
-  query = "avg(${var.pod_count_per_node_high_evaluation_period}):sum:kubernetes.pods.running{${local.pod_count_per_node_high_filter}} by {host} > ${var.pod_count_per_node_high_critical}"
+  query = "min(${var.pod_count_per_node_high_evaluation_period}):sum:kubernetes.pods.running{${local.pod_count_per_node_high_filter}} by {host} > ${var.pod_count_per_node_high_critical}"
 
   # alert specific configuration
   require_full_window = false
@@ -19,9 +20,11 @@ module "pod_count_per_node_high" {
   # monitor level vars
   enabled            = var.pod_count_per_node_high_enabled
   alerting_enabled   = var.pod_count_per_node_high_alerting_enabled
-  warning_threshold  = var.pod_count_per_node_high_warning
   critical_threshold = var.pod_count_per_node_high_critical
-  priority           = var.pod_count_per_node_high_priority
+  critical_recovery  = var.pod_count_per_node_high_critical_recovery
+  warning_threshold  = var.pod_count_per_node_high_warning
+  warning_recovery   = var.pod_count_per_node_high_warning_recovery
+  priority           = min(var.pod_count_per_node_high_priority + var.priority_offset, 5)
   docs               = var.pod_count_per_node_high_docs
   note               = var.pod_count_per_node_high_note
 

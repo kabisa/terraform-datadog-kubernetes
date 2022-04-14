@@ -6,7 +6,8 @@ locals {
 }
 
 module "persistent_volumes_low" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name             = "Failed Persistent Volume Claims"
   query            = "avg(${var.persistent_volumes_evaluation_period}):max:kubernetes_state.persistentvolumes.by_phase{${local.persistent_volumes_filter} AND phase:failed} > ${var.persistent_volumes_critical}"
@@ -18,7 +19,7 @@ module "persistent_volumes_low" {
   alerting_enabled   = var.persistent_volumes_alerting_enabled
   critical_threshold = var.persistent_volumes_critical
   warning_threshold  = var.persistent_volumes_warning
-  priority           = var.persistent_volumes_priority
+  priority           = min(var.persistent_volumes_priority + var.priority_offset, 5)
   docs               = var.persistent_volumes_docs
   note               = var.persistent_volumes_note
 

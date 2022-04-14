@@ -8,7 +8,8 @@ locals {
 }
 
 module "cpu_on_dns_pods_high" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name             = "CPU Usage on DNS pods is high"
   query            = "avg(${var.cpu_on_dns_pods_high_evaluation_period}):avg:docker.cpu.usage{${local.cpu_on_dns_pods_high_filter}} by {cluster_name,host,container_name} > ${var.cpu_on_dns_pods_high_critical}"
@@ -20,7 +21,7 @@ module "cpu_on_dns_pods_high" {
   alerting_enabled   = var.cpu_on_dns_pods_high_alerting_enabled
   critical_threshold = var.cpu_on_dns_pods_high_critical
   warning_threshold  = var.cpu_on_dns_pods_high_warning
-  priority           = var.cpu_on_dns_pods_high_priority
+  priority           = min(var.cpu_on_dns_pods_high_priority + var.priority_offset, 5)
   docs               = var.cpu_on_dns_pods_high_docs
   note               = var.cpu_on_dns_pods_high_note
 

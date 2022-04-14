@@ -6,10 +6,11 @@ locals {
 }
 
 module "memory_requests_low" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name             = "Available Memory for Requests Low"
-  query            = "avg(${var.memory_requests_low_evaluation_period}):max:kubernetes.memory.capacity{${local.memory_requests_low_filter}} by {host,cluster_name} - max:kubernetes.memory.requests{${local.memory_requests_low_filter}} by {host,cluster_name} < ${var.memory_requests_low_critical}"
+  query            = "avg(${var.memory_requests_low_evaluation_period}):max:system.mem.total{${local.memory_requests_low_filter}} by {host,cluster_name} - max:kubernetes.memory.requests{${local.memory_requests_low_filter}} by {host,cluster_name} < ${var.memory_requests_low_critical}"
   alert_message    = "Total memory available for requests on {{ host }} is low ({{value}})"
   recovery_message = "Total memory available for requests on {{ host }} has recovered ({{value}})"
 
@@ -18,7 +19,7 @@ module "memory_requests_low" {
   alerting_enabled   = var.memory_requests_low_alerting_enabled
   critical_threshold = var.memory_requests_low_critical
   warning_threshold  = var.memory_requests_low_warning
-  priority           = var.memory_requests_low_priority
+  priority           = min(var.memory_requests_low_priority + var.priority_offset, 5)
   docs               = var.memory_requests_low_docs
   note               = var.memory_requests_low_note
 

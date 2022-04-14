@@ -5,7 +5,8 @@ locals {
 }
 
 module "hpa_status" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name             = "HPA Status not OK"
   query            = "avg(${var.hpa_status_evaluation_period}):avg:kubernetes_state.hpa.condition{${local.hpa_status_filter}} by {hpa,kube_namespace,status,condition} < 1"
@@ -18,7 +19,7 @@ module "hpa_status" {
   alerting_enabled   = var.hpa_status_alerting_enabled
   critical_threshold = 1
   # No warning_threshold possible
-  priority = var.hpa_status_priority
+  priority = min(var.hpa_status_priority + var.priority_offset, 5)
   docs     = var.hpa_status_docs
   note     = var.hpa_status_note
 

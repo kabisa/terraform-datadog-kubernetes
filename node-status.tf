@@ -6,7 +6,8 @@ locals {
 }
 
 module "node_status" {
-  source = "git@github.com:kabisa/terraform-datadog-generic-monitor.git?ref=0.7.0"
+  source  = "kabisa/generic-monitor/datadog"
+  version = "0.7.1"
 
   name                = "Node Status not OK"
   query               = "avg(${var.node_status_evaluation_period}):avg:kubernetes_state.node.status{${local.node_status_filter}} by {cluster_name,node} < 1"
@@ -19,7 +20,7 @@ module "node_status" {
   alerting_enabled   = var.node_status_alerting_enabled
   critical_threshold = 1
   # No warning possible for status that is either 0 or 1
-  priority = var.node_status_priority
+  priority = min(var.node_status_priority + var.priority_offset, 5)
   docs     = var.node_status_docs
   note     = var.node_status_note
 

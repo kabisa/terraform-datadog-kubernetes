@@ -13,6 +13,16 @@ variable "pod_count_per_node_high_critical" {
   default = 100.0
 }
 
+variable "pod_count_per_node_high_warning_recovery" {
+  type    = number
+  default = null
+}
+
+variable "pod_count_per_node_high_critical_recovery" {
+  type    = number
+  default = null
+}
+
 variable "pod_count_per_node_high_evaluation_period" {
   type    = string
   default = "last_10m"
