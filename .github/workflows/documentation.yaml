@@ -1,0 +1,22 @@
+name: Generate terraform docs
+
+on:
+  push:
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: terraform-linters/setup-tflint@v2
+      name: Setup TFLint
+      with:
+        tflint_version: v0.38.1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+    - uses: pre-commit/action@v3.0.0
+      # pre-commit fails if it changed files
+      # we want to go on
+      continue-on-error: true
+    - uses: pre-commit/action@v3.0.0
+    - uses: EndBug/add-and-commit@v9
+      with:
+        default_author: github_actions
