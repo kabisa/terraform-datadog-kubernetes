@@ -7,7 +7,7 @@ locals {
 
 module "deployment_multiple_restarts" {
   source  = "kabisa/generic-monitor/datadog"
-  version = "0.7.1"
+  version = "1.0.0"
 
   name  = "Deployment Multiple Restarts"
   query = "max(${var.deployment_multiple_restarts_evaluation_period}):clamp_min(max:kubernetes.containers.restarts{${local.deployment_multiple_restarts_filter}} by {kube_deployment} - hour_before(max:kubernetes.containers.restarts{${local.deployment_multiple_restarts_filter}} by {kube_deployment}), 0) > ${var.deployment_multiple_restarts_critical}"
