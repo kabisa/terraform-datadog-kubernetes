@@ -7,7 +7,7 @@ locals {
 
 module "memory_limits_low_perc_state" {
   source  = "kabisa/generic-monitor/datadog"
-  version = "0.7.1"
+  version = "1.0.0"
 
   name             = "Available Memory for Limits in percentage Low"
   query            = "max(${var.memory_limits_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.memory_limit{${local.memory_limits_low_perc_state_filter}} by {host,cluster_name} / sum:kubernetes_state.node.memory_allocatable{${local.memory_limits_low_perc_state_filter}} by {host,cluster_name}) * 100 > ${var.memory_limits_low_perc_state_critical}"
