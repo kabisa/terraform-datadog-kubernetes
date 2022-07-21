@@ -7,7 +7,7 @@ locals {
 
 module "cpu_requests_low" {
   source  = "kabisa/generic-monitor/datadog"
-  version = "0.7.1"
+  version = "1.0.0"
 
   name             = "Available CPU for Requests Low"
   query            = "max(${var.cpu_requests_low_evaluation_period}):max:system.cpu.num_cores{${local.cpu_requests_low_filter}} by {cluster_name,host} - sum:kubernetes.cpu.requests{${local.cpu_requests_low_filter}} by {cluster_name,host} < ${var.cpu_requests_low_critical}"

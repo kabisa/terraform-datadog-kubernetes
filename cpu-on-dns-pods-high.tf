@@ -9,7 +9,7 @@ locals {
 
 module "cpu_on_dns_pods_high" {
   source  = "kabisa/generic-monitor/datadog"
-  version = "0.7.1"
+  version = "1.0.0"
 
   name             = "CPU Usage on DNS pods is high"
   query            = "avg(${var.cpu_on_dns_pods_high_evaluation_period}):avg:docker.cpu.usage{${local.cpu_on_dns_pods_high_filter}} by {cluster_name,host,container_name} > ${var.cpu_on_dns_pods_high_critical}"

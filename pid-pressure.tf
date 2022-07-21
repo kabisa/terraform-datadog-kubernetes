@@ -7,7 +7,7 @@ locals {
 
 module "pid_pressure" {
   source  = "kabisa/generic-monitor/datadog"
-  version = "0.7.1"
+  version = "1.0.0"
 
   name             = "Nodes with PID Pressure"
   query            = "avg(${var.pid_pressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.pid_pressure_filter} AND condition:pidpressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.pid_pressure_critical}"

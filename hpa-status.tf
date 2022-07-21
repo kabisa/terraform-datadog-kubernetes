@@ -6,7 +6,7 @@ locals {
 
 module "hpa_status" {
   source  = "kabisa/generic-monitor/datadog"
-  version = "0.7.1"
+  version = "1.0.0"
 
   name             = "HPA Status not OK"
   query            = "avg(${var.hpa_status_evaluation_period}):avg:kubernetes_state.hpa.condition{${local.hpa_status_filter}} by {hpa,kube_namespace,status,condition} < 1"
