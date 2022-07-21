@@ -7,7 +7,7 @@ locals {
 
 module "cpu_requests_low_perc" {
   source  = "kabisa/generic-monitor/datadog"
-  version = "0.7.1"
+  version = "1.0.0"
 
   name             = "Available CPU for requests in percentages Low"
   query            = "max(${var.cpu_requests_low_perc_evaluation_period}):100 * sum:kubernetes.cpu.requests{${local.cpu_requests_low_perc_filter}} by {cluster_name,host} / max:system.cpu.num_cores{${local.cpu_requests_low_perc_filter}} by {cluster_name,host} > ${var.cpu_requests_low_perc_critical}"
