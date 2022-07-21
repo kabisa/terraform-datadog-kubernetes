@@ -11,7 +11,7 @@ jobs:
       with:
         tflint_version: v0.38.1
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v4
     - uses: pre-commit/action@v3.0.0
       # pre-commit fails if it changed files
       # we want to go on
