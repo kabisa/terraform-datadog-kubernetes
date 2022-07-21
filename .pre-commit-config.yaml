@@ -6,9 +6,8 @@ repos:
       - id: terraform-validate
       - id: tflint
   - repo: git@github.com:kabisa/terraform-datadog-pre-commit-hook.git
-    rev: "1.2.2"
+    rev: "1.3.0"
     hooks:
       - id: terraform-datadog-docs
-        exclude: ^README.md$
         args:
         - "."
