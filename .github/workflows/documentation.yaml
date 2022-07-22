@@ -2,6 +2,13 @@ name: Generate terraform docs
 
 on:
   push:
+    # don't run when we push a tag
+    tags-ignore:
+    - '*'
+    # don't run when we merge to main
+    # the action should have run already
+    branches-ignore:
+    - 'main'
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
