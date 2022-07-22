@@ -27,7 +27,7 @@ module "replicaset_unavailable" {
   note     = var.replicaset_unavailable_note
 
   # module level vars
-  env                  = var.alert_env
+  env                  = var.env
   service              = var.service
   service_display_name = var.service_display_name
   notification_channel = var.notification_channel

@@ -2,10 +2,6 @@ variable "env" {
   type = string
 }
 
-variable "alert_env" {
-  type = string
-}
-
 variable "service" {
   type    = string
   default = "Kubernetes"

@@ -24,7 +24,7 @@ module "memory_limits_low_perc_state" {
   note               = var.memory_limits_low_perc_state_note
 
   # module level vars
-  env                  = var.alert_env
+  env                  = var.env
   service              = var.service
   service_display_name = var.service_display_name
   notification_channel = var.notification_channel
