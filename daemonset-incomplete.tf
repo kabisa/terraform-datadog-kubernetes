@@ -10,7 +10,7 @@ module "daemonset_incomplete" {
   version = "1.0.0"
 
   name             = "Daemonset Incomplete"
-  query            = "min(${var.daemonset_incomplete_evaluation_period}):max:kubernetes_state.daemonset.scheduled{${local.daemonset_incomplete_filter}} by {daemonset,cluster_name} - min:kubernetes_state.daemonset.ready{${local.daemonset_incomplete_filter}} by {daemonset,cluster_name} > 0"
+  query            = "min(${var.daemonset_incomplete_evaluation_period}):max:kubernetes_state.daemonset.scheduled{${local.daemonset_incomplete_filter}} by {kube_daemon_set,kube_cluster_name} - min:kubernetes_state.daemonset.ready{${local.daemonset_incomplete_filter}} by {kube_daemon_set,kube_cluster_name} > 0"
   alert_message    = "Kubernetes Daemonset {{daemonset}} is incomplete. Missing pod count:{{value}}"
   recovery_message = "Kubernetes Daemonset {{daemonset}} has recovered"
 

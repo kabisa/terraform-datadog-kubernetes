@@ -10,7 +10,7 @@ module "node_memory_used_percent" {
   version = "1.0.0"
 
   name             = "Memory Used Percent"
-  query            = "avg(${var.node_memory_used_percent_evaluation_period}):( 100 * max:kubernetes.memory.usage{${local.node_memory_used_percent_filter}} by {host,cluster_name} ) / max:system.mem.total{${local.node_memory_used_percent_filter}} by {host,cluster_name} > ${var.node_memory_used_percent_critical}"
+  query            = "avg(${var.node_memory_used_percent_evaluation_period}):( 100 * max:kubernetes.memory.usage{${local.node_memory_used_percent_filter}} by {host,kube_cluster_name} ) / max:system.mem.total{${local.node_memory_used_percent_filter}} by {host,kube_cluster_name} > ${var.node_memory_used_percent_critical}"
   alert_message    = "Available memory on ${var.service} Node {{host.name}} has dropped below {{threshold}} and has {{value}}% available"
   recovery_message = "Available memory on ${var.service} Node {{host.name}} has recovered {{value}}%"
 

@@ -10,7 +10,7 @@ module "node_ready" {
   version = "1.0.0"
 
   name             = "Node Not Ready"
-  query            = "avg(${var.node_ready_evaluation_period}):count_nonzero(sum:kubernetes_state.nodes.by_condition{${local.node_ready_filter} AND (NOT condition:ready) AND (status:true OR status:unknown)} by {cluster_name,host}) > ${var.node_ready_critical}"
+  query            = "avg(${var.node_ready_evaluation_period}):count_nonzero(sum:kubernetes_state.node.by_condition{${local.node_ready_filter} AND (NOT condition:ready) AND (status:true OR status:unknown)} by {kube_cluster_name,host}) > ${var.node_ready_critical}"
   alert_message    = "Kubernetes cluster node {{host}} is not ready."
   recovery_message = "Kubernetes cluster node {{host}} is ready again."
 

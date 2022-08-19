@@ -10,9 +10,10 @@ module "cpu_limits_low" {
   version = "1.0.0"
 
   name             = "Available CPU for Limits Low"
-  query            = "min(${var.cpu_limits_low_evaluation_period}):max:system.cpu.num_cores{${local.cpu_limits_low_filter}} by {cluster_name,host} - sum:kubernetes.cpu.limits{${local.cpu_limits_low_filter}} by {cluster_name,host} < ${var.cpu_limits_low_critical}"
-  alert_message    = "Kubernetes cluster cpu room for limits is too low"
-  recovery_message = "Kubernetes cluster cpu limits has recovered"
+  query            = "min(${var.cpu_limits_low_evaluation_period}):max:system.cpu.num_cores{${local.cpu_limits_low_filter}} by {kube_cluster_name,host} - sum:kubernetes.cpu.limits{${local.cpu_limits_low_filter}} by {kube_cluster_name,host} < ${var.cpu_limits_low_critical}"
+  alert_message    = "Kubernetes cluster {{kube_cluster_name.name}} cpu room for limits is too low "
+  recovery_message = "Kubernetes cluster {{kube_cluster_name.name}} cpu limits has recovered"
+
 
   # monitor level vars
   enabled            = var.cpu_limits_low_enabled

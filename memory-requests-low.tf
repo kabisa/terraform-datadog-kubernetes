@@ -10,7 +10,7 @@ module "memory_requests_low" {
   version = "1.0.0"
 
   name             = "Available Memory for Requests Low"
-  query            = "avg(${var.memory_requests_low_evaluation_period}):max:system.mem.total{${local.memory_requests_low_filter}} by {host,cluster_name} - max:kubernetes.memory.requests{${local.memory_requests_low_filter}} by {host,cluster_name} < ${var.memory_requests_low_critical}"
+  query            = "avg(${var.memory_requests_low_evaluation_period}):max:system.mem.total{${local.memory_requests_low_filter}} by {host,kube_cluster_name} - max:kubernetes.memory.requests{${local.memory_requests_low_filter}} by {host,kube_cluster_name} < ${var.memory_requests_low_critical}"
   alert_message    = "Total memory available for requests on {{ host }} is low ({{value}})"
   recovery_message = "Total memory available for requests on {{ host }} has recovered ({{value}})"
 

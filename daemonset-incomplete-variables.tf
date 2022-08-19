@@ -11,7 +11,7 @@ variable "daemonset_incomplete_critical" {
 
 variable "daemonset_incomplete_evaluation_period" {
   type    = string
-  default = "last_30m"
+  default = "last_15m"
 }
 
 variable "daemonset_incomplete_note" {
@@ -53,5 +53,5 @@ variable "daemonset_incomplete_priority" {
   description = "Number from 1 (high) to 5 (low)."
 
   type    = number
-  default = 3
+  default = 2
 }

@@ -9,6 +9,11 @@ This module mainly check on Kubernetes resource level and cluster health.
 System level monitoring can best be implemented with the [system module](https://github.com/kabisa/terraform-datadog-system).
 Docker/Container level monitoring can best be implemented with the [docker module](https://github.com/kabisa/terraform-datadog-docker-container).
 
+# Recent changes:
+
+- switch from kubernetes_state to kubernetes_state_core as a default https://docs.datadoghq.com/integrations/kubernetes_state_core/?tab=helm
+- upgrade provider to ~> 3.12
+
 This module is part of a larger suite of modules that provide alerts in Datadog.
 Other modules can be found on the [Terraform Registry](https://registry.terraform.io/search/modules?namespace=kabisa&provider=datadog)
 
@@ -27,7 +32,7 @@ module "kubernetes" {
   notification_channel = "mail@example.com"
   service              = "Kubernetes"
   env                  = "prd"
-  filter_str           = "cluster_name:production"
+  filter_str           = "kube_cluster_name:production"
 }
 
 ```
@@ -39,39 +44,39 @@ Monitors:
 
 | Monitor name    | Default enabled | Priority | Query                  |
 |-----------------|------|----|------------------------|
-| [CPU Limits Low Perc State](#cpu-limits-low-perc-state) | False | 3  | `max(last_5m):( sum:kubernetes_state.container.cpu_limit{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,cluster_name}) * 100 > 100` |
-| [CPU Limits Low Perc](#cpu-limits-low-perc) | True | 3  | `max(last_5m):(sum:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} / max:system.cpu.num_cores{tag:xxx} by {host,cluster_name}) * 100 > 100` |
-| [CPU Limits Low](#cpu-limits-low) | False | 3  | `min(last_5m):max:system.cpu.num_cores{tag:xxx} by {cluster_name,host} - sum:kubernetes.cpu.limits{tag:xxx} by {cluster_name,host} < ${-30}` |
-| [CPU On Dns Pods High](#cpu-on-dns-pods-high) | True | 2  | `avg(last_30m):avg:docker.cpu.usage{tag:xxx} by {cluster_name,host,container_name} > 85` |
-| [CPU Requests Low Perc State](#cpu-requests-low-perc-state) | False | 3  | `max(last_5m):( sum:kubernetes_state.container.cpu_requested{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,cluster_name} ) * 100 > 95` |
-| [CPU Requests Low Perc](#cpu-requests-low-perc) | True | 3  | `max(last_5m):100 * sum:kubernetes.cpu.requests{tag:xxx} by {cluster_name,host} / max:system.cpu.num_cores{tag:xxx} by {cluster_name,host} > 95` |
-| [CPU Requests Low](#cpu-requests-low) | False | 3  | `max(last_5m):max:system.cpu.num_cores{tag:xxx} by {cluster_name,host} - sum:kubernetes.cpu.requests{tag:xxx} by {cluster_name,host} < 0.5` |
-| [Daemonset Incomplete](#daemonset-incomplete) | True | 3  | `min(last_30m):max:kubernetes_state.daemonset.scheduled{tag:xxx} by {daemonset,cluster_name} - min:kubernetes_state.daemonset.ready{tag:xxx} by {daemonset,cluster_name} > 0` |
+| [CPU Limits Low Perc State](#cpu-limits-low-perc-state) | False | 3  | `max(last_5m):( sum:kubernetes_state.container.cpu_limit{tag:xxx} by {host,kube_cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,kube_cluster_name}) * 100 > 100` |
+| [CPU Limits Low Perc](#cpu-limits-low-perc) | True | 3  | `max(last_5m):(sum:kubernetes.cpu.limits{tag:xxx} by {host,kube_cluster_name} / max:system.cpu.num_cores{tag:xxx} by {host,kube_cluster_name}) * 100 > 100` |
+| [CPU Limits Low](#cpu-limits-low) | False | 3  | `min(last_5m):max:system.cpu.num_cores{tag:xxx} by {kube_cluster_name,host} - sum:kubernetes.cpu.limits{tag:xxx} by {kube_cluster_name,host} < ${-30}` |
+| [CPU On Dns Pods High](#cpu-on-dns-pods-high) | True | 2  | `avg(last_30m):avg:docker.cpu.usage{tag:xxx} by {kube_cluster_name,host,container_name} > 85` |
+| [CPU Requests Low Perc State](#cpu-requests-low-perc-state) | False | 3  | `max(last_5m):( sum:kubernetes_state.container.cpu_requested{tag:xxx} by {host,kube_cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,kube_cluster_name} ) * 100 > 95` |
+| [CPU Requests Low Perc](#cpu-requests-low-perc) | True | 3  | `max(last_5m):100 * sum:kubernetes.cpu.requests{tag:xxx} by {kube_cluster_name,host} / max:system.cpu.num_cores{tag:xxx} by {kube_cluster_name,host} > 95` |
+| [CPU Requests Low](#cpu-requests-low) | False | 3  | `max(last_5m):max:system.cpu.num_cores{tag:xxx} by {kube_cluster_name,host} - sum:kubernetes.cpu.requests{tag:xxx} by {kube_cluster_name,host} < 0.5` |
+| [Daemonset Incomplete](#daemonset-incomplete) | True | 2  | `min(last_15m):max:kubernetes_state.daemonset.scheduled{tag:xxx} by {kube_daemon_set,kube_cluster_name} - min:kubernetes_state.daemonset.ready{tag:xxx} by {kube_daemon_set,kube_cluster_name} > 0` |
 | [Daemonset Multiple Restarts](#daemonset-multiple-restarts) | True | 3  | `max(last_15m):clamp_min(max:kubernetes.containers.restarts{tag:xxx} by {kube_daemon_set} - hour_before(max:kubernetes.containers.restarts{tag:xxx} by {kube_daemon_set}), 0) > 5.0` |
-| [Datadog Agent](#datadog-agent) | True | 2  | `avg(last_5m):avg:datadog.agent.running{tag:xxx} by {host,cluster_name} < 1` |
-| [Deploy Desired Vs Status](#deploy-desired-vs-status) | True | 3  | `avg(last_15m):max:kubernetes_state.deployment.replicas_desired{tag:xxx} by {cluster_name,host} - max:kubernetes_state.deployment.replicas{tag:xxx} by {cluster_name,host} > 10` |
+| [Datadog Agent](#datadog-agent) | True | 2  | `avg(last_5m):avg:datadog.agent.running{tag:xxx} by {host,kube_cluster_name} < 1` |
+| [Deploy Desired Vs Status](#deploy-desired-vs-status) | True | 3  | `avg(last_15m):max:kubernetes_state.deployment.replicas_desired{tag:xxx} by {kube_cluster_name} - max:kubernetes_state.deployment.replicas_available{tag:xxx} by {kube_cluster_name} > 10` |
 | [Deployment Multiple Restarts](#deployment-multiple-restarts) | True | 3  | `max(last_15m):clamp_min(max:kubernetes.containers.restarts{tag:xxx} by {kube_deployment} - hour_before(max:kubernetes.containers.restarts{tag:xxx} by {kube_deployment}), 0) > 5.0` |
 | [Hpa Status](#hpa-status) | True | 3  | `avg(last_15m):avg:kubernetes_state.hpa.condition{tag:xxx} by {hpa,kube_namespace,status,condition} < 1` |
-| [Memory Limits Low Perc State](#memory-limits-low-perc-state) | False | 3  | `max(last_5m):( sum:kubernetes_state.container.memory_limit{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.memory_allocatable{tag:xxx} by {host,cluster_name}) * 100 > 100` |
-| [Memory Limits Low Perc](#memory-limits-low-perc) | True | 3  | `max(last_5m):( max:kubernetes.memory.limits{tag:xxx}  by {host,cluster_name}/ max:system.mem.total{tag:xxx} by {host,cluster_name}) * 100 > 100` |
-| [Memory Limits Low](#memory-limits-low) | False | 3  | `avg(last_5m):max:system.mem.total{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.limits{tag:xxx} by {host,cluster_name} < 3000000000` |
+| [Memory Limits Low Perc State](#memory-limits-low-perc-state) | False | 3  | `max(last_5m):( sum:kubernetes_state.container.memory_limit{tag:xxx} by {host,kube_cluster_name} / sum:kubernetes_state.node.memory_allocatable{tag:xxx} by {host,kube_cluster_name}) * 100 > 100` |
+| [Memory Limits Low Perc](#memory-limits-low-perc) | True | 3  | `max(last_5m):( max:kubernetes.memory.limits{tag:xxx}  by {host,kube_cluster_name}/ max:system.mem.total{tag:xxx} by {host,kube_cluster_name}) * 100 > 100` |
+| [Memory Limits Low](#memory-limits-low) | False | 3  | `avg(last_5m):max:system.mem.total{tag:xxx} by {host,kube_cluster_name} - max:kubernetes.memory.limits{tag:xxx} by {host,kube_cluster_name} < 3000000000` |
 | [Memory Requests Low Perc State](#memory-requests-low-perc-state) | False | 3  | `max(last_5m):( max:kubernetes_state.container.memory_requested{tag:xxx} / max:kubernetes_state.node.memory_allocatable{tag:xxx} ) * 100 > 95` |
 | [Memory Requests Low Perc](#memory-requests-low-perc) | True | 3  | `max(${var.cpu_requests_low_perc_evaluation_period}):( max:kubernetes.memory.requests{${local.cpu_requests_low_perc_filter}} / max:system.mem.total{${local.cpu_requests_low_perc_filter}} ) * 100 > ${var.cpu_requests_low_perc_critical}` |
-| [Memory Requests Low](#memory-requests-low) | False | 3  | `avg(last_5m):max:system.mem.total{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.requests{tag:xxx} by {host,cluster_name} < 3000000000` |
-| [Network Unavailable](#network-unavailable) | True | 3  | `avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:networkunavailable AND (status:true OR status:unknown)} by {cluster_name,host} > ` |
-| [Node Diskpressure](#node-diskpressure) | True | 3  | `avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:diskpressure AND (status:true OR status:unknown)} by {cluster_name,host} > ` |
-| [Node Memory Used Percent](#node-memory-used-percent) | True | 2  | `avg(last_5m):( 100 * max:kubernetes.memory.usage{tag:xxx} by {host,cluster_name} ) / max:system.mem.total{tag:xxx} by {host,cluster_name} > 90` |
-| [Node Memorypressure](#node-memorypressure) | True | 3  | `avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:memorypressure AND (status:true OR status:unknown)} by {cluster_name,host} > ` |
-| [Node Ready](#node-ready) | True | 2  | `avg(last_5m):count_nonzero(sum:kubernetes_state.nodes.by_condition{tag:xxx AND (NOT condition:ready) AND (status:true OR status:unknown)} by {cluster_name,host}) > 1` |
-| [Node Status](#node-status) | True | 2  | `avg(last_5m):avg:kubernetes_state.node.status{tag:xxx} by {cluster_name,node} < 1` |
-| [Persistent Volumes](#persistent-volumes) | True | 3  | `avg(last_5m):max:kubernetes_state.persistentvolumes.by_phase{tag:xxx AND phase:failed} > 1` |
-| [Pid Pressure](#pid-pressure) | True | 3  | `avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:pidpressure AND (status:true OR status:unknown)} by {cluster_name,host} > ` |
+| [Memory Requests Low](#memory-requests-low) | False | 3  | `avg(last_5m):max:system.mem.total{tag:xxx} by {host,kube_cluster_name} - max:kubernetes.memory.requests{tag:xxx} by {host,kube_cluster_name} < 3000000000` |
+| [Network Unavailable](#network-unavailable) | True | 3  | `avg(last_5m):max:kubernetes_state.node.by_condition{tag:xxx AND condition:networkunavailable AND (status:true OR status:unknown)} by {kube_cluster_name,host} > ` |
+| [Node Diskpressure](#node-diskpressure) | True | 3  | `avg(last_5m):max:kubernetes_state.node.by_condition{tag:xxx AND condition:diskpressure AND (status:true OR status:unknown)} by {kube_cluster_name,host} > ` |
+| [Node Memory Used Percent](#node-memory-used-percent) | True | 2  | `avg(last_5m):( 100 * max:kubernetes.memory.usage{tag:xxx} by {host,kube_cluster_name} ) / max:system.mem.total{tag:xxx} by {host,kube_cluster_name} > 90` |
+| [Node Memorypressure](#node-memorypressure) | True | 3  | `avg(last_5m):max:kubernetes_state.node.by_condition{tag:xxx AND condition:memorypressure AND (status:true OR status:unknown)} by {kube_cluster_name,host} > ` |
+| [Node Ready](#node-ready) | True | 2  | `avg(last_5m):count_nonzero(sum:kubernetes_state.node.by_condition{tag:xxx AND (NOT condition:ready) AND (status:true OR status:unknown)} by {kube_cluster_name,host}) > 1` |
+| [Node Status](#node-status) | True | 2  | `avg(last_5m):avg:kubernetes_state.node.status{tag:xxx} by {kube_cluster_name,node} < 1` |
+| [Persistent Volumes](#persistent-volumes) | True | 3  | `avg(last_5m):max:kubernetes_state.persistentvolume.by_phase{tag:xxx AND phase:failed} > 1` |
+| [Pid Pressure](#pid-pressure) | True | 3  | `avg(last_5m):max:kubernetes_state.node.by_condition{tag:xxx AND condition:pidpressure AND (status:true OR status:unknown)} by {kube_cluster_name,host} > ` |
 | [Pod Count Per Node High](#pod-count-per-node-high) | True | 2  | `min(last_10m):sum:kubernetes.pods.running{tag:xxx} by {host} > 100.0` |
-| [Pod Ready](#pod-ready) | True | 3  | `min(last_30m):sum:kubernetes_state.pod.count{tag:xxx} by {cluster_name,namespace} - sum:kubernetes_state.pod.ready{tag:xxx} by {cluster_name,namespace} > 0` |
+| [Pod Ready](#pod-ready) | True | 3  | `min(last_30m):sum:kubernetes_state.pod.count{tag:xxx} by {kube_cluster_name,kube_namespace} - sum:kubernetes_state.pod.ready{tag:xxx} by {kube_cluster_name,kube_namespace} > 0` |
 | [Pod Restarts](#pod-restarts) | False | 2  | `change(avg(last_10m),last_10m):exclude_null(avg:kubernetes.containers.restarts{tag:xxx} by {pod_name}) > 5` |
-| [Pods Failed](#pods-failed) | True | 3  | `min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}tag:xxx} by {namespace}) > ` |
-| [Pods Pending](#pods-pending) | True | 3  | `min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}tag:xxx} by {namespace}) > ` |
-| [Replicaset Incomplete](#replicaset-incomplete) | True | 3  | `min(last_15m):max:kubernetes_state.replicaset.replicas_desired{tag:xxx} by {kube_replica_set,cluster_name} - min:kubernetes_state.replicaset.replicas_ready{tag:xxx} by {kube_replica_set,cluster_name} > ` |
+| [Pods Failed](#pods-failed) | True | 3  | `min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}tag:xxx} by {kube_namespace}) > ` |
+| [Pods Pending](#pods-pending) | True | 3  | `min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}tag:xxx} by {kube_namespace}) > ` |
+| [Replicaset Incomplete](#replicaset-incomplete) | True | 3  | `min(last_15m):max:kubernetes_state.replicaset.replicas_desired{tag:xxx} by {kube_replica_set,kube_cluster_name} - min:kubernetes_state.replicaset.replicas_ready{tag:xxx} by {kube_replica_set,kube_cluster_name} > ` |
 | [Replicaset Unavailable](#replicaset-unavailable) | True | 2  | `max(last_5m):( ${local.rs_pods_ready} ) / ${local.rs_pods_desired} / ( ${local.rs_pods_desired} - 1 ) <= 0` |
 
 # Getting started developing
@@ -88,7 +93,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):( sum:kubernetes_state.container.cpu_limit{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,cluster_name}) * 100 > 100
+max(last_5m):( sum:kubernetes_state.container.cpu_limit{tag:xxx} by {host,kube_cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,kube_cluster_name}) * 100 > 100
 ```
 
 | variable                                    | default                                  | required | description                                                                                          |
@@ -113,7 +118,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):(sum:kubernetes.cpu.limits{tag:xxx} by {host,cluster_name} / max:system.cpu.num_cores{tag:xxx} by {host,cluster_name}) * 100 > 100
+max(last_5m):(sum:kubernetes.cpu.limits{tag:xxx} by {host,kube_cluster_name} / max:system.cpu.num_cores{tag:xxx} by {host,kube_cluster_name}) * 100 > 100
 ```
 
 | variable                              | default                                  | required | description                      |
@@ -138,7 +143,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-min(last_5m):max:system.cpu.num_cores{tag:xxx} by {cluster_name,host} - sum:kubernetes.cpu.limits{tag:xxx} by {cluster_name,host} < ${-30}
+min(last_5m):max:system.cpu.num_cores{tag:xxx} by {kube_cluster_name,host} - sum:kubernetes.cpu.limits{tag:xxx} by {kube_cluster_name,host} < ${-30}
 ```
 
 | variable                         | default                                  | required | description                                                                                          |
@@ -161,7 +166,7 @@ min(last_5m):max:system.cpu.num_cores{tag:xxx} by {cluster_name,host} - sum:kube
 
 Query:
 ```terraform
-avg(last_30m):avg:docker.cpu.usage{tag:xxx} by {cluster_name,host,container_name} > 85
+avg(last_30m):avg:docker.cpu.usage{tag:xxx} by {kube_cluster_name,host,container_name} > 85
 ```
 
 | variable                               | default                                  | required | description                                                                                          |
@@ -190,7 +195,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):( sum:kubernetes_state.container.cpu_requested{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,cluster_name} ) * 100 > 95
+max(last_5m):( sum:kubernetes_state.container.cpu_requested{tag:xxx} by {host,kube_cluster_name} / sum:kubernetes_state.node.cpu_capacity{tag:xxx} by {host,kube_cluster_name} ) * 100 > 95
 ```
 
 | variable                                      | default                                  | required | description                                                                                          |
@@ -215,7 +220,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):100 * sum:kubernetes.cpu.requests{tag:xxx} by {cluster_name,host} / max:system.cpu.num_cores{tag:xxx} by {cluster_name,host} > 95
+max(last_5m):100 * sum:kubernetes.cpu.requests{tag:xxx} by {kube_cluster_name,host} / max:system.cpu.num_cores{tag:xxx} by {kube_cluster_name,host} > 95
 ```
 
 | variable                                | default                                  | required | description                      |
@@ -240,7 +245,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):max:system.cpu.num_cores{tag:xxx} by {cluster_name,host} - sum:kubernetes.cpu.requests{tag:xxx} by {cluster_name,host} < 0.5
+max(last_5m):max:system.cpu.num_cores{tag:xxx} by {kube_cluster_name,host} - sum:kubernetes.cpu.requests{tag:xxx} by {kube_cluster_name,host} < 0.5
 ```
 
 | variable                           | default                                  | required | description                                                                                          |
@@ -265,14 +270,14 @@ In kubernetes a daemonset is responsible for running the same pod across all Nod
 
 Query:
 ```terraform
-min(last_30m):max:kubernetes_state.daemonset.scheduled{tag:xxx} by {daemonset,cluster_name} - min:kubernetes_state.daemonset.ready{tag:xxx} by {daemonset,cluster_name} > 0
+min(last_15m):max:kubernetes_state.daemonset.scheduled{tag:xxx} by {kube_daemon_set,kube_cluster_name} - min:kubernetes_state.daemonset.ready{tag:xxx} by {kube_daemon_set,kube_cluster_name} > 0
 ```
 
 | variable                               | default                                  | required | description                                                              |
 |----------------------------------------|------------------------------------------|----------|--------------------------------------------------------------------------|
 | daemonset_incomplete_enabled           | True                                     | No       |                                                                          |
 | daemonset_incomplete_critical          | 0                                        | No       | alert is raised when (desired - running) > daemonset_incomplete_critical |
-| daemonset_incomplete_evaluation_period | last_30m                                 | No       |                                                                          |
+| daemonset_incomplete_evaluation_period | last_15m                                 | No       |                                                                          |
 | daemonset_incomplete_note              | ""                                       | No       |                                                                          |
 | daemonset_incomplete_docs              | In kubernetes a daemonset is responsible for running the same pod across all Nodes. An example for when this fails, is when the image cannot be pulled, the pod fails to initialize or no resources are available on the cluster\nThis alert is raised when (desired - running) > 0 | No       |                                                                          |
 | daemonset_incomplete_filter_override   | ""                                       | No       |                                                                          |
@@ -280,7 +285,7 @@ min(last_30m):max:kubernetes_state.daemonset.scheduled{tag:xxx} by {daemonset,cl
 | daemonset_incomplete_no_data_timeframe | None                                     | No       |                                                                          |
 | daemonset_incomplete_notify_no_data    | False                                    | No       |                                                                          |
 | daemonset_incomplete_ok_threshold      | None                                     | No       |                                                                          |
-| daemonset_incomplete_priority          | 3                                        | No       | Number from 1 (high) to 5 (low).                                         |
+| daemonset_incomplete_priority          | 2                                        | No       | Number from 1 (high) to 5 (low).                                         |
 
 
 ## Daemonset Multiple Restarts
@@ -315,7 +320,7 @@ max(last_15m):clamp_min(max:kubernetes.containers.restarts{tag:xxx} by {kube_dae
 
 Query:
 ```terraform
-avg(last_5m):avg:datadog.agent.running{tag:xxx} by {host,cluster_name} < 1
+avg(last_5m):avg:datadog.agent.running{tag:xxx} by {host,kube_cluster_name} < 1
 ```
 
 | variable                        | default  | required | description                      |
@@ -338,7 +343,7 @@ The amount of expected pods to run minus the actual number
 
 Query:
 ```terraform
-avg(last_15m):max:kubernetes_state.deployment.replicas_desired{tag:xxx} by {cluster_name,host} - max:kubernetes_state.deployment.replicas{tag:xxx} by {cluster_name,host} > 10
+avg(last_15m):max:kubernetes_state.deployment.replicas_desired{tag:xxx} by {kube_cluster_name} - max:kubernetes_state.deployment.replicas_available{tag:xxx} by {kube_cluster_name} > 10
 ```
 
 | variable                                   | default                                  | required | description                      |
@@ -414,7 +419,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):( sum:kubernetes_state.container.memory_limit{tag:xxx} by {host,cluster_name} / sum:kubernetes_state.node.memory_allocatable{tag:xxx} by {host,cluster_name}) * 100 > 100
+max(last_5m):( sum:kubernetes_state.container.memory_limit{tag:xxx} by {host,kube_cluster_name} / sum:kubernetes_state.node.memory_allocatable{tag:xxx} by {host,kube_cluster_name}) * 100 > 100
 ```
 
 | variable                                       | default                                  | required | description                                                                                          |
@@ -439,7 +444,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-max(last_5m):( max:kubernetes.memory.limits{tag:xxx}  by {host,cluster_name}/ max:system.mem.total{tag:xxx} by {host,cluster_name}) * 100 > 100
+max(last_5m):( max:kubernetes.memory.limits{tag:xxx}  by {host,kube_cluster_name}/ max:system.mem.total{tag:xxx} by {host,kube_cluster_name}) * 100 > 100
 ```
 
 | variable                                 | default                                  | required | description                      |
@@ -464,7 +469,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-avg(last_5m):max:system.mem.total{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.limits{tag:xxx} by {host,cluster_name} < 3000000000
+avg(last_5m):max:system.mem.total{tag:xxx} by {host,kube_cluster_name} - max:kubernetes.memory.limits{tag:xxx} by {host,kube_cluster_name} < 3000000000
 ```
 
 | variable                            | default                                  | required | description                                                                                          |
@@ -539,7 +544,7 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Query:
 ```terraform
-avg(last_5m):max:system.mem.total{tag:xxx} by {host,cluster_name} - max:kubernetes.memory.requests{tag:xxx} by {host,cluster_name} < 3000000000
+avg(last_5m):max:system.mem.total{tag:xxx} by {host,kube_cluster_name} - max:kubernetes.memory.requests{tag:xxx} by {host,kube_cluster_name} < 3000000000
 ```
 
 | variable                              | default                                  | required | description                                                                                          |
@@ -564,7 +569,7 @@ All your nodes need network  connections, and this status indicates that thereâ€
 
 Query:
 ```terraform
-avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:networkunavailable AND (status:true OR status:unknown)} by {cluster_name,host} > 
+avg(last_5m):max:kubernetes_state.node.by_condition{tag:xxx AND condition:networkunavailable AND (status:true OR status:unknown)} by {kube_cluster_name,host} > 
 ```
 
 | variable                              | default                                  | required | description                                                             |
@@ -588,7 +593,7 @@ Disk pressure is a condition indicating that a node is using too much disk space
 
 Query:
 ```terraform
-avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:diskpressure AND (status:true OR status:unknown)} by {cluster_name,host} > 
+avg(last_5m):max:kubernetes_state.node.by_condition{tag:xxx AND condition:diskpressure AND (status:true OR status:unknown)} by {kube_cluster_name,host} > 
 ```
 
 | variable                            | default                                  | required | description                                                           |
@@ -610,7 +615,7 @@ avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:diskp
 
 Query:
 ```terraform
-avg(last_5m):( 100 * max:kubernetes.memory.usage{tag:xxx} by {host,cluster_name} ) / max:system.mem.total{tag:xxx} by {host,cluster_name} > 90
+avg(last_5m):( 100 * max:kubernetes.memory.usage{tag:xxx} by {host,kube_cluster_name} ) / max:system.mem.total{tag:xxx} by {host,kube_cluster_name} > 90
 ```
 
 | variable                                   | default  | required | description                      |
@@ -635,7 +640,7 @@ Memory pressure is a resourcing condition indicating that your node is running o
 
 Query:
 ```terraform
-avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:memorypressure AND (status:true OR status:unknown)} by {cluster_name,host} > 
+avg(last_5m):max:kubernetes_state.node.by_condition{tag:xxx AND condition:memorypressure AND (status:true OR status:unknown)} by {kube_cluster_name,host} > 
 ```
 
 | variable                              | default                                  | required | description                                                             |
@@ -659,7 +664,7 @@ Checks to see if the node is in ready status or not
 
 Query:
 ```terraform
-avg(last_5m):count_nonzero(sum:kubernetes_state.nodes.by_condition{tag:xxx AND (NOT condition:ready) AND (status:true OR status:unknown)} by {cluster_name,host}) > 1
+avg(last_5m):count_nonzero(sum:kubernetes_state.node.by_condition{tag:xxx AND (NOT condition:ready) AND (status:true OR status:unknown)} by {kube_cluster_name,host}) > 1
 ```
 
 | variable                     | default                                  | required | description                      |
@@ -683,7 +688,7 @@ This cluster state metric provides a high-level overview of a nodeâ€™s health an
 
 Query:
 ```terraform
-avg(last_5m):avg:kubernetes_state.node.status{tag:xxx} by {cluster_name,node} < 1
+avg(last_5m):avg:kubernetes_state.node.status{tag:xxx} by {kube_cluster_name,node} < 1
 ```
 
 | variable                      | default                                  | required | description                      |
@@ -704,7 +709,7 @@ avg(last_5m):avg:kubernetes_state.node.status{tag:xxx} by {cluster_name,node} < 
 
 Query:
 ```terraform
-avg(last_5m):max:kubernetes_state.persistentvolumes.by_phase{tag:xxx AND phase:failed} > 1
+avg(last_5m):max:kubernetes_state.persistentvolume.by_phase{tag:xxx AND phase:failed} > 1
 ```
 
 | variable                             | default  | required | description                      |
@@ -729,7 +734,7 @@ PID pressure is a rare condition where a pod or container spawns too many proces
 
 Query:
 ```terraform
-avg(last_5m):max:kubernetes_state.nodes.by_condition{tag:xxx AND condition:pidpressure AND (status:true OR status:unknown)} by {cluster_name,host} > 
+avg(last_5m):max:kubernetes_state.node.by_condition{tag:xxx AND condition:pidpressure AND (status:true OR status:unknown)} by {kube_cluster_name,host} > 
 ```
 
 | variable                       | default                                  | required | description                                                      |
@@ -780,7 +785,7 @@ A pod may be running but not available, meaning it is not ready and able to acce
 
 Query:
 ```terraform
-min(last_30m):sum:kubernetes_state.pod.count{tag:xxx} by {cluster_name,namespace} - sum:kubernetes_state.pod.ready{tag:xxx} by {cluster_name,namespace} > 0
+min(last_30m):sum:kubernetes_state.pod.count{tag:xxx} by {kube_cluster_name,kube_namespace} - sum:kubernetes_state.pod.ready{tag:xxx} by {kube_cluster_name,kube_namespace} > 0
 ```
 
 | variable                    | default                                  | required | description                      |
@@ -826,7 +831,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
 Query:
 ```terraform
-min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}tag:xxx} by {namespace}) > 
+min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}tag:xxx} by {kube_namespace}) > 
 ```
 
 | variable                      | default                                  | required | description                      |
@@ -853,7 +858,7 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
 
 Query:
 ```terraform
-min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}tag:xxx} by {namespace}) > 
+min(last_10m):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}tag:xxx} by {kube_namespace}) > 
 ```
 
 | variable                       | default                                  | required | description                      |
@@ -880,7 +885,7 @@ In kubernetes a Replicaset is responsible for making sure a specific number of p
 
 Query:
 ```terraform
-min(last_15m):max:kubernetes_state.replicaset.replicas_desired{tag:xxx} by {kube_replica_set,cluster_name} - min:kubernetes_state.replicaset.replicas_ready{tag:xxx} by {kube_replica_set,cluster_name} > 
+min(last_15m):max:kubernetes_state.replicaset.replicas_desired{tag:xxx} by {kube_replica_set,kube_cluster_name} - min:kubernetes_state.replicaset.replicas_ready{tag:xxx} by {kube_replica_set,kube_cluster_name} > 
 ```
 
 | variable                                | default                                  | required | description                                                               |

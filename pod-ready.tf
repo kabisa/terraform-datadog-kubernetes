@@ -10,9 +10,9 @@ module "pod_ready" {
   version = "1.0.0"
 
   name             = "Pod status not ready"
-  query            = "min(${var.pod_ready_evaluation_period}):sum:kubernetes_state.pod.count{${local.pod_ready_filter}} by {cluster_name,namespace} - sum:kubernetes_state.pod.ready{${local.pod_ready_filter}} by {cluster_name,namespace} > 0"
-  alert_message    = "Kubernetes Pod {{value}} status not ready in namespace {{namespace}} "
-  recovery_message = "Kubernetes Pod status recovered in namespace {{namespace}}"
+  query            = "min(${var.pod_ready_evaluation_period}):sum:kubernetes_state.pod.count{${local.pod_ready_filter}} by {kube_cluster_name,kube_namespace} - sum:kubernetes_state.pod.ready{${local.pod_ready_filter}} by {kube_cluster_name,kube_namespace} > 0"
+  alert_message    = "Kubernetes Pod {{value}} status not ready in namespace {{kube_namespace}} "
+  recovery_message = "Kubernetes Pod status recovered in namespace {{kube_namespace}}"
 
   # monitor level vars
   enabled            = var.state_metrics_monitoring && var.pod_ready_enabled

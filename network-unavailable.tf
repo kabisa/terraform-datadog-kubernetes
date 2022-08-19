@@ -10,7 +10,7 @@ module "network_unavailable" {
   version = "1.0.0"
 
   name             = "Nodes with Network Unavailable"
-  query            = "avg(${var.network_unavailable_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.network_unavailable_filter} AND condition:networkunavailable AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.network_unavailable_critical}"
+  query            = "avg(${var.network_unavailable_evaluation_period}):max:kubernetes_state.node.by_condition{${local.network_unavailable_filter} AND condition:networkunavailable AND (status:true OR status:unknown)} by {kube_cluster_name,host} > ${var.network_unavailable_critical}"
   alert_message    = "Kubernetes cluster node {{node}} has no network. Meaning it is not accessible"
   recovery_message = "Kubernetes cluster node {{node}} has come back on the network"
 

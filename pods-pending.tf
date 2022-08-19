@@ -10,7 +10,7 @@ module "pods_pending" {
   version = "1.0.0"
 
   name  = "Pods Pending"
-  query = "min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}${local.pods_pending_filter}} by {namespace}) > ${var.pods_pending_critical}"
+  query = "min(${var.pods_pending_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:pending${var.filter_str_concatenation}${local.pods_pending_filter}} by {kube_namespace}) > ${var.pods_pending_critical}"
 
   # alert specific configuration
   require_full_window = true

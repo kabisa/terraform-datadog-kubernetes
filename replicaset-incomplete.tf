@@ -10,7 +10,7 @@ module "replicaset_incomplete" {
   version = "1.0.0"
 
   name             = "Replicaset Incomplete"
-  query            = "min(${var.replicaset_incomplete_evaluation_period}):max:kubernetes_state.replicaset.replicas_desired{${local.replicaset_incomplete_filter}} by {kube_replica_set,cluster_name} - min:kubernetes_state.replicaset.replicas_ready{${local.replicaset_incomplete_filter}} by {kube_replica_set,cluster_name} > ${var.replicaset_incomplete_critical}"
+  query            = "min(${var.replicaset_incomplete_evaluation_period}):max:kubernetes_state.replicaset.replicas_desired{${local.replicaset_incomplete_filter}} by {kube_replica_set,kube_cluster_name} - min:kubernetes_state.replicaset.replicas_ready{${local.replicaset_incomplete_filter}} by {kube_replica_set,kube_cluster_name} > ${var.replicaset_incomplete_critical}"
   alert_message    = "Kubernetes Replicaset {{kube_replica_set}} is incomplete. Missing pod count:{{value}}"
   recovery_message = "Kubernetes Replicaset {{kube_replica_set}} has recovered"
 
