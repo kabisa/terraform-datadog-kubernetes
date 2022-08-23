@@ -10,7 +10,7 @@ module "pid_pressure" {
   version = "1.0.0"
 
   name             = "Nodes with PID Pressure"
-  query            = "avg(${var.pid_pressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.pid_pressure_filter} AND condition:pidpressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.pid_pressure_critical}"
+  query            = "avg(${var.pid_pressure_evaluation_period}):max:kubernetes_state.node.by_condition{${local.pid_pressure_filter} AND condition:pidpressure AND (status:true OR status:unknown)} by {kube_cluster_name,host} > ${var.pid_pressure_critical}"
   alert_message    = "Kubernetes cluster node {{node}} has PID Pressure, meaning it may not be able to start more containers"
   recovery_message = "Kubernetes cluster node {{node}} n olonger has pid pressure."
 

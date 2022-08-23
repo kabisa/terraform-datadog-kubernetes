@@ -10,7 +10,7 @@ module "node_status" {
   version = "1.0.0"
 
   name                = "Node Status not OK"
-  query               = "avg(${var.node_status_evaluation_period}):avg:kubernetes_state.node.status{${local.node_status_filter}} by {cluster_name,node} < 1"
+  query               = "avg(${var.node_status_evaluation_period}):avg:kubernetes_state.node.status{${local.node_status_filter}} by {kube_cluster_name,node} < 1"
   alert_message       = "Kubernetes Node Status for Node {{node}} is not ok"
   recovery_message    = "Kubernetes Node Status for Node {{node}} has recovered"
   require_full_window = false

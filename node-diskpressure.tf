@@ -10,7 +10,7 @@ module "node_diskpressure" {
   version = "1.0.0"
 
   name             = "Nodes with Diskpressure"
-  query            = "avg(${var.node_diskpressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.node_diskpressure_filter} AND condition:diskpressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.node_diskpressure_critical}"
+  query            = "avg(${var.node_diskpressure_evaluation_period}):max:kubernetes_state.node.by_condition{${local.node_diskpressure_filter} AND condition:diskpressure AND (status:true OR status:unknown)} by {kube_cluster_name,host} > ${var.node_diskpressure_critical}"
   alert_message    = "Kubernetes cluster node {{node}} has diskpressure. Meaning it is low on disk space (Logging, emptydir volumes, caching, etc)"
   recovery_message = "Kubernetes cluster node {{node}} no longer has problems with DiskPressure."
 

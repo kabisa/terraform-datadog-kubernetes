@@ -10,9 +10,9 @@ module "cpu_limits_low_perc_state" {
   version = "1.0.0"
 
   name             = "Available CPU for Limits in percentages Low"
-  query            = "max(${var.cpu_limits_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.cpu_limit{${local.cpu_limits_low_perc_state_filter}} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{${local.cpu_limits_low_perc_state_filter}} by {host,cluster_name}) * 100 > ${var.cpu_limits_low_perc_state_critical}"
-  alert_message    = "Kubernetes cluster cpu room for limits / percentage is too low"
-  recovery_message = "Kubernetes cluster cpu limits / percentage has recovered"
+  query            = "max(${var.cpu_limits_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.cpu_limit{${local.cpu_limits_low_perc_state_filter}} by {host,kube_cluster_name} / sum:kubernetes_state.node.cpu_capacity{${local.cpu_limits_low_perc_state_filter}} by {host,kube_cluster_name}) * 100 > ${var.cpu_limits_low_perc_state_critical}"
+  alert_message    = "Kubernetes cluster {{kube_cluster_name.name}} cpu room for limits / percentage is too low"
+  recovery_message = "Kubernetes cluster {{kube_cluster_name.name}} cpu limits / percentage has recovered"
 
   # monitor level vars
   enabled            = var.cpu_limits_low_perc_state_enabled

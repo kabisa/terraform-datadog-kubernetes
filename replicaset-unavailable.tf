@@ -3,8 +3,8 @@ locals {
     var.replicaset_unavailable_filter_override,
     var.filter_str
   )
-  rs_pods_ready   = "min:kubernetes_state.replicaset.replicas_ready{${local.replicaset_unavailable_filter}} by {kube_replica_set,cluster_name}"
-  rs_pods_desired = "min:kubernetes_state.replicaset.replicas_desired{${local.replicaset_unavailable_filter}} by {kube_replica_set,cluster_name}"
+  rs_pods_ready   = "min:kubernetes_state.replicaset.replicas_ready{${local.replicaset_unavailable_filter}} by {kube_replica_set,kube_cluster_name}"
+  rs_pods_desired = "min:kubernetes_state.replicaset.replicas_desired{${local.replicaset_unavailable_filter}} by {kube_replica_set,kube_cluster_name}"
 }
 
 module "replicaset_unavailable" {

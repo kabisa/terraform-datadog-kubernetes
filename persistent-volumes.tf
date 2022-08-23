@@ -10,7 +10,7 @@ module "persistent_volumes_low" {
   version = "1.0.0"
 
   name             = "Failed Persistent Volume Claims"
-  query            = "avg(${var.persistent_volumes_evaluation_period}):max:kubernetes_state.persistentvolumes.by_phase{${local.persistent_volumes_filter} AND phase:failed} > ${var.persistent_volumes_critical}"
+  query            = "avg(${var.persistent_volumes_evaluation_period}):max:kubernetes_state.persistentvolume.by_phase{${local.persistent_volumes_filter} AND phase:failed} > ${var.persistent_volumes_critical}"
   alert_message    = "There are failed Physical Volume Claims, storage has problems"
   recovery_message = "There are no failed Physical Volume Claims"
 

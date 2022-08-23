@@ -10,7 +10,7 @@ module "node_memorypressure" {
   version = "1.0.0"
 
   name             = "Nodes with Memorypressure"
-  query            = "avg(${var.node_memorypressure_evaluation_period}):max:kubernetes_state.nodes.by_condition{${local.node_memorypressure_filter} AND condition:memorypressure AND (status:true OR status:unknown)} by {cluster_name,host} > ${var.node_memorypressure_critical}"
+  query            = "avg(${var.node_memorypressure_evaluation_period}):max:kubernetes_state.node.by_condition{${local.node_memorypressure_filter} AND condition:memorypressure AND (status:true OR status:unknown)} by {kube_cluster_name,host} > ${var.node_memorypressure_critical}"
   alert_message    = "Kubernetes cluster node {{node}} has memorypressure. Meaning it is low on memory"
   recovery_message = "Kubernetes cluster node {{node}} no longer has Memory Pressure."
 

@@ -10,9 +10,11 @@ module "deploy_desired_vs_status" {
   version = "1.0.0"
 
   name             = "Desired pods vs current pods (Deployments)"
-  query            = "avg(${var.deploy_desired_vs_status_evaluation_period}):max:kubernetes_state.deployment.replicas_desired{${local.deploy_desired_vs_status_filter}} by {cluster_name,host} - max:kubernetes_state.deployment.replicas{${local.deploy_desired_vs_status_filter}} by {cluster_name,host} > ${var.deploy_desired_vs_status_critical}"
+  query            = "avg(${var.deploy_desired_vs_status_evaluation_period}):max:kubernetes_state.deployment.replicas_desired{${local.deploy_desired_vs_status_filter}} by {kube_cluster_name} - max:kubernetes_state.deployment.replicas_available{${local.deploy_desired_vs_status_filter}} by {kube_cluster_name} > ${var.deploy_desired_vs_status_critical}"
   alert_message    = "Kubernetes is having trouble getting all the pods to start. (Based on replicas number in all the deployments)"
   recovery_message = "All pods described in deployments have started"
+  notify_no_data   = true
+  no_data_message  = "Kubernetes State data missing for {{kube_cluster_name.name}}"
 
   # monitor level vars
   enabled            = var.state_metrics_monitoring && var.deploy_desired_vs_status_enabled

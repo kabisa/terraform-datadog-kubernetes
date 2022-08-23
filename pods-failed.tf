@@ -10,7 +10,7 @@ module "pods_failed" {
   version = "1.0.0"
 
   name  = "Pods Failed"
-  query = "min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}${local.pods_failed_filter}} by {namespace}) > ${var.pods_failed_critical}"
+  query = "min(${var.pods_failed_evaluation_period}):default_zero(max:kubernetes_state.pod.status_phase{phase:failed${var.filter_str_concatenation}${local.pods_failed_filter}} by {kube_namespace}) > ${var.pods_failed_critical}"
 
   # alert specific configuration
   require_full_window = true

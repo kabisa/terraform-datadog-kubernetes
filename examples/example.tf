@@ -5,5 +5,5 @@ module "kubernetes" {
   notification_channel = "mail@example.com"
   service              = "Kubernetes"
   env                  = "prd"
-  filter_str           = "cluster_name:production"
+  filter_str           = "kube_cluster_name:production"
 }

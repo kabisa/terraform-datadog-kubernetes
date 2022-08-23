@@ -10,7 +10,7 @@ module "cpu_requests_low_perc_state" {
   version = "1.0.0"
 
   name             = "Available CPU for requests in percentages Low"
-  query            = "max(${var.cpu_requests_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.cpu_requested{${local.cpu_requests_low_perc_state_filter}} by {host,cluster_name} / sum:kubernetes_state.node.cpu_capacity{${local.cpu_requests_low_perc_state_filter}} by {host,cluster_name} ) * 100 > ${var.cpu_requests_low_perc_state_critical}"
+  query            = "max(${var.cpu_requests_low_perc_state_evaluation_period}):( sum:kubernetes_state.container.cpu_requested{${local.cpu_requests_low_perc_state_filter}} by {host,kube_cluster_name} / sum:kubernetes_state.node.cpu_capacity{${local.cpu_requests_low_perc_state_filter}} by {host,kube_cluster_name} ) * 100 > ${var.cpu_requests_low_perc_state_critical}"
   alert_message    = "Kubernetes cluster cpu room for requests / percentage is too low"
   recovery_message = "Kubernetes cluster cpu requests / percentage has recovered"
 
