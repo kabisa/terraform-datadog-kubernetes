@@ -13,7 +13,7 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: terraform-linters/setup-tflint@v2
+    - uses: terraform-linters/setup-tflint@v3
       name: Setup TFLint
       with:
         tflint_version: v0.38.1
